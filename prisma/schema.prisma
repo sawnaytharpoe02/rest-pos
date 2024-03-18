@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  name       String
+  email      String    @unique
+  password   String
+  isArchived Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  companies  Company[]
+}
+
+model Company {
+  id         Int      @id @default(autoincrement())
+  name       String
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  isArchived Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Menu {
+  id               Int                @id @default(autoincrement())
+  name             String
+  price            Int
+  isArchived       Boolean            @default(false)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  MenuCategoryMenu MenuCategoryMenu[]
+}
+
+model MenuCategory {
+  id               Int                @id @default(autoincrement())
+  name             String
+  isAvailable      Boolean
+  isArchived       Boolean            @default(false)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  MenuCategoryMenu MenuCategoryMenu[]
+}
+
+model MenuCategoryMenu {
+  id             Int          @id @default(autoincrement())
+  menuId         Int
+  menu           Menu         @relation(fields: [menuId], references: [id])
+  menuCategoryId Int
+  menuCategory   MenuCategory @relation(fields: [menuCategoryId], references: [id])
+}
