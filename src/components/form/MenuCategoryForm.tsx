@@ -24,38 +24,45 @@ interface Props {
 
 const MenuCategoryForm = ({ setMenuCategoryData, menuCategoryData }: Props) => {
   const dispatch = useAppDispatch();
-  const { isLoading } = useAppSelector((state) => state.menu);
+  const { isLoading } = useAppSelector((state) => state.menuCategory);
+  const { company } = useAppSelector((state) => state.company);
+  menuCategoryData.companyId = company?.id;
 
   const handleCreateMenuCategory = () => {
-    dispatch(
-      createMenuCategory({
-        ...menuCategoryData,
-        onSuccess: () => {
-          dispatch(setOpenDialog(false));
-          setTimeout(() => {
-            dispatch(
-              setSnackbar({
-                type: "success",
-                isOpen: true,
-                message: "Create menu category successfully",
-              })
-            );
-          }, 1000);
-        },
-        onError: () => {
-          dispatch(setOpenDialog(false));
-          setTimeout(() => {
-            dispatch(
-              setSnackbar({
-                type: "error",
-                isOpen: true,
-                message: "Error occured while creating menu category",
-              })
-            );
-          }, 1000);
-        },
-      })
-    );
+    const isValid =
+      menuCategoryData.name &&
+      menuCategoryData.companyId &&
+      menuCategoryData.isAvailable;
+    isValid &&
+      dispatch(
+        createMenuCategory({
+          ...menuCategoryData,
+          onSuccess: () => {
+            dispatch(setOpenDialog(false));
+            setTimeout(() => {
+              dispatch(
+                setSnackbar({
+                  type: "success",
+                  isOpen: true,
+                  message: "Create menu category successfully",
+                })
+              );
+            }, 1000);
+          },
+          onError: () => {
+            dispatch(setOpenDialog(false));
+            setTimeout(() => {
+              dispatch(
+                setSnackbar({
+                  type: "error",
+                  isOpen: true,
+                  message: "Error occured while creating menu category",
+                })
+              );
+            }, 1000);
+          },
+        })
+      );
   };
 
   return (

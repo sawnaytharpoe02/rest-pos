@@ -30,7 +30,6 @@ export const createMenuCategory = createAsyncThunk(
       });
 
       const { menuCategory } = await res.json();
-      console.log(menuCategory);
       onSuccess && onSuccess();
       return menuCategory;
     } catch (error) {
@@ -52,7 +51,6 @@ export const updateMenuCategory = createAsyncThunk(
       });
 
       const { menuCategory } = await res.json();
-      console.log(menuCategory);
       onSuccess && onSuccess();
       return menuCategory;
     } catch (error) {
@@ -76,14 +74,38 @@ const menuCategorySlice = createSlice({
         state.isLoading = true;
         state.isError = null;
       })
-      .addCase(createMenuCategory.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = null;
-        state.menuCategories = [...state.menuCategories, action.payload];
-      })
+      .addCase(
+        createMenuCategory.fulfilled,
+        (state, action: PayloadAction<MenuCategory>) => {
+          state.isLoading = false;
+          state.isError = null;
+          state.menuCategories = [...state.menuCategories, action.payload];
+        }
+      )
       .addCase(createMenuCategory.rejected, (state, _action) => {
         state.isLoading = false;
         const error = new Error("Error occured while creating menu category");
+        state.isError = error.message;
+      });
+
+    builder
+      .addCase(updateMenuCategory.pending, (state, _action) => {
+        state.isLoading = true;
+        state.isError = null;
+      })
+      .addCase(
+        updateMenuCategory.fulfilled,
+        (state, action: PayloadAction<MenuCategory>) => {
+          state.isLoading = false;
+          state.isError = null;
+          state.menuCategories = state.menuCategories.map((item) =>
+            item.id === action.payload.id ? action.payload : {...item}
+          );
+        }
+      )
+      .addCase(updateMenuCategory.rejected, (state, _action) => {
+        state.isLoading = false;
+        const error = new Error("Error occured while updating menu category");
         state.isError = error.message;
       });
   },

@@ -9,14 +9,16 @@ import CommonDialog from "@/components/dialog/CommonDialog";
 import MenuCategoryForm from "@/components/form/MenuCategoryForm";
 import MenuCategoryCard from "@/components/card/MenuCategoryCard";
 import { config } from "@/config";
-import { CreateUpdateMenuCategory } from "@/types/menuCategory";
+import { CreateMenuCategoryPayload } from "@/types/menuCategory";
 
 const MenuCategoryPage = () => {
-  const [menuCategoryData, setMenuCategoryData] = useState<CreateUpdateMenuCategory>({
-    name: "",
-    isAvailable: true,
-  });
   const { menuCategories } = useAppSelector((state) => state.menuCategory);
+
+  const [menuCategoryData, setMenuCategoryData] =
+    useState<CreateMenuCategoryPayload>({
+      name: "",
+      isAvailable: true,
+    });
 
   const dispatch = useAppDispatch();
   const handleOpenDialog = () => {
@@ -39,7 +41,7 @@ const MenuCategoryPage = () => {
         </Box>
 
         <Box sx={{ display: "flex", gap: 2, mt: 4 }}>
-          {menuCategories?.map((item) => (
+          {menuCategories && menuCategories.map((item) => (
             <MenuCategoryCard
               key={item.id}
               title={item.name}
