@@ -13,51 +13,111 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id         Int       @id @default(autoincrement())
-  name       String
-  email      String    @unique
-  password   String
-  isArchived Boolean   @default(false)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  companies  Company[]
+model Company {
+  id             Int            @id @default(autoincrement())
+  name           String
+  street         String
+  township       String
+  city           String
+  isArchived     Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  locations      Location[]
+  menuCategories MenuCategory[]
+  user           User[]
 }
 
-model Company {
+model Location {
   id         Int      @id @default(autoincrement())
   name       String
-  userId     Int
-  user       User     @relation(fields: [userId], references: [id])
+  street     String
+  township   String
+  city       String
   isArchived Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-}
-
-model Menu {
-  id               Int                @id @default(autoincrement())
-  name             String
-  price            Int
-  isArchived       Boolean            @default(false)
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
-  MenuCategoryMenu MenuCategoryMenu[]
+  companyId  Int
+  company    Company  @relation(fields: [companyId], references: [id])
+  tables     Table[]
 }
 
 model MenuCategory {
   id               Int                @id @default(autoincrement())
   name             String
-  isAvailable      Boolean
   isArchived       Boolean            @default(false)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
-  MenuCategoryMenu MenuCategoryMenu[]
+  companyId        Int
+  company          Company            @relation(fields: [companyId], references: [id])
+  menuCategoryMenu MenuCategoryMenu[]
+}
+
+model Menu {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  price             Int                 @default(0)
+  description       String?
+  assetUrl          String?
+  isArchived        Boolean             @default(false)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  menuAddonCategory MenuAddonCategory[]
+  menuCategoryMenu  MenuCategoryMenu[]
 }
 
 model MenuCategoryMenu {
   id             Int          @id @default(autoincrement())
-  menuId         Int
-  menu           Menu         @relation(fields: [menuId], references: [id])
   menuCategoryId Int
   menuCategory   MenuCategory @relation(fields: [menuCategoryId], references: [id])
+  menuId         Int
+  menu           Menu         @relation(fields: [menuId], references: [id])
+}
+
+model AddonCategory {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  isRequired        Boolean             @default(true)
+  isArchived        Boolean             @default(false)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  addons            Addon[]
+  menuAddonCategory MenuAddonCategory[]
+}
+
+model MenuAddonCategory {
+  id              Int           @id @default(autoincrement())
+  addonCategoryId Int
+  addonCategory   AddonCategory @relation(fields: [addonCategoryId], references: [id])
+  menuId          Int
+  menu            Menu          @relation(fields: [menuId], references: [id])
+}
+
+model Addon {
+  id              Int           @id @default(autoincrement())
+  name            String
+  price           Int           @default(0)
+  addonCategoryId Int
+  isArchived      Boolean       @default(false)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  addonCategory   AddonCategory @relation(fields: [addonCategoryId], references: [id])
+}
+
+model Table {
+  id         Int      @id @default(autoincrement())
+  name       String
+  assetUrl   String
+  isArchived Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  locationId Int
+  location   Location @relation(fields: [locationId], references: [id])
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  name      String?
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id])
 }

@@ -143,7 +143,7 @@ const BackOfficeLayout = ({ children }: Props) => {
     {
       name: "Location",
       href: "/backoffice/location",
-      icon: "mingcute:location-3-fill",
+      icon: "codicon:circle-filled",
     },
   ];
 
@@ -151,7 +151,7 @@ const BackOfficeLayout = ({ children }: Props) => {
     {
       name: "Company",
       href: "/backoffice/company",
-      icon: "solar:buildings-bold-duotone",
+      icon: "codicon:circle-filled",
     },
   ];
 
@@ -195,14 +195,14 @@ const BackOfficeLayout = ({ children }: Props) => {
           <MenuItemDropDown
             menus={LOCATION}
             isOpenDrawer={isOpen}
-            menuIcon="lets-icons:arhive-duotone"
+            menuIcon="mingcute:location-3-fill"
             menuLabel="Location"
           />
 
           <MenuItemDropDown
             menus={COMPANY}
             isOpenDrawer={isOpen}
-            menuIcon="lets-icons:arhive-duotone"
+            menuIcon="solar:home-2-bold-duotone"
             menuLabel="Company"
           />
         </List>
