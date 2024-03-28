@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import MuiDrawer from "@mui/material/Drawer";
@@ -14,11 +14,13 @@ import {
 } from "@mui/material";
 import { LuChevronsLeft, LuChevronsRight } from "react-icons/lu";
 import CssBaseline from "@mui/material/CssBaseline";
-import MenuItemDropDown from "./layoutmenu/MenuItemDropDown";
+import MenuItemDropDown from "../layoutmenu/MenuItemDropDown";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import AppSnackbar from "./snackbar/AppSnackbar";
+import AppSnackbar from "../snackbar/AppSnackbar";
+import { fetchAppData } from "@/store/slice/appSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hook";
 
 const drawerWidth = 250;
 
@@ -113,6 +115,14 @@ interface Props {
 const BackOfficeLayout = ({ children }: Props) => {
   const theme = useTheme();
   const [isOpen, setOpen] = useState(false);
+  const { init } = useAppSelector((state) => state.app);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!init) {
+      dispatch(fetchAppData())
+    }
+  }, []);
 
   const handleDrawerOpen = () => {
     setOpen(true);

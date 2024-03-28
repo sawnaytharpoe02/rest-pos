@@ -1,7 +1,16 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { MenuCategorySlice, MenuCategory } from "@/types/menuCategory";
-import { CreateUpdateMenuCategoryPayload } from "@/types/menuCategory";
+import { MenuCategory } from "@prisma/client";
+import {
+  CreateMenuCategoryPayload,
+  UpdateMenuCategoryPayload,
+} from "@/types/menuCategory";
 import { config } from "@/config";
+
+interface MenuCategorySlice {
+  menuCategories: MenuCategory[];
+  isLoading: boolean;
+  isError: string | null;
+}
 
 const initialState: MenuCategorySlice = {
   menuCategories: [],
@@ -11,22 +20,44 @@ const initialState: MenuCategorySlice = {
 
 export const createMenuCategory = createAsyncThunk(
   "create/menuCategory",
-  async (payload: CreateUpdateMenuCategoryPayload) => {
+  async (payload: CreateMenuCategoryPayload) => {
+    const { onSuccess, onError } = payload;
     try {
-      const { name, isAvailable } = payload;
       const res = await fetch(`${config.backofficeApiBaseUrl}/menu-category`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, isAvailable }),
+        body: JSON.stringify(payload),
       });
 
       const { menuCategory } = await res.json();
       console.log(menuCategory);
-      payload.onSuccess && payload.onSuccess();
+      onSuccess && onSuccess();
       return menuCategory;
     } catch (error) {
       console.log(error);
-      payload.onError && payload.onError();
+      onError && onError();
+    }
+  }
+);
+
+export const updateMenuCategory = createAsyncThunk(
+  "update/menuCategory",
+  async (payload: UpdateMenuCategoryPayload) => {
+    const { onSuccess, onError } = payload;
+    try {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/menu-category`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const { menuCategory } = await res.json();
+      console.log(menuCategory);
+      onSuccess && onSuccess();
+      return menuCategory;
+    } catch (error) {
+      console.log(error);
+      onError && onError();
     }
   }
 );
@@ -37,7 +68,7 @@ const menuCategorySlice = createSlice({
   reducers: {
     setMenuCategories: (state, action: PayloadAction<MenuCategory[]>) => {
       state.menuCategories = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -58,5 +89,5 @@ const menuCategorySlice = createSlice({
   },
 });
 
-export const {setMenuCategories} = menuCategorySlice.actions;
+export const { setMenuCategories } = menuCategorySlice.actions;
 export default menuCategorySlice.reducer;

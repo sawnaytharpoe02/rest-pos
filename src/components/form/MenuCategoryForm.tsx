@@ -9,15 +9,17 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
-import { MenuCategory } from "@/types/menuCategory";
+import { CreateMenuCategoryPayload } from "@/types/menuCategory";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { createMenuCategory } from "@/store/slice/menuCategorySlice";
 
 interface Props {
-  menuCategoryData: MenuCategory;
-  setMenuCategoryData: React.Dispatch<React.SetStateAction<MenuCategory>>;
+  menuCategoryData: CreateMenuCategoryPayload;
+  setMenuCategoryData: React.Dispatch<
+    React.SetStateAction<CreateMenuCategoryPayload>
+  >;
 }
 
 const MenuCategoryForm = ({ setMenuCategoryData, menuCategoryData }: Props) => {
@@ -55,6 +57,7 @@ const MenuCategoryForm = ({ setMenuCategoryData, menuCategoryData }: Props) => {
       })
     );
   };
+
   return (
     <div>
       <Box>

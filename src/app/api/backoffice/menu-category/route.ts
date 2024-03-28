@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import {prisma} from '@/utils/prisma'
+import { prisma } from "@/utils/prisma";
 
 export async function GET(req: Request, res: Response) {
   try {
@@ -13,16 +13,45 @@ export async function GET(req: Request, res: Response) {
   }
 }
 
-export async function POST(req: Request, res: Response){
+export async function POST(req: Request, res: Response) {
   try {
-    const {name, isAvailable} = await req.json();
-    const isValid = name !== null;
+    const { name, isAvailable, companyId } = await req.json();
+    const isValid = name && companyId && isAvailable !== null;
     if (!isValid) {
       return NextResponse.json({ message: "Invalid request" }, { status: 400 });
     }
 
-    const menuCategory = await prisma.menuCategory.create({data: {name, isAvailable}})
-    return NextResponse.json({message: 'OK POST REQ', menuCategory}, {status: 201})
+    const menuCategory = await prisma.menuCategory.create({
+      data: { name, isAvailable, companyId },
+    });
+    return NextResponse.json(
+      { message: "OK POST REQ", menuCategory },
+      { status: 201 }
+    );
+  } catch (error) {
+    return NextResponse.json({ message: error }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request, res: Response) {
+  try {
+    const { id, ...payload } = await req.json();
+
+    const menuCategory = await prisma.menuCategory.findFirst({ where: { id } });
+    if (!menuCategory) {
+      return NextResponse.json(
+        { message: "Menu category not found" },
+        { status: 404 }
+      );
+    }
+    const updatedMenuCategory = await prisma.menuCategory.update({
+      where: { id },
+      data: payload,
+    });
+    return NextResponse.json(
+      { message: "OK PUT REQ", updatedMenuCategory },
+      { status: 201 }
+    );
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });
   }

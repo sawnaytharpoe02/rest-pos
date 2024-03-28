@@ -1,16 +1,12 @@
 import { BaseOptions } from "./user";
-
-export interface BaseMenuCategory {
+export interface CreateMenuCategoryPayload extends BaseOptions {
   name: string;
   isAvailable: boolean;
+  companyId?: number;
 }
 
-export interface MenuCategory extends BaseMenuCategory {}
-
-export interface MenuCategorySlice {
-  menuCategories: MenuCategory[];
-  isLoading: boolean;
-  isError: null | string;
+export interface UpdateMenuCategoryPayload extends BaseOptions {
+  name: string;
+  isAvailable: boolean;
+  companyId?: number;
 }
-
-export interface CreateUpdateMenuCategoryPayload extends BaseMenuCategory, BaseOptions {}
