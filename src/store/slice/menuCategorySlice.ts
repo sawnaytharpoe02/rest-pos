@@ -5,6 +5,7 @@ import {
   UpdateMenuCategoryPayload,
 } from "@/types/menuCategory";
 import { config } from "@/config";
+import MenuCategoryCard from "@/components/card/MenuCategoryCard";
 
 interface MenuCategorySlice {
   menuCategories: MenuCategory[];
@@ -29,7 +30,7 @@ export const createMenuCategory = createAsyncThunk(
         body: JSON.stringify(payload),
       });
 
-      const { menuCategory } = await res.json();
+      const menuCategory = await res.json();
       onSuccess && onSuccess();
       return menuCategory;
     } catch (error) {
@@ -50,9 +51,9 @@ export const updateMenuCategory = createAsyncThunk(
         body: JSON.stringify(payload),
       });
 
-      const { menuCategory } = await res.json();
+      const updatedMenuCategory = await res.json();
       onSuccess && onSuccess();
-      return menuCategory;
+      return updatedMenuCategory;
     } catch (error) {
       console.log(error);
       onError && onError();
@@ -99,7 +100,7 @@ const menuCategorySlice = createSlice({
           state.isLoading = false;
           state.isError = null;
           state.menuCategories = state.menuCategories.map((item) =>
-            item.id === action.payload.id ? action.payload : {...item}
+            item.id === action.payload.id ? action.payload : item
           );
         }
       )

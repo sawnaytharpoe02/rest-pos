@@ -22,9 +22,6 @@ const MenuCategoryCard = ({ icon, href, title, subTitle }: Props) => {
           <Typography variant="h5" component="div">
             {title}
           </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            adjective
-          </Typography>
           <Typography variant="body2">{subTitle}</Typography>
         </CardContent>
       </Card>

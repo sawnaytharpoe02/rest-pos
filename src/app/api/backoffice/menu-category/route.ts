@@ -17,7 +17,7 @@ export async function POST(req: Request, res: Response) {
   try {
     const { name, isAvailable, companyId } = await req.json();
     const isValid = name && companyId && isAvailable !== null;
-    console.log('is Valid ka true pyit ka ml', isValid)
+    console.log("is Valid ka true pyit ka ml", isValid);
     if (!isValid) {
       return NextResponse.json({ message: "Invalid request" }, { status: 400 });
     }
@@ -25,10 +25,7 @@ export async function POST(req: Request, res: Response) {
     const menuCategory = await prisma.menuCategory.create({
       data: { name, isAvailable, companyId },
     });
-    return NextResponse.json(
-      { message: "OK POST REQ", menuCategory },
-      { status: 201 }
-    );
+    return NextResponse.json(menuCategory, { status: 201 });
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });
   }
@@ -49,10 +46,7 @@ export async function PUT(req: Request, res: Response) {
       where: { id },
       data: payload,
     });
-    return NextResponse.json(
-      { message: "OK PUT REQ", updatedMenuCategory },
-      { status: 201 }
-    );
+    return NextResponse.json(updatedMenuCategory, { status: 201 });
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });
   }
