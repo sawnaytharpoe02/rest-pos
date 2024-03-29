@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Typography, Box } from "@mui/material";
+import { Button, Typography, Box, Grid } from "@mui/material";
 import { Icon } from "@iconify/react";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import CommonDialog from "@/components/dialog/CommonDialog";
 import MenuCategoryForm from "@/components/form/MenuCategoryForm";
 import MenuCategoryCard from "@/components/card/MenuCategoryCard";
-import { config } from "@/config";
 import { CreateMenuCategoryPayload } from "@/types/menuCategory";
+import { config } from "@/config";
 
 const MenuCategoryPage = () => {
   const { menuCategories } = useAppSelector((state) => state.menuCategory);
@@ -36,21 +36,23 @@ const MenuCategoryPage = () => {
           }}>
           <Typography> Menu Category Lists </Typography>{" "}
           <Button onClick={handleOpenDialog} variant="contained">
-            Create New Menu Category
+            New Menu Category
           </Button>
         </Box>
 
-        <Box sx={{ display: "flex", gap: 2, mt: 4 }}>
-          {menuCategories && menuCategories.map((item) => (
-            <MenuCategoryCard
-              key={item.id}
-              title={item.name}
-              subTitle="description"
-              icon={<Icon icon="mingcute:fork-spoon-fill" />}
-              href={`${config.backofficeBaseUrl}/menu-category/${item.id}`}
-            />
-          ))}
-        </Box>
+        <Grid container spacing={2} mt={4}>
+          {menuCategories &&
+            menuCategories.map((item) => (
+              <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
+                <MenuCategoryCard
+                  title={item.name}
+                  subTitle="description"
+                  icon={<Icon icon="mingcute:fork-spoon-fill" />}
+                  href={`${config.backofficeBaseUrl}/menu-category/${item.id}`}
+                />
+              </Grid>
+            ))}
+        </Grid>
       </Box>
       <CommonDialog formTitle="Create Menu Category Form">
         <MenuCategoryForm

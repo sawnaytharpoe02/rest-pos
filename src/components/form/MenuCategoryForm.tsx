@@ -14,6 +14,8 @@ import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { createMenuCategory } from "@/store/slice/menuCategorySlice";
+import CustomButton from "@/components/button/FormButton";
+import FormButton from "@/components/button/FormButton";
 
 interface Props {
   menuCategoryData: CreateMenuCategoryPayload;
@@ -100,19 +102,19 @@ const MenuCategoryForm = ({ setMenuCategoryData, menuCategoryData }: Props) => {
             item
             xs={12}
             sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
-            <Button
+            <FormButton
               startIcon={
                 isLoading && <CircularProgress color="inherit" size={20} />
               }
               variant="contained"
               onClick={handleCreateMenuCategory}>
               Create
-            </Button>
-            <Button
+            </FormButton>
+            <FormButton
               onClick={() => dispatch(setOpenDialog(false))}
               variant="outlined">
               Cancel
-            </Button>
+            </FormButton>
           </Grid>
         </Grid>
       </Box>

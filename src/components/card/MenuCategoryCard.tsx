@@ -14,9 +14,17 @@ interface Props {
 const MenuCategoryCard = ({ icon, href, title, subTitle }: Props) => {
   return (
     <Link href={href} style={{ cursor: "pointer" }}>
-      <Card variant="outlined">
+      <Card
+        variant="outlined"
+        sx={{
+          borderRadius: "1rem",
+          ":hover": {
+            backgroundColor: "primary.lighter",
+            color: "primary.dark",
+          },
+        }}>
         <CardContent>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          <Typography sx={{ fontSize: 20 }} color="primary" gutterBottom>
             {icon}
           </Typography>
           <Typography variant="h5" component="div">
