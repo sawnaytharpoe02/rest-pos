@@ -16,3 +16,7 @@ export interface MenuCategorySlice {
   isLoading: boolean;
   error: string | null;
 }
+
+export interface DeleteMenuCategoryPayload extends BaseOptions {
+  id: number;
+}

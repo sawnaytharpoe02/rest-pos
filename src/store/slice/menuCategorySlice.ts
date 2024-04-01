@@ -3,6 +3,7 @@ import { MenuCategory } from "@prisma/client";
 import {
   CreateMenuCategoryPayload,
   UpdateMenuCategoryPayload,
+  DeleteMenuCategoryPayload,
   MenuCategorySlice,
 } from "@/types/menuCategory";
 import { config } from "@/config";
@@ -45,9 +46,33 @@ export const updateMenuCategory = createAsyncThunk(
         body: JSON.stringify(payload),
       });
 
-      const updatedMenuCategory = await res.json();
+      const updateMenuCategory = await res.json();
       onSuccess && onSuccess();
-      return updatedMenuCategory;
+      return updateMenuCategory;
+    } catch (error) {
+      console.log(error);
+      onError && onError();
+    }
+  }
+);
+
+export const deleteMenuCategory = createAsyncThunk(
+  "delete/menuCategory",
+  async (payload: DeleteMenuCategoryPayload) => {
+    const { id, onSuccess, onError } = payload;
+    try {
+      const res = await fetch(
+        `${config.backofficeApiBaseUrl}/menu-category/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const deleteMenuCategory = await res.json();
+      onSuccess && onSuccess();
+
+      console.log(deleteMenuCategory);
+      return deleteMenuCategory;
     } catch (error) {
       console.log(error);
       onError && onError();
@@ -99,6 +124,27 @@ const menuCategorySlice = createSlice({
         }
       )
       .addCase(updateMenuCategory.rejected, (state, _action) => {
+        state.isLoading = false;
+        const error = new Error("Error occured while updating menu category");
+        state.error = error.message;
+      });
+
+    builder
+      .addCase(deleteMenuCategory.pending, (state, _action) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(
+        deleteMenuCategory.fulfilled,
+        (state, action: PayloadAction<MenuCategory>) => {
+          state.isLoading = false;
+          state.error = null;
+          state.menuCategories = state.menuCategories.filter((item) =>
+            item.id === action.payload.id ? false : true
+          );
+        }
+      )
+      .addCase(deleteMenuCategory.rejected, (state, _action) => {
         state.isLoading = false;
         const error = new Error("Error occured while updating menu category");
         state.error = error.message;

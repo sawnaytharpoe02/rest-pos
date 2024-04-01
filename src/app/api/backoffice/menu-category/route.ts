@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/utils/prisma";
 
 export async function GET(req: Request, res: Response) {
@@ -46,6 +46,24 @@ export async function PUT(req: Request, res: Response) {
       data: payload,
     });
     return NextResponse.json(updatedMenuCategory, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ message: error }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const id = req.nextUrl.searchParams.get("id");
+
+    console.log(id);
+    // const menuCategory = await prisma.menuCategory.update({
+    //   where: {id},
+    //   data: {
+    //     isArchived: true
+    //   }
+    // })
+
+    // return NextResponse.json(menuCategory, {status: 200})
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });
   }
