@@ -3,7 +3,6 @@
 import {
   Grid,
   TextField,
-  Button,
   Box,
   CircularProgress,
   Checkbox,
@@ -14,7 +13,6 @@ import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { createMenuCategory } from "@/store/slice/menuCategorySlice";
-import CustomButton from "@/components/button/FormButton";
 import FormButton from "@/components/button/FormButton";
 
 interface Props {
@@ -28,9 +26,9 @@ const MenuCategoryForm = ({ setMenuCategoryData, menuCategoryData }: Props) => {
   const dispatch = useAppDispatch();
   const { isLoading } = useAppSelector((state) => state.menuCategory);
   const { company } = useAppSelector((state) => state.company);
-  menuCategoryData.companyId = company?.id;
-
+  
   const handleCreateMenuCategory = () => {
+    setMenuCategoryData((prev) => ({...prev, companyId: company?.id}))
     const isValid =
       menuCategoryData.name &&
       menuCategoryData.companyId &&

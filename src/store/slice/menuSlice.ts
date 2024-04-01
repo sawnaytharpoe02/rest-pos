@@ -1,27 +1,52 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { CreateUpdateMenuPayload, MenuSlice, Menu } from "@/types/menu";
+import { MenuSlice, CreateMenuPayload, UpdateMenuPayload } from "@/types/menu";
+import { Menu } from "@prisma/client";
 import { config } from "@/config";
+import { setMenuCategoryMenus } from "./menuCategoryMenuSlice";
 
 const initialState: MenuSlice = {
   menus: [],
   isLoading: false,
-  isError: null,
+  error: null,
 };
 
 export const createMenu = createAsyncThunk(
   "menu/createMenu",
-  async (payload: CreateUpdateMenuPayload) => {
+  async (payload: CreateMenuPayload) => {
     try {
-      const { name, price } = payload;
       const res = await fetch(`${config.backofficeApiBaseUrl}/menu`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, price }),
+        body: JSON.stringify(payload),
       });
 
       const { menu } = await res.json();
+      payload.onSuccess && payload.onSuccess();
+
+      return menu;
+    } catch (error) {
+      console.log(error);
+      payload.onError && payload.onError();
+    }
+  }
+);
+
+export const updateMenu = createAsyncThunk(
+  "menu/updateMenu",
+  async (payload: UpdateMenuPayload, thunkApi) => {
+    try {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/menu`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const { menu, menuCategoryMenus } = await res.json();
+      thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
       payload.onSuccess && payload.onSuccess();
 
       return menu;
@@ -37,27 +62,45 @@ const menuSlice = createSlice({
   initialState,
   reducers: {
     setMenus: (state, action: PayloadAction<Menu[]>) => {
-      state.menus = action.payload
-    }
+      state.menus = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(createMenu.pending, (state, _action) => {
         state.isLoading = true;
-        state.isError = null;
+        state.error = null;
       })
-      .addCase(createMenu.fulfilled, (state, action) => {
+      .addCase(createMenu.fulfilled, (state, action: PayloadAction<Menu>) => {
         state.isLoading = false;
-        state.isError = null;
+        state.error = null;
         state.menus = [...state.menus, action.payload];
       })
       .addCase(createMenu.rejected, (state, _action) => {
         state.isLoading = false;
         const error = new Error("Create menu error occured");
-        state.isError = error.message;
+        state.error = error.message;
+      });
+
+    builder
+      .addCase(updateMenu.pending, (state, _action) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateMenu.fulfilled, (state, action: PayloadAction<Menu>) => {
+        state.isLoading = false;
+        state.error = null;
+        state.menus = state.menus.map((item) =>
+          item.id === action.payload.id ? action.payload : item
+        );
+      })
+      .addCase(updateMenu.rejected, (state, _action) => {
+        state.isLoading = false;
+        const error = new Error("Update menu error occured");
+        state.error = error.message;
       });
   },
 });
 
-export const {setMenus} = menuSlice.actions;
+export const { setMenus } = menuSlice.actions;
 export default menuSlice.reducer;

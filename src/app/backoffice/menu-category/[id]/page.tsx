@@ -16,16 +16,13 @@ import { UpdateMenuCategoryPayload } from "@/types/menuCategory";
 import { updateMenuCategory } from "@/store/slice/menuCategorySlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 
-const MenuCategoryDetailPage = () => {
-  const pathname = usePathname();
+const MenuCategoryDetailPage = ({ params }: {params: {id: string}}) => {
   const router = useRouter();
-  const id = Number(pathname.split("/")[3]);
   const [updateData, setUpdateData] = useState<UpdateMenuCategoryPayload>();
 
   const dispatch = useAppDispatch();
-  const { menuCategories } = useAppSelector((state) => state.menuCategory);
-  const { isLoading } = useAppSelector((state) => state.menuCategory);
-  const menuCategory = menuCategories.find((item) => item.id === id);
+  const { menuCategories, isLoading } = useAppSelector((state) => state.menuCategory);
+  const menuCategory = menuCategories.find((item) => item.id === Number(params.id));
 
   useEffect(() => {
     if (menuCategory) {

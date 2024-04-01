@@ -1,8 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { signOut } from "next-auth/react";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
 import {
   Box,
@@ -13,12 +17,8 @@ import {
   Button,
 } from "@mui/material";
 import { LuChevronsLeft, LuChevronsRight } from "react-icons/lu";
-import CssBaseline from "@mui/material/CssBaseline";
-import MenuItemDropDown from "../layoutmenu/MenuItemDropDown";
-import { useRouter, usePathname } from "next/navigation";
-import Link from "next/link";
-import { signOut } from "next-auth/react";
-import AppSnackbar from "../snackbar/AppSnackbar";
+import MenuItemDropDown from "./_components/MenuItemDropDown";
+import AppSnackbar from "@/components/snackbar/AppSnackbar";
 import { fetchAppData } from "@/store/slice/appSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 
@@ -108,11 +108,11 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-interface Props {
+const BackOfficeLayout = ({
+  children,
+}: Readonly<{
   children: React.ReactNode;
-}
-
-const BackOfficeLayout = ({ children }: Props) => {
+}>) => {
   const theme = useTheme();
   const [isOpen, setOpen] = useState(false);
   const { init } = useAppSelector((state) => state.app);
@@ -120,7 +120,7 @@ const BackOfficeLayout = ({ children }: Props) => {
 
   useEffect(() => {
     if (!init) {
-      dispatch(fetchAppData())
+      dispatch(fetchAppData());
     }
   }, []);
 
@@ -133,8 +133,6 @@ const BackOfficeLayout = ({ children }: Props) => {
   };
 
   const navigate = useRouter();
-  const pathname = usePathname();
-  const isBackOffice = pathname.includes("/backoffice");
 
   const MENU = [
     {
@@ -165,7 +163,7 @@ const BackOfficeLayout = ({ children }: Props) => {
     },
   ];
 
-  return isBackOffice ? (
+  return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar open={isOpen}>
@@ -246,8 +244,6 @@ const BackOfficeLayout = ({ children }: Props) => {
         </Box>
       </Box>
     </Box>
-  ) : (
-    <Box>{children}</Box>
   );
 };
 

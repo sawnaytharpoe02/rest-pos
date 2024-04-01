@@ -1,16 +1,16 @@
 import { BaseOptions } from "./user";
-
-export interface BaseMenu {
+import { Menu } from "@prisma/client";
+export interface CreateMenuPayload extends BaseOptions {
   name: string;
   price: number;
+  description: string;
+  assetUrl?: string;
+  menuCategoryIds: number[];
 }
-
-export interface Menu extends BaseMenu {}
-
 export interface MenuSlice {
   menus: Menu[];
   isLoading: boolean;
-  isError: null | string;
+  error: string | null;
 }
 
-export interface CreateUpdateMenuPayload extends BaseMenu, BaseOptions {}
+export interface UpdateMenuPayload extends Menu, BaseOptions {}

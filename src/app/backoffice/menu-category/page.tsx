@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import CommonDialog from "@/components/dialog/CommonDialog";
 import MenuCategoryForm from "@/components/form/MenuCategoryForm";
-import MenuCategoryCard from "@/components/card/MenuCategoryCard";
+import MenuCategoryCard from "@/app/backoffice/menu-category/_components/MenuCategoryCard";
 import { CreateMenuCategoryPayload } from "@/types/menuCategory";
 import { config } from "@/config";
 
@@ -18,6 +18,7 @@ const MenuCategoryPage = () => {
     useState<CreateMenuCategoryPayload>({
       name: "",
       isAvailable: true,
+      companyId: undefined,
     });
 
   const dispatch = useAppDispatch();

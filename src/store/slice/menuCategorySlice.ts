@@ -3,20 +3,14 @@ import { MenuCategory } from "@prisma/client";
 import {
   CreateMenuCategoryPayload,
   UpdateMenuCategoryPayload,
+  MenuCategorySlice,
 } from "@/types/menuCategory";
 import { config } from "@/config";
-import MenuCategoryCard from "@/components/card/MenuCategoryCard";
-
-interface MenuCategorySlice {
-  menuCategories: MenuCategory[];
-  isLoading: boolean;
-  isError: string | null;
-}
 
 const initialState: MenuCategorySlice = {
   menuCategories: [],
   isLoading: false,
-  isError: null,
+  error: null,
 };
 
 export const createMenuCategory = createAsyncThunk(
@@ -73,32 +67,32 @@ const menuCategorySlice = createSlice({
     builder
       .addCase(createMenuCategory.pending, (state, _action) => {
         state.isLoading = true;
-        state.isError = null;
+        state.error = null;
       })
       .addCase(
         createMenuCategory.fulfilled,
         (state, action: PayloadAction<MenuCategory>) => {
           state.isLoading = false;
-          state.isError = null;
+          state.error = null;
           state.menuCategories = [...state.menuCategories, action.payload];
         }
       )
       .addCase(createMenuCategory.rejected, (state, _action) => {
         state.isLoading = false;
         const error = new Error("Error occured while creating menu category");
-        state.isError = error.message;
+        state.error = error.message;
       });
 
     builder
       .addCase(updateMenuCategory.pending, (state, _action) => {
         state.isLoading = true;
-        state.isError = null;
+        state.error = null;
       })
       .addCase(
         updateMenuCategory.fulfilled,
         (state, action: PayloadAction<MenuCategory>) => {
           state.isLoading = false;
-          state.isError = null;
+          state.error = null;
           state.menuCategories = state.menuCategories.map((item) =>
             item.id === action.payload.id ? action.payload : item
           );
@@ -107,7 +101,7 @@ const menuCategorySlice = createSlice({
       .addCase(updateMenuCategory.rejected, (state, _action) => {
         state.isLoading = false;
         const error = new Error("Error occured while updating menu category");
-        state.isError = error.message;
+        state.error = error.message;
       });
   },
 });

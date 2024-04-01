@@ -6,7 +6,7 @@ import { Company } from "@prisma/client";
 const initialState: CompanySlice = {
   company: null,
   isLoading: false,
-  isError: null,
+  error: null,
 };
 
 const companySlice = createSlice({

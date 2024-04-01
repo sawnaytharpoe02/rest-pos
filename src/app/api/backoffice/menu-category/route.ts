@@ -17,7 +17,6 @@ export async function POST(req: Request, res: Response) {
   try {
     const { name, isAvailable, companyId } = await req.json();
     const isValid = name && companyId && isAvailable !== null;
-    console.log("is Valid ka true pyit ka ml", isValid);
     if (!isValid) {
       return NextResponse.json({ message: "Invalid request" }, { status: 400 });
     }

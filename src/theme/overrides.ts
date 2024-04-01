@@ -45,17 +45,23 @@ export const overrides = (): ThemeOptions["components"] => {
         },
       },
     },
-    MuiTextField: {
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          fontSize: "15px",
+          marginBottom: ".3rem",
+        },
+      },
+    },
+    MuiOutlinedInput: {
       styleOverrides: {
         root: {
           width: "100%",
+          borderRadius: ".6rem",
         },
       },
       defaultProps: {
         size: "small",
-        InputLabelProps: {
-          shrink: true,
-        },
       },
     },
     MuiDrawer: {
@@ -89,6 +95,14 @@ export const overrides = (): ThemeOptions["components"] => {
       styleOverrides: {
         root: {
           color: "#637381",
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          padding: "0 12px",
+          color: "black",
         },
       },
     },
