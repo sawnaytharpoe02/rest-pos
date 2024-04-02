@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
   try {
-    const { name, street, township, city, companyId } = await res.json();
+    const { name, street, township, city, companyId } = await req.json();
 
     const isValid = name && street && township && city && companyId;
     if (!isValid) {
@@ -46,7 +46,7 @@ export async function PUT(req: Request, res: Response) {
       },
     });
 
-    return NextResponse.json(location, { status: 201 });
+    return NextResponse.json(location, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });
   }

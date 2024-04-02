@@ -10,7 +10,7 @@ import { CreateMenuPayload } from "@/types/menu";
 import MenuCard from "./_components/MenuCard";
 import { config } from "@/config";
 
-const page = () => {
+const MenuPage = () => {
   const [menuData, setMenuData] = useState<CreateMenuPayload>({
     name: "",
     description: "",
@@ -19,14 +19,10 @@ const page = () => {
   });
 
   const dispatch = useAppDispatch();
-  const { menus } = useAppSelector((state) => state.menu);
+  const { menus, isLoading } = useAppSelector((state) => state.menu);
   const handleOpenDialog = () => {
     dispatch(setOpenDialog(true));
   };
-
-  if (!menus) {
-    return <Typography>Menus not found.</Typography>;
-  }
 
   return (
     <>
@@ -44,7 +40,7 @@ const page = () => {
         </Box>
 
         <Grid container spacing={2} mt={4}>
-          {menus &&
+          {isLoading ? <Typography>Loading ...</Typography> :
             menus.map((item) => (
               <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
                 <MenuCard
@@ -65,4 +61,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default MenuPage;

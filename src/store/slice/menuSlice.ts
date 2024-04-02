@@ -35,7 +35,8 @@ export const createMenu = createAsyncThunk(
 
 export const updateMenu = createAsyncThunk(
   "menu/updateMenu",
-  async (payload: UpdateMenuPayload, thunkApi) => {
+  async (data: UpdateMenuPayload, thunkApi) => {
+    const { onSuccess, onError, ...payload } = data;
     try {
       const res = await fetch(`${config.backofficeApiBaseUrl}/menu`, {
         method: "PUT",
@@ -45,14 +46,13 @@ export const updateMenu = createAsyncThunk(
         body: JSON.stringify(payload),
       });
 
-      const { menu, menuCategoryMenus } = await res.json();
-      thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
-      payload.onSuccess && payload.onSuccess();
+      await res.json();
+      // thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
+      // onSuccess && onSuccess();
 
-      return menu;
+      // return menu;
     } catch (error) {
       console.log(error);
-      payload.onError && payload.onError();
     }
   }
 );
@@ -90,8 +90,8 @@ const menuSlice = createSlice({
       .addCase(updateMenu.fulfilled, (state, action: PayloadAction<Menu>) => {
         state.isLoading = false;
         state.error = null;
-        state.menus = state.menus.map((item) =>
-          item.id === action.payload.id ? action.payload : item
+        state.menus = state.menus.map((menu) =>
+          menu.id === action.payload.id ? action.payload : menu
         );
       })
       .addCase(updateMenu.rejected, (state, _action) => {

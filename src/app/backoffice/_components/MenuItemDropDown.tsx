@@ -63,9 +63,8 @@ const MenuItemDropDown = ({
       <ListItemButton
         onClick={handleOpenSubMenu}
         sx={{
-          minHeight: 48,
+          padding: "5px 16px",
           justifyContent: isOpenDrawer ? "initial" : "center",
-          px: 2.5,
           borderRadius: ".4rem",
           backgroundColor: isActiveSubmenu
             ? "#F0FFF4"
@@ -82,7 +81,7 @@ const MenuItemDropDown = ({
           }}>
           <Icon
             icon={menuIcon}
-            fontSize={25}
+            fontSize={22}
             color={
               isActiveSubmenu ? "#00A76F" : subMenuOpen ? "#454F5B" : "#637381"
             }
@@ -116,9 +115,6 @@ const MenuItemDropDown = ({
       <Tooltip title={menuLabel} placement="right-start">
         <IconButton
           sx={{
-            minHeight: 48,
-            padding: "8px 15px",
-            borderRadius: "0.2rem",
             justifyContent: isOpenDrawer ? "initial" : "center",
             backgroundColor: isActiveSubmenu
               ? "#F0FFF4"
@@ -129,7 +125,7 @@ const MenuItemDropDown = ({
           onClick={handleClickPopover}>
           <Icon
             icon={menuIcon}
-            fontSize={25}
+            fontSize={22}
             color={
               isActiveSubmenu ? "#00A76F" : subMenuOpen ? "#161C24" : "#637381"
             }
@@ -154,7 +150,12 @@ const MenuItemDropDown = ({
           horizontal: "left",
         }}>
         {menus.map((link, index) => (
-          <MenuItem key={index} link={link} isOpenDrawer={isOpenDrawer} handleClosePopover={handleClosePopover}/>
+          <MenuItem
+            key={index}
+            link={link}
+            isOpenDrawer={isOpenDrawer}
+            handleClosePopover={handleClosePopover}
+          />
         ))}
       </Popover>
     </Box>

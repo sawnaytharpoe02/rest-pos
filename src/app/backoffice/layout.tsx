@@ -22,7 +22,7 @@ import AppSnackbar from "@/components/snackbar/AppSnackbar";
 import { fetchAppData } from "@/store/slice/appSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 
-const drawerWidth = 250;
+const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,

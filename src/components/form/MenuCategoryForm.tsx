@@ -2,7 +2,9 @@
 
 import {
   Grid,
-  TextField,
+  OutlinedInput,
+  FormControl,
+  FormLabel,
   Box,
   CircularProgress,
   Checkbox,
@@ -70,15 +72,15 @@ const MenuCategoryForm = ({ setMenuCategoryData, menuCategoryData }: Props) => {
       <Box>
         <Grid width={350} container sx={{ p: 4 }}>
           <Grid item xs={12}>
-            <TextField
-              label="Category Name"
-              onChange={(e) =>
-                setMenuCategoryData({
-                  ...menuCategoryData,
-                  name: e.target.value,
-                })
-              }
-            />
+            <FormControl sx={{ width: "100%" }}>
+              <FormLabel>Name</FormLabel>
+              <OutlinedInput
+                type="text"
+                onChange={(e) =>
+                  setMenuCategoryData({ ...menuCategoryData, name: e.target.value })
+                }
+              />
+            </FormControl>
           </Grid>
           <Grid item xs={12} sx={{ my: 2 }}>
             <FormControlLabel

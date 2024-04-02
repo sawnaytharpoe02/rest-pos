@@ -3,10 +3,10 @@ import { Location } from "@prisma/client";
 
 export interface CreateLocationPayload extends BaseOptions {
   name: string;
-  street: number;
+  street: string;
   township: string;
   city: string;
-  companyId: number;
+  companyId?: number;
 }
 
 export interface LocationSlice {
@@ -16,3 +16,7 @@ export interface LocationSlice {
 }
 
 export interface UpdateLocationPayload extends Location, BaseOptions {}
+
+export interface DeleteLocationPayload extends BaseOptions{
+  id: number;
+}

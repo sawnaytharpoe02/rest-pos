@@ -47,6 +47,10 @@ export async function PUT(req: Request, res: Response) {
       return NextResponse.json({ message: "Invalid request" }, { status: 400 });
     }
 
+    const existingMenu = await prisma.menu.findFirst({ where: { id } });
+    if (!existingMenu)
+      return NextResponse.json({ message: "Menu Not Found." }, { status: 404 });
+
     const menu = await prisma.menu.update({
       where: { id },
       data: {
@@ -56,40 +60,51 @@ export async function PUT(req: Request, res: Response) {
       },
     });
 
-    // user ကပို့လိုက်တဲ့ menucategory နဲ့ database ထဲက menucategory တိုက်စစ်ပီး မတူတာဘဲဖျက်ထုတ်ပစ်
-    await prisma.menuCategoryMenu.deleteMany({
-      where: { menuCategoryId: { notIn: menuCategoryIds }, menuId: menu.id },
-    });
-
-    // menuId နဲ့သက်ဆိုင်တဲ့ menuCategory အကုန်ယူ
+    // Find existing menu categories for the menu
     const findMenuCategories = await prisma.menuCategoryMenu.findMany({
       where: { menuId: menu.id },
     });
-    // menuId နဲ့သက်ဆိုင်တဲ့ menuCategory တေထဲက user ကပို့လိုက်တဲ မတူတဲ့menuCategory ကိုစစ်ထုတ်
+
+    // Identify menuCategoryIds to delete
+    const menuCategoryIdsToDelete = findMenuCategories
+      .filter((item) => !menuCategoryIds.includes(item.menuCategoryId))
+      .map((item) => item.menuCategoryId);
+
+    // Identify menuCategoryIds to create
     const menuCategoryIdsToCreate = menuCategoryIds.filter(
       (item: number) =>
-        !findMenuCategories.some(
+        !findMenuCategories.find(
           (menuCategory) => menuCategory.menuCategoryId === item
         )
     );
 
-    // စစ်ထုတ်လို့ရတာတေကို database ထဲမှာအသစ်အနေနဲ့ထပ်ထည့်ပေး
-    await prisma.$transaction(
-      menuCategoryIdsToCreate.map((itemId: number) =>
-        prisma.menuCategoryMenu.create({
-          data: {
-            menuId: menu.id,
-            menuCategoryId: itemId,
-          },
-        })
-      )
-    );
+    if (menuCategoryIdsToDelete.length) {
+      await prisma.menuCategoryMenu.deleteMany({
+        where: {
+          menuCategoryId: { in: menuCategoryIdsToDelete },
+          menuId: menu.id,
+        },
+      });
+    }
+
+    if (menuCategoryIdsToCreate.length) {
+      await prisma.$transaction(
+        menuCategoryIdsToCreate.map((itemId: number) =>
+          prisma.menuCategoryMenu.create({
+            data: {
+              menuId: menu.id,
+              menuCategoryId: itemId,
+            },
+          })
+        )
+      );
+    }
 
     const menuCategoryMenus = await prisma.menuCategoryMenu.findMany({
       where: { menuId: menu.id },
     });
 
-    return NextResponse.json({ menu, menuCategoryMenus }, { status: 201 });
+    return NextResponse.json({ menu, menuCategoryMenus }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to update menu" },

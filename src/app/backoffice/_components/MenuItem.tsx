@@ -31,7 +31,6 @@ const MenuItem = ({ link, isOpenDrawer, handleClosePopover }: Props) => {
             height: isOpenDrawer ? 48 : 35,
             justifyContent: isOpenDrawer ? "space-around" : "center",
             px: 2.5,
-            borderRadius: ".4rem",
             display: "flex",
           }}>
           {isOpenDrawer && (

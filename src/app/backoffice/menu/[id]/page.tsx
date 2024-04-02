@@ -49,7 +49,7 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
 
   const menu = menus.find((item) => item.id === paramsId);
   const selectedMenuCategoryIds = menuCategoryMenus
-    .filter((item) => item.menuId === menu?.id)
+    ?.filter((item) => item.menuId === menu?.id)
     .map((item) => item.menuCategoryId);
 
   useEffect(() => {
@@ -57,22 +57,22 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
       setUpdateData(menu);
       setSelectedIds(selectedMenuCategoryIds);
     }
-  }, []);
+  }, [menu]);
 
   if (!updateData) {
     return <Typography>Menu not found</Typography>;
   }
 
+  
   const handleUpdateMenu = async () => {
     const shouldUpdate =
       menu?.name !== updateData?.name ||
       menu?.price !== updateData?.price ||
       menu?.description !== updateData?.description ||
-      selectedIds.length === selectedMenuCategoryIds.length
-        ? selectedIds.every(
-            (item, index) => item !== selectedMenuCategoryIds[index]
-          )
-        : true;
+      selectedIds.length !== selectedMenuCategoryIds.length ||
+      selectedIds.every(
+        (item, index) => item !== selectedMenuCategoryIds[index]
+      );
 
     if (!shouldUpdate) {
       return router.push("/backoffice/menu");

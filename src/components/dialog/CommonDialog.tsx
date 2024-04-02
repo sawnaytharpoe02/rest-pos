@@ -19,7 +19,7 @@ const CommonDialog = ({ children, formTitle }: Props) => {
   const dispatch = useAppDispatch();
 
   const handleCloseDialog = () => {
-    dispatch(setOpenDialog(true));
+    dispatch(setOpenDialog(false));
   };
 
   return (
