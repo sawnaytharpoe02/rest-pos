@@ -53,17 +53,20 @@ export async function PUT(req: Request, res: Response) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const id = req.nextUrl.searchParams.get("id");
+    const id = Number(req.nextUrl.searchParams.get("id"));
+    const existingMenuCategory = await prisma.menuCategory.findFirst({ where: { id } });
+    if(!existingMenuCategory){
+      return NextResponse.json({ message: "Menu category not found" }, { status: 404 });
+    }
 
-    console.log(id);
-    // const menuCategory = await prisma.menuCategory.update({
-    //   where: {id},
-    //   data: {
-    //     isArchived: true
-    //   }
-    // })
+    const menuCategory = await prisma.menuCategory.update({
+      where: { id },
+      data: {
+        isArchived: true,
+      },
+    });
 
-    // return NextResponse.json(menuCategory, {status: 200})
+    return NextResponse.json(menuCategory, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });
   }

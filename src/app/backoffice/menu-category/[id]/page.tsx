@@ -1,28 +1,40 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import {
   Grid,
   FormControlLabel,
-  TextField,
+  FormLabel,
+  OutlinedInput,
   Checkbox,
   Button,
   CircularProgress,
   Typography,
 } from "@mui/material";
+import FormButton from "@/components/button/FormButton";
 import { UpdateMenuCategoryPayload } from "@/types/menuCategory";
-import { updateMenuCategory } from "@/store/slice/menuCategorySlice";
+import {
+  deleteMenuCategory,
+  updateMenuCategory,
+} from "@/store/slice/menuCategorySlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
+import CommonDeleteDialog from "@/components/dialog/CommonDeleteDialog";
 
-const MenuCategoryDetailPage = ({ params }: {params: {id: string}}) => {
+const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
+  const menuCategoryId = Number(params.id);
   const router = useRouter();
   const [updateData, setUpdateData] = useState<UpdateMenuCategoryPayload>();
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const { menuCategories, isLoading } = useAppSelector((state) => state.menuCategory);
-  const menuCategory = menuCategories.find((item) => item.id === Number(params.id));
+  const { menuCategories, isLoading } = useAppSelector(
+    (state) => state.menuCategory
+  );
+  const menuCategory = menuCategories.find(
+    (item) => item.id === menuCategoryId
+  );
 
   useEffect(() => {
     if (menuCategory) {
@@ -72,45 +84,82 @@ const MenuCategoryDetailPage = ({ params }: {params: {id: string}}) => {
     return <Typography>Menu category not found</Typography>;
   }
 
+  const handleDeleteMenuCategory = () => {
+    dispatch(
+      deleteMenuCategory({
+        id: menuCategoryId,
+        onSuccess: () => {
+          setOpenDeleteDialog(false);
+          setTimeout(() => {
+            dispatch(
+              setSnackbar({
+                type: "success",
+                isOpen: true,
+                message: "Delete menu category successfully",
+              })
+            );
+          }, 1000);
+          router.push('/backoffice/menu-category')
+        },
+      })
+    );
+  };
+
   return (
     <div>
-      <Grid width={350} container sx={{ p: 4 }}>
-        <Grid item xs={12}>
-          <TextField
-            label="Category Name"
-            value={updateData.name}
-            onChange={(e) =>
-              setUpdateData({ ...updateData, name: e.target.value })
-            }
-          />
-        </Grid>
-        <Grid item xs={12} sx={{ my: 2 }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={updateData.isAvailable}
-                onChange={(e, value) =>
-                  setUpdateData({ ...updateData, isAvailable: value })
+      <Grid container sx={{ width: "100%" }}>
+        <Grid item xs={6}>
+          <Grid container sx={{ p: 4 }}>
+            <Grid item xs={12}>
+              <FormLabel>Name</FormLabel>
+              <OutlinedInput
+                value={updateData.name}
+                onChange={(e) =>
+                  setUpdateData({ ...updateData, name: e.target.value })
                 }
               />
-            }
-            label="Available"
-          />
+            </Grid>
+            <Grid item xs={12} sx={{ my: 2 }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={updateData.isAvailable}
+                    onChange={(e, value) =>
+                      setUpdateData({ ...updateData, isAvailable: value })
+                    }
+                  />
+                }
+                label="Available"
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
+              <Button
+                startIcon={
+                  isLoading && <CircularProgress color="inherit" size={20} />
+                }
+                variant="contained"
+                onClick={handleUpdateMenuCategory}>
+                Update
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
-          <Button
-            startIcon={
-              isLoading && <CircularProgress color="inherit" size={20} />
-            }
-            variant="contained"
-            onClick={handleUpdateMenuCategory}>
-            Update
-          </Button>
+        <Grid item xs={6}>
+          <FormButton onClick={() => setOpenDeleteDialog(true)}>
+            Delete
+          </FormButton>
         </Grid>
       </Grid>
+      <CommonDeleteDialog
+        title="Delete Menu Category"
+        content="Are you sure you want to delete this menu category?"
+        open={openDeleteDialog}
+        close={() => setOpenDeleteDialog(false)}
+        handleDelete={handleDeleteMenuCategory}
+      />
     </div>
   );
 };

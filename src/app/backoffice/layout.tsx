@@ -21,6 +21,7 @@ import MenuItemDropDown from "./_components/MenuItemDropDown";
 import AppSnackbar from "@/components/snackbar/AppSnackbar";
 import { fetchAppData } from "@/store/slice/appSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
+import NextTopLoader from "nextjs-toploader";
 
 const drawerWidth = 240;
 
@@ -241,6 +242,7 @@ const BackOfficeLayout = ({
       <Box component="main" sx={{ pt: "64px", width: "100%" }}>
         <Box sx={{ minHeight: "100vh", p: 4 }}>
           <AppSnackbar />
+          <NextTopLoader color="#5BE49B" showSpinner={false} />
           {isLoading ? <Typography>Loading ...</Typography> : children}
         </Box>
       </Box>

@@ -113,10 +113,7 @@ export async function PUT(req: Request, res: Response) {
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params: { id } }: { params: { id: number } }
-) {
+export async function DELETE(req: NextRequest) {
   try {
     const id = Number(req.nextUrl.searchParams.get("id"));
     const existingMenu = await prisma.menu.findFirst({ where: { id } });

@@ -28,7 +28,7 @@ export async function GET(req: Request, res: Response) {
           });
 
           const menuCategories = await prisma.menuCategory.findMany({
-            where: { companyId },
+            where: { companyId , isArchived: false},
           });
           const menuCategoryIds = menuCategories.map((item) => item.id);
           const menuCategoryMenus = await prisma.menuCategoryMenu.findMany({
