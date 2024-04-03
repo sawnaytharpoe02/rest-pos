@@ -63,7 +63,6 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
     return <Typography>Menu not found</Typography>;
   }
 
-  
   const handleUpdateMenu = async () => {
     const shouldUpdate =
       menu?.name !== updateData?.name ||
@@ -76,6 +75,16 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
 
     if (!shouldUpdate) {
       return router.push("/backoffice/menu");
+    }
+
+    if (selectedIds.length === 0) {
+      dispatch(
+        setSnackbar({
+          type: "error",
+          isOpen: true,
+          message: "Pease select at least one menu category",
+        })
+      );
     }
 
     const payload = {

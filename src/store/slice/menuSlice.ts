@@ -46,11 +46,11 @@ export const updateMenu = createAsyncThunk(
         body: JSON.stringify(payload),
       });
 
-      await res.json();
-      // thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
-      // onSuccess && onSuccess();
+      const { menu, menuCategoryMenus } = await res.json();
+      thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
+      onSuccess && onSuccess();
 
-      // return menu;
+      return menu;
     } catch (error) {
       console.log(error);
     }

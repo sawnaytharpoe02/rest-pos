@@ -24,9 +24,7 @@ const snackbarSlice = createSlice({
       state.message = action.payload.message;
     },
     setHideSnackbar: (state) => {
-      state.type = "success";
       state.isOpen = false;
-      state.message = "";
     },
   },
 });

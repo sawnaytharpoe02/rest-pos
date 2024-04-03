@@ -18,7 +18,6 @@ import { UpdateLocationPayload } from "@/types/location";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { updateLocation } from "@/store/slice/locationSlice";
 import { setSelectedLocation } from "@/store/slice/appSlice";
-import { Location } from "@prisma/client";
 
 const LocationDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -135,16 +134,18 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
             control={
               <Switch
                 defaultChecked={location?.id === selectedLocation?.id}
-                onChange={(value) => {
-                  setSelectedLocation(location as Location);
-                  localStorage.setItem(
-                    "selectedLocation",
-                    JSON.stringify(location)
-                  );
+                onChange={() => {
+                  if (location) {
+                    dispatch(setSelectedLocation(location));
+                    localStorage.setItem(
+                      "selectedLocationId",
+                      JSON.stringify(location.id)
+                    );
+                  }
                 }}
               />
             }
-            label="current location"
+            label="Current location"
           />
         </Grid>
         <Grid

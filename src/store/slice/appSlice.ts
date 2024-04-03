@@ -42,8 +42,12 @@ export const fetchAppData = createAsyncThunk(
       thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
       thunkApi.dispatch(setLocations(locations));
 
-      if (localStorage.getItem("selectedLocation")) {
-        
+      if (localStorage.getItem("selectedLocationId")) {
+        const selectedLocation = locations.find(
+          (location: any) =>
+            location.id === Number(localStorage.getItem("selectedLocationId"))
+        ) as Location;
+        thunkApi.dispatch(setSelectedLocation(selectedLocation));
       } else {
         thunkApi.dispatch(setSelectedLocation(locations[0]));
       }

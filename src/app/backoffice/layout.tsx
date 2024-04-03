@@ -115,7 +115,8 @@ const BackOfficeLayout = ({
 }>) => {
   const theme = useTheme();
   const [isOpen, setOpen] = useState(false);
-  const { init } = useAppSelector((state) => state.app);
+  const { init, isLoading } = useAppSelector((state) => state.app);
+  const { selectedLocation } = useAppSelector((state) => state.app);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -172,7 +173,7 @@ const BackOfficeLayout = ({
             justifyContent: "space-between",
           }}>
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+            {selectedLocation?.name}
           </Typography>
           <Button
             variant="contained"
@@ -240,7 +241,7 @@ const BackOfficeLayout = ({
       <Box component="main" sx={{ pt: "64px", width: "100%" }}>
         <Box sx={{ minHeight: "100vh", p: 4 }}>
           <AppSnackbar />
-          {children}
+          {isLoading ? <Typography>Loading ...</Typography> : children}
         </Box>
       </Box>
     </Box>

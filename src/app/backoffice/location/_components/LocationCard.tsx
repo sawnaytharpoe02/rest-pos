@@ -15,7 +15,7 @@ const LocationCard = ({ name, street, href }: Props) => {
       <Card variant="outlined">
         <CardContent>
           <Box>
-            <Icon icon="fa6-solid:map-location" />
+            <Icon icon="fa6-solid:map-location" color="#63738180" />
           </Box>
           <Typography variant="h5" component="div">
             {name}
