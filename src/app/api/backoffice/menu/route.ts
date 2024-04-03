@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/utils/prisma";
 
 export async function GET(req: Request, res: Response) {
@@ -110,5 +110,29 @@ export async function PUT(req: Request, res: Response) {
       { message: "Failed to update menu" },
       { status: 500 }
     );
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params: { id } }: { params: { id: number } }
+) {
+  try {
+    const id = Number(req.nextUrl.searchParams.get("id"));
+    const existingMenu = await prisma.menu.findFirst({ where: { id } });
+    if (!existingMenu) {
+      return NextResponse.json("Menu not found", { status: 404 });
+    }
+
+    const menu = await prisma.menu.update({
+      where: { id },
+      data: {
+        isArchived: true,
+      },
+    });
+
+    return NextResponse.json(menu, { status: 200 });
+  } catch (error) {
+    return NextResponse.json("Failed to delete menu", { status: 500 });
   }
 }

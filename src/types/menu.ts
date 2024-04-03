@@ -14,3 +14,7 @@ export interface MenuSlice {
 }
 
 export interface UpdateMenuPayload extends Menu, BaseOptions {}
+
+export interface DeleteMenuPayload extends BaseOptions {
+  id: number;
+}

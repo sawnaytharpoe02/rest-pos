@@ -1,5 +1,5 @@
 import { prisma } from "@/utils/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
   try {
@@ -43,6 +43,31 @@ export async function PUT(req: Request, res: Response) {
         township,
         city,
         companyId,
+      },
+    });
+
+    return NextResponse.json(location, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ message: error }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const id = Number(req.nextUrl.searchParams.get("id"));
+
+    const existingLocation = await prisma.location.findUnique({ where: { id } });
+    if (!existingLocation) {
+      return NextResponse.json(
+        { message: "Location not found" },
+        { status: 404 }
+      );
+    }
+
+    const location = await prisma.location.update({
+      where: { id },
+      data: {
+        isArchived: true,
       },
     });
 

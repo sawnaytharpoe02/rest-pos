@@ -1,8 +1,14 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { MenuSlice, CreateMenuPayload, UpdateMenuPayload } from "@/types/menu";
+import {
+  MenuSlice,
+  CreateMenuPayload,
+  UpdateMenuPayload,
+  DeleteMenuPayload,
+} from "@/types/menu";
 import { Menu } from "@prisma/client";
 import { config } from "@/config";
 import { setMenuCategoryMenus } from "./menuCategoryMenuSlice";
+import { SiPayloadcms } from "react-icons/si";
 
 const initialState: MenuSlice = {
   menus: [],
@@ -57,6 +63,24 @@ export const updateMenu = createAsyncThunk(
   }
 );
 
+export const deleteMenu = createAsyncThunk(
+  "menu/deleteMenu",
+  async (payload: DeleteMenuPayload, thunkApi) => {
+    const { onSuccess, onError, id } = payload;
+    try {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/menu?id=${id}`, {
+        method: "DELETE",
+      });
+
+      const menu = await res.json();
+      thunkApi.dispatch(removeMenu(menu));
+      onSuccess && onSuccess();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const menuSlice = createSlice({
   name: "menu",
   initialState,
@@ -64,6 +88,9 @@ const menuSlice = createSlice({
     setMenus: (state, action: PayloadAction<Menu[]>) => {
       state.menus = action.payload;
     },
+    removeMenu: (state, action: PayloadAction<Menu>) => {
+      state.menus = state.menus.filter((menu) => menu.id === action.payload.id ? false : true);
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -102,5 +129,5 @@ const menuSlice = createSlice({
   },
 });
 
-export const { setMenus } = menuSlice.actions;
+export const { setMenus, removeMenu } = menuSlice.actions;
 export default menuSlice.reducer;

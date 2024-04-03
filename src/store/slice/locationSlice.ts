@@ -61,13 +61,17 @@ export const deleteLocation = createAsyncThunk(
   async (data: DeleteLocationPayload, thunkApi) => {
     const { onSuccess, onError, id } = data;
     try {
-      const res = await fetch(`${config.backofficeApiBaseUrl}/location/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${config.backofficeApiBaseUrl}/location?id=${id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       const location = await res.json();
+      thunkApi.dispatch(removeLocation(location));
+
       onSuccess && onSuccess();
-      return location;
     } catch (error) {
       console.log(error);
       onError && onError();
@@ -81,6 +85,11 @@ export const locationSlice = createSlice({
   reducers: {
     setLocations: (state, action: PayloadAction<Location[]>) => {
       state.locations = action.payload;
+    },
+    removeLocation: (state, action: PayloadAction<Location>) => {
+      state.locations = state.locations.filter((location) =>
+        location.id === action.payload.id ? false : true
+      );
     },
   },
   extraReducers: (builder) => {
@@ -123,29 +132,8 @@ export const locationSlice = createSlice({
         const error = new Error("Error occured while updating location.");
         state.error = error.message;
       });
-
-    builder
-      .addCase(deleteLocation.pending, (state, _action) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(
-        deleteLocation.fulfilled,
-        (state, action: PayloadAction<Location>) => {
-          state.isLoading = false;
-          state.error = null;
-          state.locations = state.locations.filter((location) =>
-            location.id === action.payload.id ? false : true
-          );
-        }
-      )
-      .addCase(deleteLocation.rejected, (state, _action) => {
-        state.isLoading = false;
-        const error = new Error("Error occured while deleting location.");
-        state.error = error.message;
-      });
   },
 });
 
-export const { setLocations } = locationSlice.actions;
+export const { setLocations, removeLocation } = locationSlice.actions;
 export default locationSlice.reducer;

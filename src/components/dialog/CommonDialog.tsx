@@ -26,8 +26,7 @@ const CommonDialog = ({ children, formTitle }: Props) => {
     <Dialog
       open={isOpenDialog}
       fullScreen={fullScreen}
-      onClose={handleCloseDialog}
-      aria-labelledby="responsive-dialog-title">
+      onClose={handleCloseDialog}>
       <DialogTitle sx={{ mx: "auto" }}>{formTitle}</DialogTitle>
       <DialogContent>{children}</DialogContent>
     </Dialog>
