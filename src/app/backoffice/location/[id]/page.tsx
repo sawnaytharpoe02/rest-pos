@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import {
@@ -35,8 +35,9 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     if (location) {
       setUpdateData(location);
+      dispatch(setSelectedLocation(location));
     }
-  }, [location]);
+  }, [locations]);
 
   const handleUpdateLocation = () => {
     const shouldUpdate =

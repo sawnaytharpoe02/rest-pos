@@ -9,14 +9,16 @@ interface Props {
   href: string;
   title: string;
   subTitle?: string;
+  isAvailable:boolean;
 }
 
-const MenuCategoryCard = ({ icon, href, title, subTitle }: Props) => {
+const MenuCategoryCard = ({ icon, href, title, subTitle, isAvailable }: Props) => {
   return (
     <Link href={href} style={{ cursor: "pointer" }}>
       <Card
         variant="outlined"
         sx={{
+          opacity: isAvailable ? 1 : 0.4,
           borderRadius: "1rem",
           ":hover": {
             backgroundColor: "primary.lighter",

@@ -43,16 +43,20 @@ const MenuCategoryPage = () => {
 
         <Grid container spacing={2} mt={4}>
           {menuCategories &&
-            menuCategories.map((item) => (
-              <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
-                <MenuCategoryCard
-                  title={item.name}
-                  subTitle="description"
-                  icon={<Icon icon="mingcute:fork-spoon-fill" />}
-                  href={`${config.backofficeBaseUrl}/menu-category/${item.id}`}
-                />
-              </Grid>
-            ))}
+            menuCategories.map((item) => {
+              const isAvailable = true;
+              return (
+                <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
+                  <MenuCategoryCard
+                    title={item.name}
+                    subTitle="description"
+                    icon={<Icon icon="mingcute:fork-spoon-fill" />}
+                    href={`${config.backofficeBaseUrl}/menu-category/${item.id}`}
+                    isAvailable={isAvailable}
+                  />
+                </Grid>
+              );
+            })}
         </Grid>
       </Box>
       <CommonDialog formTitle="Create Menu Category Form">

@@ -41,7 +41,7 @@ export const palette = (): ThemeOptions["palette"] => {
     error: {
       lighter: "#FFE9D5",
       light: "#FFAC82",
-      main: "#FF5630",
+      main: "##d50000",
       dark: "#B71D18",
       darker: "#7A0916",
     },

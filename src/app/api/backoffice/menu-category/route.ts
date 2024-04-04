@@ -15,14 +15,14 @@ export async function GET(req: Request, res: Response) {
 
 export async function POST(req: Request, res: Response) {
   try {
-    const { name, isAvailable, companyId } = await req.json();
-    const isValid = name && companyId && isAvailable !== null;
+    const { name, companyId } = await req.json();
+    const isValid = name && companyId
     if (!isValid) {
       return NextResponse.json({ message: "Invalid request" }, { status: 400 });
     }
 
     const menuCategory = await prisma.menuCategory.create({
-      data: { name, isAvailable, companyId },
+      data: { name, companyId },
     });
     return NextResponse.json(menuCategory, { status: 201 });
   } catch (error) {
@@ -32,7 +32,7 @@ export async function POST(req: Request, res: Response) {
 
 export async function PUT(req: Request, res: Response) {
   try {
-    const { id, ...payload } = await req.json();
+    const { id, isAvailable, locationId, ...payload } = await req.json();
 
     const menuCategory = await prisma.menuCategory.findFirst({ where: { id } });
     if (!menuCategory) {
@@ -45,7 +45,35 @@ export async function PUT(req: Request, res: Response) {
       where: { id },
       data: payload,
     });
-    return NextResponse.json(updatedMenuCategory, { status: 201 });
+
+    if (locationId && isAvailable !== undefined) {
+      if (isAvailable === false) {
+        await prisma.disableLocationMenuCategory.create({
+          data: {
+            locationId,
+            menuCategoryId: id,
+          },
+        });
+      } else {
+        const item = await prisma.disableLocationMenuCategory.findFirst({
+          where: { menuCategoryId: id, locationId },
+        });
+
+        item &&
+          (await prisma.disableLocationMenuCategory.delete({
+            where: { id: item.id },
+          }));
+      }
+    }
+
+    const disableLocationMenuCategories =
+      await prisma.disableLocationMenuCategory.findMany({
+        where: { menuCategoryId: id },
+      });
+    return NextResponse.json(
+      { updatedMenuCategory, disableLocationMenuCategories },
+      { status: 201 }
+    );
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });
   }
@@ -54,9 +82,14 @@ export async function PUT(req: Request, res: Response) {
 export async function DELETE(req: NextRequest) {
   try {
     const id = Number(req.nextUrl.searchParams.get("id"));
-    const existingMenuCategory = await prisma.menuCategory.findFirst({ where: { id } });
-    if(!existingMenuCategory){
-      return NextResponse.json({ message: "Menu category not found" }, { status: 404 });
+    const existingMenuCategory = await prisma.menuCategory.findFirst({
+      where: { id },
+    });
+    if (!existingMenuCategory) {
+      return NextResponse.json(
+        { message: "Menu category not found" },
+        { status: 404 }
+      );
     }
 
     const menuCategory = await prisma.menuCategory.update({

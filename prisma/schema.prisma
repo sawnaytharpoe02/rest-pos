@@ -28,29 +28,38 @@ model Company {
 }
 
 model Location {
-  id         Int      @id @default(autoincrement())
-  name       String
-  street     String
-  township   String
-  city       String
-  isArchived Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  companyId  Int
-  company    Company  @relation(fields: [companyId], references: [id])
-  tables     Table[]
+  id                          Int                           @id @default(autoincrement())
+  name                        String
+  street                      String
+  township                    String
+  city                        String
+  isArchived                  Boolean                       @default(false)
+  createdAt                   DateTime                      @default(now())
+  updatedAt                   DateTime                      @updatedAt
+  companyId                   Int
+  company                     Company                       @relation(fields: [companyId], references: [id])
+  tables                      Table[]
+  disableLocationMenuCategory disableLocationMenuCategory[]
+}
+
+model disableLocationMenuCategory {
+  id             Int          @id @default(autoincrement())
+  locationId     Int
+  menuCategoryId Int
+  location       Location     @relation(fields: [locationId], references: [id])
+  menuCategory   MenuCategory @relation(fields: [menuCategoryId], references: [id])
 }
 
 model MenuCategory {
-  id               Int                @id @default(autoincrement())
-  name             String
-  isAvailable      Boolean            @default(true)
-  isArchived       Boolean            @default(false)
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
-  companyId        Int
-  company          Company            @relation(fields: [companyId], references: [id])
-  menuCategoryMenu MenuCategoryMenu[]
+  id                          Int                           @id @default(autoincrement())
+  name                        String
+  isArchived                  Boolean                       @default(false)
+  createdAt                   DateTime                      @default(now())
+  updatedAt                   DateTime                      @updatedAt
+  companyId                   Int
+  company                     Company                       @relation(fields: [companyId], references: [id])
+  menuCategoryMenu            MenuCategoryMenu[]
+  disableLocationMenuCategory disableLocationMenuCategory[]
 }
 
 model Menu {

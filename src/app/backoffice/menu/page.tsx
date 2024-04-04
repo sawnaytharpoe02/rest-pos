@@ -40,8 +40,10 @@ const MenuPage = () => {
         </Box>
 
         <Grid container spacing={2} mt={4}>
-          {isLoading ? <Typography>Loading ...</Typography> :
-            menus.map((item) => (
+          {isLoading ? (
+            <Typography>Loading ...</Typography>
+          ) : (
+            menus?.map((item) => (
               <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
                 <MenuCard
                   name={item.name}
@@ -51,7 +53,8 @@ const MenuPage = () => {
                   href={`${config.backofficeBaseUrl}/menu/${item.id}`}
                 />
               </Grid>
-            ))}
+            ))
+          )}
         </Grid>
       </Box>
       <CommonDialog formTitle="Create Menu Form">

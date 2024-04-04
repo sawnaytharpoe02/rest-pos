@@ -38,14 +38,14 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
 
   useEffect(() => {
     if (menuCategory) {
-      setUpdateData(menuCategory);
+      setUpdateData({...menuCategory,isAvailable: true});
     }
   }, []);
 
   const handleUpdateMenuCategory = () => {
     const shouldUpdate =
       updateData?.name !== menuCategory?.name ||
-      updateData?.isAvailable !== menuCategory?.isAvailable;
+      updateData?.isAvailable !== undefined
     if (!shouldUpdate) {
       return router.push("/backoffice/menu-category");
     }

@@ -1,44 +1,16 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "Company" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "street" TEXT NOT NULL,
+    "township" TEXT NOT NULL,
+    "city" TEXT NOT NULL,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
-  - You are about to drop the column `userId` on the `Company` table. All the data in the column will be lost.
-  - You are about to drop the column `isAvailable` on the `MenuCategory` table. All the data in the column will be lost.
-  - You are about to drop the column `createdAt` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `isArchived` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `password` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `updatedAt` on the `User` table. All the data in the column will be lost.
-  - Added the required column `city` to the `Company` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `street` to the `Company` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `township` to the `Company` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `companyId` to the `MenuCategory` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `companyId` to the `User` table without a default value. This is not possible if the table is not empty.
-
-*/
--- DropForeignKey
-ALTER TABLE "Company" DROP CONSTRAINT "Company_userId_fkey";
-
--- AlterTable
-ALTER TABLE "Company" DROP COLUMN "userId",
-ADD COLUMN     "city" TEXT NOT NULL,
-ADD COLUMN     "street" TEXT NOT NULL,
-ADD COLUMN     "township" TEXT NOT NULL;
-
--- AlterTable
-ALTER TABLE "Menu" ADD COLUMN     "assetUrl" TEXT,
-ADD COLUMN     "description" TEXT,
-ALTER COLUMN "price" SET DEFAULT 0;
-
--- AlterTable
-ALTER TABLE "MenuCategory" DROP COLUMN "isAvailable",
-ADD COLUMN     "companyId" INTEGER NOT NULL;
-
--- AlterTable
-ALTER TABLE "User" DROP COLUMN "createdAt",
-DROP COLUMN "isArchived",
-DROP COLUMN "password",
-DROP COLUMN "updatedAt",
-ADD COLUMN     "companyId" INTEGER NOT NULL,
-ALTER COLUMN "name" DROP NOT NULL;
+    CONSTRAINT "Company_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Location" (
@@ -53,6 +25,50 @@ CREATE TABLE "Location" (
     "companyId" INTEGER NOT NULL,
 
     CONSTRAINT "Location_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "disableLocationMenuCategory" (
+    "id" SERIAL NOT NULL,
+    "locationId" INTEGER NOT NULL,
+    "menuCategoryId" INTEGER NOT NULL,
+
+    CONSTRAINT "disableLocationMenuCategory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "MenuCategory" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "companyId" INTEGER NOT NULL,
+
+    CONSTRAINT "MenuCategory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Menu" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "price" INTEGER NOT NULL DEFAULT 0,
+    "description" TEXT,
+    "assetUrl" TEXT,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Menu_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "MenuCategoryMenu" (
+    "id" SERIAL NOT NULL,
+    "menuCategoryId" INTEGER NOT NULL,
+    "menuId" INTEGER NOT NULL,
+
+    CONSTRAINT "MenuCategoryMenu_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -102,11 +118,36 @@ CREATE TABLE "Table" (
     CONSTRAINT "Table_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "name" TEXT,
+    "companyId" INTEGER NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
 -- AddForeignKey
 ALTER TABLE "Location" ADD CONSTRAINT "Location_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "disableLocationMenuCategory" ADD CONSTRAINT "disableLocationMenuCategory_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "disableLocationMenuCategory" ADD CONSTRAINT "disableLocationMenuCategory_menuCategoryId_fkey" FOREIGN KEY ("menuCategoryId") REFERENCES "MenuCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "MenuCategory" ADD CONSTRAINT "MenuCategory_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MenuCategoryMenu" ADD CONSTRAINT "MenuCategoryMenu_menuCategoryId_fkey" FOREIGN KEY ("menuCategoryId") REFERENCES "MenuCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MenuCategoryMenu" ADD CONSTRAINT "MenuCategoryMenu_menuId_fkey" FOREIGN KEY ("menuId") REFERENCES "Menu"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "MenuAddonCategory" ADD CONSTRAINT "MenuAddonCategory_addonCategoryId_fkey" FOREIGN KEY ("addonCategoryId") REFERENCES "AddonCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
