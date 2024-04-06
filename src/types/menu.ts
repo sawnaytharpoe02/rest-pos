@@ -13,7 +13,10 @@ export interface MenuSlice {
   error: string | null;
 }
 
-export interface UpdateMenuPayload extends Menu, BaseOptions {}
+export interface UpdateMenuPayload extends Menu, BaseOptions {
+  isAvailable?: boolean;
+  locationId?: number;
+}
 
 export interface DeleteMenuPayload extends BaseOptions {
   id: number;

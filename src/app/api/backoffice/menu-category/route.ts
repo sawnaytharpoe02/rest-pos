@@ -41,7 +41,7 @@ export async function PUT(req: Request, res: Response) {
         { status: 404 }
       );
     }
-    const updatedMenuCategory = await prisma.menuCategory.update({
+    const updateMenuCategory = await prisma.menuCategory.update({
       where: { id },
       data: payload,
     });
@@ -71,7 +71,7 @@ export async function PUT(req: Request, res: Response) {
         where: { menuCategoryId: id },
       });
     return NextResponse.json(
-      { updatedMenuCategory, disableLocationMenuCategories },
+      { updateMenuCategory, disableLocationMenuCategories },
       { status: 201 }
     );
   } catch (error) {

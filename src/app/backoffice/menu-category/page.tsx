@@ -12,7 +12,9 @@ import { CreateMenuCategoryPayload } from "@/types/menuCategory";
 import { config } from "@/config";
 
 const MenuCategoryPage = () => {
-  const { menuCategories } = useAppSelector((state) => state.menuCategory);
+  const { isLoading, menuCategories } = useAppSelector(
+    (state) => state.menuCategory
+  );
 
   const [menuCategoryData, setMenuCategoryData] =
     useState<CreateMenuCategoryPayload>({
@@ -42,7 +44,9 @@ const MenuCategoryPage = () => {
         </Box>
 
         <Grid container spacing={2} mt={4}>
-          {menuCategories &&
+          {isLoading ? (
+            <div>Loading ...</div>
+          ) : (
             menuCategories.map((item) => {
               const isAvailable = true;
               return (
@@ -56,7 +60,8 @@ const MenuCategoryPage = () => {
                   />
                 </Grid>
               );
-            })}
+            })
+          )}
         </Grid>
       </Box>
       <CommonDialog formTitle="Create Menu Category Form">

@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, Button, Box, CircularProgress, FormLabel } from "@mui/material";
+import { Grid, Box, CircularProgress, FormLabel, Button } from "@mui/material";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,7 +13,6 @@ import { createMenu } from "@/store/slice/menuSlice";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { CreateMenuPayload } from "@/types/menu";
-import FormButton from "@/components/button/FormButton";
 
 const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = -100;
@@ -144,17 +143,20 @@ const MenuForm = ({ setMenuData, menuData }: Props) => {
             item
             xs={12}
             sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-            <FormButton
+            <Button
               startIcon={
                 isLoading && <CircularProgress color="inherit" size={20} />
               }
               variant="contained"
               onClick={handleCreateMenu}>
               Create
-            </FormButton>
-            <FormButton onClick={() => dispatch(setOpenDialog(false))}>
+            </Button>
+            <Button
+              sx={{ color: "#000" }}
+              variant="text"
+              onClick={() => dispatch(setOpenDialog(false))}>
               Cancel
-            </FormButton>
+            </Button>
           </Grid>
         </Grid>
       </Box>

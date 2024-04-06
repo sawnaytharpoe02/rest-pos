@@ -89,8 +89,10 @@ const menuSlice = createSlice({
       state.menus = action.payload;
     },
     removeMenu: (state, action: PayloadAction<Menu>) => {
-      state.menus = state.menus.filter((menu) => menu.id === action.payload.id ? false : true);
-    }
+      state.menus = state.menus.filter((menu) =>
+        menu.id === action.payload.id ? false : true
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -118,7 +120,7 @@ const menuSlice = createSlice({
         state.isLoading = false;
         state.error = null;
         state.menus = state.menus.map((menu) =>
-          menu.id === action.payload.id ? action.payload : menu
+          menu.id === action.payload?.id ? action.payload : menu
         );
       })
       .addCase(updateMenu.rejected, (state, _action) => {

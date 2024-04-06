@@ -38,13 +38,6 @@ export const palette = (): ThemeOptions["palette"] => {
       dark: "#B76E00",
       darker: "#7A4100",
     },
-    error: {
-      lighter: "#FFE9D5",
-      light: "#FFAC82",
-      main: "##d50000",
-      dark: "#B71D18",
-      darker: "#7A0916",
-    },
     grey: {
       100: "#F9FAFB",
       200: "#F4F6F8",

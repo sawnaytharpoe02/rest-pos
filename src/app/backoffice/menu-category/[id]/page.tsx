@@ -9,11 +9,10 @@ import {
   FormLabel,
   OutlinedInput,
   Checkbox,
-  Button,
   CircularProgress,
   Typography,
+  Button,
 } from "@mui/material";
-import FormButton from "@/components/button/FormButton";
 import { UpdateMenuCategoryPayload } from "@/types/menuCategory";
 import {
   deleteMenuCategory,
@@ -38,14 +37,14 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
 
   useEffect(() => {
     if (menuCategory) {
-      setUpdateData({...menuCategory,isAvailable: true});
+      setUpdateData({ ...menuCategory, isAvailable: true });
     }
   }, []);
 
   const handleUpdateMenuCategory = () => {
     const shouldUpdate =
       updateData?.name !== menuCategory?.name ||
-      updateData?.isAvailable !== undefined
+      updateData?.isAvailable !== undefined;
     if (!shouldUpdate) {
       return router.push("/backoffice/menu-category");
     }
@@ -99,7 +98,7 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
               })
             );
           }, 1000);
-          router.push('/backoffice/menu-category')
+          router.push("/backoffice/menu-category");
         },
       })
     );
@@ -144,13 +143,17 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
                 onClick={handleUpdateMenuCategory}>
                 Update
               </Button>
+              <Button sx={{color: "#000"}} variant="text" onClick={() => router.push('/backoffice/menu-category')}>Cancel</Button>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={6}>
-          <FormButton onClick={() => setOpenDeleteDialog(true)}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => setOpenDeleteDialog(true)}>
             Delete
-          </FormButton>
+          </Button>
         </Grid>
       </Grid>
       <CommonDeleteDialog

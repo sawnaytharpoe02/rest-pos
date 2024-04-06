@@ -56,7 +56,7 @@ const LocationPage = () => {
         </Grid>
       </Box>
 
-      <CommonDialog formTitle="Create Menu Form">
+      <CommonDialog formTitle="Create Location Form">
         <LocationForm
           locationData={locationData}
           setLocationData={setLocationData}

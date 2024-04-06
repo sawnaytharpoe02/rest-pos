@@ -9,13 +9,13 @@ import {
   CircularProgress,
   Checkbox,
   FormControlLabel,
+  Button,
 } from "@mui/material";
 import { CreateMenuCategoryPayload } from "@/types/menuCategory";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { createMenuCategory } from "@/store/slice/menuCategorySlice";
-import FormButton from "@/components/button/FormButton";
 
 interface Props {
   menuCategoryData: CreateMenuCategoryPayload;
@@ -90,19 +90,19 @@ const MenuCategoryForm = ({ setMenuCategoryData, menuCategoryData }: Props) => {
             item
             xs={12}
             sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
-            <FormButton
+            <Button
               startIcon={
                 isLoading && <CircularProgress color="inherit" size={20} />
               }
               variant="contained"
               onClick={handleCreateMenuCategory}>
               Create
-            </FormButton>
-            <FormButton
+            </Button>
+            <Button
               onClick={() => dispatch(setOpenDialog(false))}
-              variant="outlined">
+              sx={{ color: "#000" }}>
               Cancel
-            </FormButton>
+            </Button>
           </Grid>
         </Grid>
       </Box>

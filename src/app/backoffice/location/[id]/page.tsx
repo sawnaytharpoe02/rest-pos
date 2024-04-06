@@ -18,7 +18,6 @@ import { UpdateLocationPayload } from "@/types/location";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { deleteLocation, updateLocation } from "@/store/slice/locationSlice";
 import { setSelectedLocation } from "@/store/slice/appSlice";
-import FormButton from "@/components/button/FormButton";
 import CommonDeleteDialog from "@/components/dialog/CommonDeleteDialog";
 
 const LocationDetailPage = ({ params }: { params: { id: string } }) => {
@@ -35,7 +34,6 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     if (location) {
       setUpdateData(location);
-      dispatch(setSelectedLocation(location));
     }
   }, [locations]);
 
@@ -188,13 +186,12 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
                 onClick={handleUpdateLocation}>
                 Update
               </Button>
+              <Button sx={{color: '#000'}} variant="text" onClick={() => router.push('/backoffice/location')}>Cancel</Button>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={6}>
-          <FormButton onClick={() => setOpenDeleteDialog(true)}>
-            Delete
-          </FormButton>
+          <Button color="error" variant="contained" onClick={() => setOpenDeleteDialog(true)}>Delete</Button>
         </Grid>
       </Grid>
       <CommonDeleteDialog

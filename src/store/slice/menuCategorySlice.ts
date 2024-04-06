@@ -15,7 +15,7 @@ const initialState: MenuCategorySlice = {
 };
 
 export const createMenuCategory = createAsyncThunk(
-  "create/menuCategory",
+  "create/createMenuCategory",
   async (payload: CreateMenuCategoryPayload) => {
     const { onSuccess, onError } = payload;
     try {
@@ -36,7 +36,7 @@ export const createMenuCategory = createAsyncThunk(
 );
 
 export const updateMenuCategory = createAsyncThunk(
-  "update/menuCategory",
+  "update/updateMenuCategory",
   async (payload: UpdateMenuCategoryPayload) => {
     const { onSuccess, onError } = payload;
     try {
@@ -46,7 +46,8 @@ export const updateMenuCategory = createAsyncThunk(
         body: JSON.stringify(payload),
       });
 
-      const updateMenuCategory = await res.json();
+      const { updateMenuCategory } = await res.json();
+      console.log(updateMenuCategory);
       onSuccess && onSuccess();
       return updateMenuCategory;
     } catch (error) {
@@ -57,7 +58,7 @@ export const updateMenuCategory = createAsyncThunk(
 );
 
 export const deleteMenuCategory = createAsyncThunk(
-  "delete/menuCategory",
+  "delete/deleteMenuCategory",
   async (payload: DeleteMenuCategoryPayload, thunkApi) => {
     const { id, onSuccess, onError } = payload;
     try {

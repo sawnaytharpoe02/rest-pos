@@ -40,6 +40,7 @@ model Location {
   company                     Company                       @relation(fields: [companyId], references: [id])
   tables                      Table[]
   disableLocationMenuCategory disableLocationMenuCategory[]
+  disableLocationMenu         disableLocationMenu[]
 }
 
 model disableLocationMenuCategory {
@@ -62,17 +63,26 @@ model MenuCategory {
   disableLocationMenuCategory disableLocationMenuCategory[]
 }
 
+model disableLocationMenu {
+  id         Int      @id @default(autoincrement())
+  menuId     Int
+  locationId Int
+  menu       Menu     @relation(fields: [menuId], references: [id])
+  location   Location @relation(fields: [locationId], references: [id])
+}
+
 model Menu {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  price             Int                 @default(0)
-  description       String?
-  assetUrl          String?
-  isArchived        Boolean             @default(false)
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  menuAddonCategory MenuAddonCategory[]
-  menuCategoryMenu  MenuCategoryMenu[]
+  id                  Int                   @id @default(autoincrement())
+  name                String
+  price               Int                   @default(0)
+  description         String?
+  assetUrl            String?
+  isArchived          Boolean               @default(false)
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  menuAddonCategory   MenuAddonCategory[]
+  menuCategoryMenu    MenuCategoryMenu[]
+  disableLocationMenu disableLocationMenu[]
 }
 
 model MenuCategoryMenu {

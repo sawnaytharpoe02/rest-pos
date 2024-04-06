@@ -19,7 +19,7 @@ export async function GET(req: Request, res: Response) {
           });
 
           const locations = await prisma.location.findMany({
-            where: { companyId: companyId, isArchived: false },
+            where: { companyId: company?.id, isArchived: false },
           });
 
           const locationIds = locations.map((item) => item.id);

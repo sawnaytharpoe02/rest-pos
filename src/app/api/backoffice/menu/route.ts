@@ -38,14 +38,8 @@ export async function POST(req: Request, res: Response) {
 
 export async function PUT(req: Request, res: Response) {
   try {
-    const { id, name, description, price, menuCategoryIds } = await req.json();
-
-    const isValid =
-      name && description && price !== null && menuCategoryIds.length > 0;
-
-    if (!isValid) {
-      return NextResponse.json({ message: "Invalid request" }, { status: 400 });
-    }
+    const { id, menuCategoryIds, locationId, isAvailable, ...payload } =
+      await req.json();
 
     const existingMenu = await prisma.menu.findFirst({ where: { id } });
     if (!existingMenu)
@@ -53,16 +47,12 @@ export async function PUT(req: Request, res: Response) {
 
     const menu = await prisma.menu.update({
       where: { id },
-      data: {
-        name,
-        price,
-        description,
-      },
+      data: payload,
     });
 
-    // Find existing menu categories for the menu
+    // Find existing menu categories for the menu from database
     const findMenuCategories = await prisma.menuCategoryMenu.findMany({
-      where: { menuId: menu.id },
+      where: { menuId: id },
     });
 
     // Identify menuCategoryIds to delete

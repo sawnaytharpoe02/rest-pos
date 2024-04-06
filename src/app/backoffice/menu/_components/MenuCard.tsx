@@ -9,14 +9,23 @@ interface Props {
   price: number;
   imageUrl: string;
   href: string;
+  isAvailable: boolean;
 }
 
-const MenuCard = ({ name, description, price, imageUrl, href }: Props) => {
+const MenuCard = ({
+  name,
+  description,
+  price,
+  imageUrl,
+  href,
+  isAvailable,
+}: Props) => {
   return (
     <Link href={href} style={{ cursor: "pointer" }}>
       <Card
         variant="outlined"
         sx={{
+          opacity: isAvailable ? 1 : 0.5,
           borderRadius: "1rem",
           ":hover": {
             backgroundColor: "primary.lighter",

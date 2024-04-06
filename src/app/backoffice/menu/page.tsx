@@ -51,6 +51,7 @@ const MenuPage = () => {
                   price={item.price}
                   imageUrl={item.assetUrl || ""}
                   href={`${config.backofficeBaseUrl}/menu/${item.id}`}
+                  isAvailable={true}
                 />
               </Grid>
             ))

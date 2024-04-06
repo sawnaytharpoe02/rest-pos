@@ -7,6 +7,7 @@ import {
   Box,
   Grid,
   FormControl,
+  FormControlLabel,
   FormLabel,
   Select,
   OutlinedInput,
@@ -14,14 +15,15 @@ import {
   Checkbox,
   MenuItem,
   ListItemText,
+  Button,
 } from "@mui/material";
 import { UpdateMenuPayload } from "@/types/menu";
-import FormButton from "@/components/button/FormButton";
 import CommonDeleteDialog from "@/components/dialog/CommonDeleteDialog";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import { deleteMenu, updateMenu } from "@/store/slice/menuSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
+import { Menu } from "@prisma/client";
 
 const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = -100;
@@ -39,27 +41,33 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const { menus, isLoading } = useAppSelector(
-    (state) => state.menu
-  );
+  const { menus, isLoading } = useAppSelector((state) => state.menu);
   const { menuCategories } = useAppSelector((state) => state.menuCategory);
   const { menuCategoryMenus } = useAppSelector(
     (state) => state.menuCategoryMenu
   );
+  const { selectedLocation } = useAppSelector((state) => state.app);
 
   const [updateData, setUpdateData] = useState<UpdateMenuPayload>();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
-  const menu = menus.find((item) => item.id === menuId);
+  const menu = menus.find((menu: Menu) => menu.id === menuId);
   const selectedMenuCategoryIds = menuCategoryMenus
-    ?.filter((item) => item.menuId === menu?.id)
+    .filter((item) => item.menuId === menuId)
     .map((item) => item.menuCategoryId);
 
   useEffect(() => {
+    setSelectedIds(selectedMenuCategoryIds);
+  }, []);
+
+  useEffect(() => {
     if (menu) {
-      setUpdateData(menu);
-      setSelectedIds(selectedMenuCategoryIds);
+      setUpdateData({
+        ...menu,
+        locationId: selectedLocation?.id,
+        isAvailable: true,
+      });
     }
   }, [menu]);
 
@@ -230,28 +238,46 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
                 </Select>
               </FormControl>
             </Grid>
+            <Grid item xs={12} sx={{ my: 2 }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={updateData.isAvailable}
+                    onChange={(e, value) =>
+                      setUpdateData({ ...updateData, isAvailable: value })
+                    }
+                  />
+                }
+                label="Available"
+              />
+            </Grid>
             <Grid
               item
               xs={12}
               sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-              <FormButton
+              <Button
                 startIcon={
                   isLoading && <CircularProgress color="inherit" size={20} />
                 }
                 variant="contained"
                 onClick={handleUpdateMenu}>
                 Update
-              </FormButton>
-              <FormButton onClick={() => dispatch(setOpenDialog(false))}>
+              </Button>
+              <Button
+                sx={{ color: "#000" }}
+                onClick={() => router.push("/backoffice/menu")}>
                 Cancel
-              </FormButton>
+              </Button>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={6}>
-          <FormButton onClick={() => setOpenDeleteDialog(true)}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => setOpenDeleteDialog(true)}>
             Delete
-          </FormButton>
+          </Button>
         </Grid>
       </Grid>
       <CommonDeleteDialog
