@@ -62,6 +62,9 @@ export async function GET(req: Request, res: Response) {
             where: { addonCategoryId: { in: addonCategoryIds } },
           });
 
+          const disableLocationMenuCategories =
+            await prisma.disableLocationMenuCategory.findMany();
+
           return NextResponse.json(
             {
               company,
@@ -73,6 +76,7 @@ export async function GET(req: Request, res: Response) {
               addonCategories,
               menuAddonCategories,
               addons,
+              disableLocationMenuCategories,
             },
             { status: 200 }
           );

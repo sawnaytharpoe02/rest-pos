@@ -11,6 +11,7 @@ import { setCompany } from "./companySlice";
 import { setMenuCategoryMenus } from "./menuCategoryMenuSlice";
 import { setLocations } from "./locationSlice";
 import { Location } from "@prisma/client";
+import { setDisableLocationMenuCategories } from "./disableLocationMenuCategorySlice";
 
 interface AppSlice {
   init: boolean;
@@ -33,8 +34,14 @@ export const fetchAppData = createAsyncThunk(
       thunkApi.dispatch(setLoading(true));
       const res = await fetch(`${config.backofficeApiBaseUrl}/app`);
       const dataFromServer = await res.json();
-      const { menus, menuCategories, company, menuCategoryMenus, locations } =
-        dataFromServer;
+      const {
+        menus,
+        menuCategories,
+        company,
+        menuCategoryMenus,
+        locations,
+        disableLocationMenuCategories,
+      } = dataFromServer;
 
       thunkApi.dispatch(setMenuCategories(menuCategories));
       thunkApi.dispatch(setMenus(menus));
@@ -53,6 +60,9 @@ export const fetchAppData = createAsyncThunk(
       }
       thunkApi.dispatch(setInit(true));
       thunkApi.dispatch(setLoading(false));
+      thunkApi.dispatch(
+        setDisableLocationMenuCategories(disableLocationMenuCategories)
+      );
     } catch (error) {
       thunkApi.dispatch(setLoading(false));
       return thunkApi.rejectWithValue(error);

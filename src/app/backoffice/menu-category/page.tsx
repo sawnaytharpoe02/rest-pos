@@ -15,6 +15,10 @@ const MenuCategoryPage = () => {
   const { isLoading, menuCategories } = useAppSelector(
     (state) => state.menuCategory
   );
+  const { selectedLocation } = useAppSelector((state) => state.app);
+  const { disableLocationMenuCategories } = useAppSelector(
+    (state) => state.disableLocationMenuCategory
+  );
 
   const [menuCategoryData, setMenuCategoryData] =
     useState<CreateMenuCategoryPayload>({
@@ -48,7 +52,13 @@ const MenuCategoryPage = () => {
             <div>Loading ...</div>
           ) : (
             menuCategories.map((item) => {
-              const isAvailable = true;
+              const isAvailable = disableLocationMenuCategories.find(
+                (v) =>
+                  v.menuCategoryId === item.id &&
+                  v.locationId === selectedLocation?.id
+              )
+                ? false
+                : true;
               return (
                 <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
                   <MenuCategoryCard
