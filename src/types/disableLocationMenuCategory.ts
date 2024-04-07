@@ -1,8 +1,7 @@
 import { BaseOptions } from "./user";
-import { disableLocationMenuCategory } from "@prisma/client";
-
+import { DisableLocationMenuCategory } from "@prisma/client";
 export interface DisableLocationMenuCategorySlice extends BaseOptions {
-  disableLocationMenuCategories: disableLocationMenuCategory[];
+  disableLocationMenuCategories: DisableLocationMenuCategory[];
   isLoading: boolean;
   error: string | null;
 }

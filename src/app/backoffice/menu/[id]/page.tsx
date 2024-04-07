@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Typography,
@@ -23,7 +23,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import { deleteMenu, updateMenu } from "@/store/slice/menuSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
-import { Menu } from "@prisma/client";
+import { Menu, MenuCategory } from "@prisma/client";
 
 const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = -100;
@@ -53,21 +53,24 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
   const menu = menus.find((menu: Menu) => menu.id === menuId);
+
   const selectedMenuCategoryIds = menuCategoryMenus
     .filter((item) => item.menuId === menuId)
-    .map((item) => item.menuCategoryId);
-
-  useEffect(() => {
-    setSelectedIds(selectedMenuCategoryIds);
-  }, []);
+    .map((item) => {
+      const menuCategory = menuCategories.find(
+        (category) => category.id === item.menuCategoryId
+      ) as MenuCategory;
+      return menuCategory.id;
+    });
 
   useEffect(() => {
     if (menu) {
       setUpdateData({
         ...menu,
         locationId: selectedLocation?.id,
-        isAvailable: true,
       });
+      selectedMenuCategoryIds.length > 0 &&
+        setSelectedIds(selectedMenuCategoryIds);
     }
   }, [menu]);
 
@@ -76,21 +79,8 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
   }
 
   const handleUpdateMenu = async () => {
-    const shouldUpdate =
-      menu?.name !== updateData?.name ||
-      menu?.price !== updateData?.price ||
-      menu?.description !== updateData?.description ||
-      selectedIds.length !== selectedMenuCategoryIds.length ||
-      selectedIds.every(
-        (item, index) => item !== selectedMenuCategoryIds[index]
-      );
-
-    if (!shouldUpdate) {
-      return router.push("/backoffice/menu");
-    }
-
     if (selectedIds.length === 0) {
-      dispatch(
+      return dispatch(
         setSnackbar({
           type: "error",
           isOpen: true,
@@ -135,7 +125,6 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
   };
 
   const handleDeleteMenu = () => {
-    console.log("delete menu");
     dispatch(
       deleteMenu({
         id: menuId,
@@ -222,9 +211,14 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
                     const selectedValues = e.target.value as number[];
                     setSelectedIds(selectedValues);
                   }}
-                  renderValue={(selected: number[]) => {
-                    return menuCategories
-                      .filter((item) => selected.includes(item.id))
+                  renderValue={() => {
+                    return selectedIds
+                      .map(
+                        (itemId) =>
+                          menuCategories.find(
+                            (menuCategory) => menuCategory.id === itemId
+                          ) as MenuCategory
+                      )
                       .map((item) => item.name)
                       .join(", ");
                   }}

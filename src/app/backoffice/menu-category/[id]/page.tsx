@@ -28,6 +28,10 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
+  const { selectedLocation } = useAppSelector((state) => state.app);
+  const { disableLocationMenuCategories } = useAppSelector(
+    (state) => state.disableLocationMenuCategory
+  );
   const { menuCategories, isLoading } = useAppSelector(
     (state) => state.menuCategory
   );
@@ -35,9 +39,22 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
     (item) => item.id === menuCategoryId
   );
 
+  const isAvailable = disableLocationMenuCategories.find(
+    (item) =>
+      item.menuCategoryId === menuCategoryId &&
+      item.locationId === selectedLocation?.id
+  )
+    ? false
+    : true;
+
+
   useEffect(() => {
     if (menuCategory) {
-      setUpdateData({ ...menuCategory, isAvailable: true });
+      setUpdateData({
+        ...menuCategory,
+        isAvailable,
+        locationId: selectedLocation?.id,
+      });
     }
   }, []);
 
@@ -122,7 +139,7 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={updateData.isAvailable}
+                    defaultChecked={isAvailable}
                     onChange={(e, value) =>
                       setUpdateData({ ...updateData, isAvailable: value })
                     }
@@ -143,7 +160,12 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
                 onClick={handleUpdateMenuCategory}>
                 Update
               </Button>
-              <Button sx={{color: "#000"}} variant="text" onClick={() => router.push('/backoffice/menu-category')}>Cancel</Button>
+              <Button
+                sx={{ color: "#000" }}
+                variant="text"
+                onClick={() => router.push("/backoffice/menu-category")}>
+                Cancel
+              </Button>
             </Grid>
           </Grid>
         </Grid>

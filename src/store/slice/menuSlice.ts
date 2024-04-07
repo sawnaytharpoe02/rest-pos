@@ -18,7 +18,7 @@ const initialState: MenuSlice = {
 
 export const createMenu = createAsyncThunk(
   "menu/createMenu",
-  async (payload: CreateMenuPayload) => {
+  async (payload: CreateMenuPayload, thunkApi) => {
     try {
       const res = await fetch(`${config.backofficeApiBaseUrl}/menu`, {
         method: "POST",
@@ -28,7 +28,9 @@ export const createMenu = createAsyncThunk(
         body: JSON.stringify(payload),
       });
 
-      const { menu } = await res.json();
+      const { menu, menuCategoryMenus } = await res.json();
+
+      thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
       payload.onSuccess && payload.onSuccess();
 
       return menu;
@@ -53,6 +55,7 @@ export const updateMenu = createAsyncThunk(
       });
 
       const { menu, menuCategoryMenus } = await res.json();
+      
       thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
       onSuccess && onSuccess();
 

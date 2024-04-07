@@ -39,11 +39,11 @@ model Location {
   companyId                   Int
   company                     Company                       @relation(fields: [companyId], references: [id])
   tables                      Table[]
-  disableLocationMenuCategory disableLocationMenuCategory[]
-  disableLocationMenu         disableLocationMenu[]
+  disableLocationMenuCategory DisableLocationMenuCategory[]
+  disableLocationMenu         DisableLocationMenu[]
 }
 
-model disableLocationMenuCategory {
+model DisableLocationMenuCategory {
   id             Int          @id @default(autoincrement())
   locationId     Int
   menuCategoryId Int
@@ -60,10 +60,10 @@ model MenuCategory {
   companyId                   Int
   company                     Company                       @relation(fields: [companyId], references: [id])
   menuCategoryMenu            MenuCategoryMenu[]
-  disableLocationMenuCategory disableLocationMenuCategory[]
+  disableLocationMenuCategory DisableLocationMenuCategory[]
 }
 
-model disableLocationMenu {
+model DisableLocationMenu {
   id         Int      @id @default(autoincrement())
   menuId     Int
   locationId Int
@@ -82,7 +82,7 @@ model Menu {
   updatedAt           DateTime              @updatedAt
   menuAddonCategory   MenuAddonCategory[]
   menuCategoryMenu    MenuCategoryMenu[]
-  disableLocationMenu disableLocationMenu[]
+  disableLocationMenu DisableLocationMenu[]
 }
 
 model MenuCategoryMenu {

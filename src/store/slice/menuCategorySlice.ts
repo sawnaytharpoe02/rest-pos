@@ -7,6 +7,7 @@ import {
   MenuCategorySlice,
 } from "@/types/menuCategory";
 import { config } from "@/config";
+import { setDisableLocationMenuCategories } from "./disableLocationMenuCategorySlice";
 
 const initialState: MenuCategorySlice = {
   menuCategories: [],
@@ -37,8 +38,8 @@ export const createMenuCategory = createAsyncThunk(
 
 export const updateMenuCategory = createAsyncThunk(
   "update/updateMenuCategory",
-  async (payload: UpdateMenuCategoryPayload) => {
-    const { onSuccess, onError } = payload;
+  async (data: UpdateMenuCategoryPayload, thunkApi) => {
+    const { onSuccess, onError, ...payload } = data;
     try {
       const res = await fetch(`${config.backofficeApiBaseUrl}/menu-category`, {
         method: "PUT",
@@ -46,8 +47,12 @@ export const updateMenuCategory = createAsyncThunk(
         body: JSON.stringify(payload),
       });
 
-      const { updateMenuCategory } = await res.json();
-      console.log(updateMenuCategory);
+      const { updateMenuCategory, disableLocationMenuCategories } =
+        await res.json();
+
+      thunkApi.dispatch(
+        setDisableLocationMenuCategories(disableLocationMenuCategories)
+      );
       onSuccess && onSuccess();
       return updateMenuCategory;
     } catch (error) {

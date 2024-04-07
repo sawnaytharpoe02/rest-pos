@@ -16,6 +16,7 @@ export interface MenuSlice {
 export interface UpdateMenuPayload extends Menu, BaseOptions {
   isAvailable?: boolean;
   locationId?: number;
+  menuCategoryIds?: number[];
 }
 
 export interface DeleteMenuPayload extends BaseOptions {

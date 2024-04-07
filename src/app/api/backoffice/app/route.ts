@@ -20,6 +20,7 @@ export async function GET(req: Request, res: Response) {
 
           const locations = await prisma.location.findMany({
             where: { companyId: company?.id, isArchived: false },
+            orderBy: { id: "asc" },
           });
 
           const locationIds = locations.map((item) => item.id);
@@ -28,7 +29,8 @@ export async function GET(req: Request, res: Response) {
           });
 
           const menuCategories = await prisma.menuCategory.findMany({
-            where: { companyId , isArchived: false},
+            where: { companyId, isArchived: false },
+            orderBy: { id: "asc" },
           });
           const menuCategoryIds = menuCategories.map((item) => item.id);
           const menuCategoryMenus = await prisma.menuCategoryMenu.findMany({
@@ -40,6 +42,7 @@ export async function GET(req: Request, res: Response) {
           );
           const menus = await prisma.menu.findMany({
             where: { id: { in: menuCategoryMenuIds }, isArchived: false },
+            orderBy: { id: "asc" },
           });
 
           const menuIds = menus.map((item) => item.id);

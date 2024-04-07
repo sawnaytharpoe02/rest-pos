@@ -91,7 +91,7 @@ export async function PUT(req: Request, res: Response) {
     }
 
     const menuCategoryMenus = await prisma.menuCategoryMenu.findMany({
-      where: { menuId: menu.id },
+      where: { menuId: id },
     });
 
     return NextResponse.json({ menu, menuCategoryMenus }, { status: 200 });

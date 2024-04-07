@@ -9,7 +9,7 @@ export interface CreateMenuCategoryPayload extends BaseOptions {
 export interface UpdateMenuCategoryPayload extends BaseOptions {
   name: string;
   isAvailable?: boolean;
-  companyId?: number;
+  locationId?: number;
 }
 export interface MenuCategorySlice {
   menuCategories: MenuCategory[];

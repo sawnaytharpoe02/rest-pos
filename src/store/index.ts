@@ -6,6 +6,7 @@ import snackbarReducer from "./slice/appSnackbarSlice";
 import companyReducer from "./slice/companySlice";
 import menuCategoryMenuReducer from "./slice/menuCategoryMenuSlice";
 import locationReducer from "./slice/locationSlice";
+import disableLocationMenuCategoryReducer from "./slice/disableLocationMenuCategorySlice";
 import appReducer from "./slice/appSlice";
 
 export const store = configureStore({
@@ -16,6 +17,7 @@ export const store = configureStore({
     company: companyReducer,
     menuCategoryMenu: menuCategoryMenuReducer,
     location: locationReducer,
+    disableLocationMenuCategory: disableLocationMenuCategoryReducer,
     dialog: dialogReducer,
     snackbar: snackbarReducer,
   },

@@ -16,7 +16,7 @@ export async function GET(req: Request, res: Response) {
 export async function POST(req: Request, res: Response) {
   try {
     const { name, companyId } = await req.json();
-    const isValid = name && companyId
+    const isValid = name && companyId;
     if (!isValid) {
       return NextResponse.json({ message: "Invalid request" }, { status: 400 });
     }
@@ -48,12 +48,17 @@ export async function PUT(req: Request, res: Response) {
 
     if (locationId && isAvailable !== undefined) {
       if (isAvailable === false) {
-        await prisma.disableLocationMenuCategory.create({
-          data: {
-            locationId,
-            menuCategoryId: id,
-          },
+        const item = await prisma.disableLocationMenuCategory.findFirst({
+          where: { menuCategoryId: id, locationId },
         });
+
+        !item &&
+          (await prisma.disableLocationMenuCategory.create({
+            data: {
+              locationId,
+              menuCategoryId: id,
+            },
+          }));
       } else {
         const item = await prisma.disableLocationMenuCategory.findFirst({
           where: { menuCategoryId: id, locationId },
@@ -66,10 +71,18 @@ export async function PUT(req: Request, res: Response) {
       }
     }
 
+    const location = await prisma.location.findFirst({
+      where: { id: locationId },
+    });
+    const locations = await prisma.location.findMany({
+      where: { companyId: location?.companyId },
+    });
+
     const disableLocationMenuCategories =
       await prisma.disableLocationMenuCategory.findMany({
-        where: { menuCategoryId: id },
+        where: { locationId: {in: locations.map((item) => item.id) }},
       });
+
     return NextResponse.json(
       { updateMenuCategory, disableLocationMenuCategories },
       { status: 201 }
