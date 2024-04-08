@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/utils/prisma";
 
-export async function GET(req: Request, res: Response) {
+export async function GET(req: NextRequest) {
   return NextResponse.json({ message: "OK GET REQ" }, { status: 200 });
 }
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: NextRequest) {
   try {
     const { name, price, description, menuCategoryIds } = await req.json();
     const isValid =
@@ -36,7 +36,7 @@ export async function POST(req: Request, res: Response) {
   }
 }
 
-export async function PUT(req: Request, res: Response) {
+export async function PUT(req: NextRequest) {
   try {
     const { id, menuCategoryIds, locationId, isAvailable, ...payload } =
       await req.json();
@@ -90,11 +90,48 @@ export async function PUT(req: Request, res: Response) {
       );
     }
 
-    const menuCategoryMenus = await prisma.menuCategoryMenu.findMany({
-      where: { menuId: id },
+    if (isAvailable !== undefined && locationId) {
+      if (isAvailable === false) {
+        const item = await prisma.disableLocationMenu.findFirst({
+          where: { locationId, menuId: id },
+        });
+        !item &&
+          (await prisma.disableLocationMenu.create({
+            data: {
+              locationId,
+              menuId: id,
+            },
+          }));
+      } else {
+        const item = await prisma.disableLocationMenu.findFirst({
+          where: { locationId, menuId: id },
+        });
+        item &&
+          (await prisma.disableLocationMenu.delete({
+            where: { id: item.id },
+          }));
+      }
+    }
+
+    const location = await prisma.location.findFirst({
+      where: { id: locationId },
+    });
+    const locations = await prisma.location.findMany({
+      where: { companyId: location?.companyId },
     });
 
-    return NextResponse.json({ menu, menuCategoryMenus }, { status: 200 });
+    const disableLocationMenus = await prisma.disableLocationMenu.findMany({
+      where: {
+        locationId: { in: locations.map((location) => location.id) },
+      },
+    });
+
+    const menuCategoryMenus = await prisma.menuCategoryMenu.findMany();
+
+    return NextResponse.json(
+      { menu, menuCategoryMenus, disableLocationMenus },
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to update menu" },

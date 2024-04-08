@@ -7,6 +7,7 @@ import companyReducer from "./slice/companySlice";
 import menuCategoryMenuReducer from "./slice/menuCategoryMenuSlice";
 import locationReducer from "./slice/locationSlice";
 import disableLocationMenuCategoryReducer from "./slice/disableLocationMenuCategorySlice";
+import disableLocationMenuReducer from "./slice/disableLocationMenuSlice";
 import appReducer from "./slice/appSlice";
 
 export const store = configureStore({
@@ -18,6 +19,7 @@ export const store = configureStore({
     menuCategoryMenu: menuCategoryMenuReducer,
     location: locationReducer,
     disableLocationMenuCategory: disableLocationMenuCategoryReducer,
+    disableLocatinMenu: disableLocationMenuReducer,
     dialog: dialogReducer,
     snackbar: snackbarReducer,
   },

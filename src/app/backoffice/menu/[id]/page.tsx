@@ -47,6 +47,9 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
     (state) => state.menuCategoryMenu
   );
   const { selectedLocation } = useAppSelector((state) => state.app);
+  const { disableLocationMenus } = useAppSelector(
+    (state) => state.disableLocatinMenu
+  );
 
   const [updateData, setUpdateData] = useState<UpdateMenuPayload>();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -62,6 +65,12 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
       ) as MenuCategory;
       return menuCategory.id;
     });
+
+  const isAvailable = disableLocationMenus.find(
+    (item) => item.locationId === selectedLocation?.id && item.menuId === menuId
+  )
+    ? false
+    : true;
 
   useEffect(() => {
     if (menu) {
@@ -236,7 +245,7 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={updateData.isAvailable}
+                    defaultChecked={isAvailable}
                     onChange={(e, value) =>
                       setUpdateData({ ...updateData, isAvailable: value })
                     }

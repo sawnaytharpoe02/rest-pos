@@ -9,6 +9,7 @@ import { Menu } from "@prisma/client";
 import { config } from "@/config";
 import { setMenuCategoryMenus } from "./menuCategoryMenuSlice";
 import { SiPayloadcms } from "react-icons/si";
+import { setDisableLocationMenus } from "./disableLocationMenuSlice";
 
 const initialState: MenuSlice = {
   menus: [],
@@ -54,9 +55,11 @@ export const updateMenu = createAsyncThunk(
         body: JSON.stringify(payload),
       });
 
-      const { menu, menuCategoryMenus } = await res.json();
-      
+      const { menu, menuCategoryMenus, disableLocationMenus } =
+        await res.json();
+
       thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
+      thunkApi.dispatch(setDisableLocationMenus(disableLocationMenus));
       onSuccess && onSuccess();
 
       return menu;
