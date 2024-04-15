@@ -16,7 +16,7 @@ const initialState: LocationSlice = {
 
 export const createLocation = createAsyncThunk(
   "location/createLocation",
-  async (data: CreateLocationPayload, thunkApi) => {
+  async (data: CreateLocationPayload) => {
     const { onSuccess, onError, ...payload } = data;
     try {
       const res = await fetch(`${config.backofficeApiBaseUrl}/location`, {
@@ -37,7 +37,7 @@ export const createLocation = createAsyncThunk(
 
 export const updateLocation = createAsyncThunk(
   "location/updateLocation",
-  async (data: UpdateLocationPayload, thunkApi) => {
+  async (data: UpdateLocationPayload) => {
     const { onSuccess, onError, ...payload } = data;
     try {
       const res = await fetch(`${config.backofficeApiBaseUrl}/location`, {

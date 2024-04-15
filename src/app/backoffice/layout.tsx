@@ -22,6 +22,7 @@ import AppSnackbar from "@/components/snackbar/AppSnackbar";
 import { fetchAppData } from "@/store/slice/appSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import NextTopLoader from "nextjs-toploader";
+import AddonCategoryForm from "@/components/form/AddonCategoryForm";
 
 const drawerWidth = 240;
 
@@ -149,6 +150,19 @@ const BackOfficeLayout = ({
     },
   ];
 
+  const ADDON = [
+    {
+      name: "Addon",
+      href: "/backoffice/addon",
+      icon: "codicon:circle-filled",
+    },
+    {
+      name: "Addon Category",
+      href: "/backoffice/addon-category",
+      icon: "codicon:circle-filled",
+    },
+  ];
+
   const LOCATION = [
     {
       name: "Location",
@@ -200,6 +214,13 @@ const BackOfficeLayout = ({
             isOpenDrawer={isOpen}
             menuIcon="lets-icons:arhive-duotone"
             menuLabel="Menu"
+          />
+
+          <MenuItemDropDown
+            menus={ADDON}
+            isOpenDrawer={isOpen}
+            menuIcon="lets-icons:arhive-duotone"
+            menuLabel="Addon"
           />
 
           <MenuItemDropDown

@@ -8,6 +8,8 @@ import menuCategoryMenuReducer from "./slice/menuCategoryMenuSlice";
 import locationReducer from "./slice/locationSlice";
 import disableLocationMenuCategoryReducer from "./slice/disableLocationMenuCategorySlice";
 import disableLocationMenuReducer from "./slice/disableLocationMenuSlice";
+import addonCategorySliceReducer from "./slice/addonCategorySlice";
+import menuAddonCategorySliceReduer from "./slice/menuAddonCategorySlice";
 import appReducer from "./slice/appSlice";
 
 export const store = configureStore({
@@ -20,6 +22,8 @@ export const store = configureStore({
     location: locationReducer,
     disableLocationMenuCategory: disableLocationMenuCategoryReducer,
     disableLocatinMenu: disableLocationMenuReducer,
+    addonCategory: addonCategorySliceReducer,
+    menuAddonCategory: menuAddonCategorySliceReduer,
     dialog: dialogReducer,
     snackbar: snackbarReducer,
   },

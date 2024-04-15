@@ -2,7 +2,7 @@ import { ThemeOptions } from "@mui/material";
 
 export const typography = (): ThemeOptions["typography"] => {
   return {
-    fontFamily: ["Baloo 2", "Segoe UI", "sans-serif"].join(","),
+    fontFamily: ["Inter", "Baloo 2", "Segoe UI", "sans-serif"].join(","),
     h1: {
       fontSize: 64,
       lineHeight: 80 / 64,

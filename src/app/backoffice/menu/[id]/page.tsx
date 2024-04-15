@@ -24,6 +24,7 @@ import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import { deleteMenu, updateMenu } from "@/store/slice/menuSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { Menu, MenuCategory } from "@prisma/client";
+import MultiSelect from "@/components/MultiSelect";
 
 const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = -100;
@@ -211,44 +212,26 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <FormControl size="small" sx={{ width: "100%" }}>
-                <FormLabel>Menu Category</FormLabel>
-                <Select
-                  value={selectedIds}
-                  multiple
-                  onChange={(e) => {
-                    const selectedValues = e.target.value as number[];
-                    setSelectedIds(selectedValues);
-                  }}
-                  renderValue={() => {
-                    return selectedIds
-                      .map(
-                        (itemId) =>
-                          menuCategories.find(
-                            (menuCategory) => menuCategory.id === itemId
-                          ) as MenuCategory
-                      )
-                      .map((item) => item.name)
-                      .join(", ");
-                  }}
-                  MenuProps={MenuProps}>
-                  {menuCategories.map((item) => (
-                    <MenuItem key={item.id} value={item.id}>
-                      <Checkbox checked={selectedIds.includes(item.id)} />
-                      <ListItemText primary={item.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <MultiSelect
+                title="Menu Category"
+                selected={selectedIds}
+                setSelected={(selectedValues: number[]) =>
+                  setSelectedIds(selectedValues)
+                }
+                items={menuCategories}
+              />
             </Grid>
             <Grid item xs={12} sx={{ my: 2 }}>
               <FormControlLabel
                 control={
                   <Checkbox
                     defaultChecked={isAvailable}
-                    onChange={(e, value) =>
-                      setUpdateData({ ...updateData, isAvailable: value })
-                    }
+                    onChange={(e, value) => {
+                      setUpdateData({
+                        ...updateData,
+                        isAvailable: value,
+                      });
+                    }}
                   />
                 }
                 label="Available"

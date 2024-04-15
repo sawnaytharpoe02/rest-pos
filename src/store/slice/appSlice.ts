@@ -13,6 +13,8 @@ import { setLocations } from "./locationSlice";
 import { Location } from "@prisma/client";
 import { setDisableLocationMenuCategories } from "./disableLocationMenuCategorySlice";
 import { setDisableLocationMenus } from "./disableLocationMenuSlice";
+import { setAddonCategories } from "./addonCategorySlice";
+import { setMenuAddonCategories } from "./menuAddonCategorySlice";
 
 interface AppSlice {
   init: boolean;
@@ -43,6 +45,8 @@ export const fetchAppData = createAsyncThunk(
         locations,
         disableLocationMenuCategories,
         disableLocationMenus,
+        addonCategories,
+        menuAddonCategories,
       } = dataFromServer;
 
       thunkApi.dispatch(setMenuCategories(menuCategories));
@@ -66,6 +70,8 @@ export const fetchAppData = createAsyncThunk(
         setDisableLocationMenuCategories(disableLocationMenuCategories)
       );
       thunkApi.dispatch(setDisableLocationMenus(disableLocationMenus));
+      thunkApi.dispatch(setAddonCategories(addonCategories));
+      thunkApi.dispatch(setMenuAddonCategories(menuAddonCategories));
     } catch (error) {
       thunkApi.dispatch(setLoading(false));
       return thunkApi.rejectWithValue(error);

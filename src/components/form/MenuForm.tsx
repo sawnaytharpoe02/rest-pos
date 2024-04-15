@@ -2,28 +2,13 @@
 
 import { Grid, Box, CircularProgress, FormLabel, Button } from "@mui/material";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Checkbox from "@mui/material/Checkbox";
-import ListItemText from "@mui/material/ListItemText";
-import Select from "@mui/material/Select";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { createMenu } from "@/store/slice/menuSlice";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { CreateMenuPayload } from "@/types/menu";
-
-const ITEM_HEIGHT = 50;
-const ITEM_PADDING_TOP = -100;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+import MultiSelect from "../MultiSelect";
 
 interface Props {
   menuData: CreateMenuPayload;
@@ -112,32 +97,14 @@ const MenuForm = ({ setMenuData, menuData }: Props) => {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <FormControl size="small" sx={{ width: "100%" }}>
-              <FormLabel>Menu Category</FormLabel>
-              <Select
-                value={menuData.menuCategoryIds}
-                multiple
-                onChange={(e) => {
-                  const selectedValues = e.target.value as number[];
-                  setMenuData({ ...menuData, menuCategoryIds: selectedValues });
-                }}
-                renderValue={(selected: number[]) => {
-                  return menuCategories
-                    .filter((item) => selected.includes(item.id))
-                    .map((item) => item.name)
-                    .join(", ");
-                }}
-                MenuProps={MenuProps}>
-                {menuCategories.map((item) => (
-                  <MenuItem key={item.id} value={item.id}>
-                    <Checkbox
-                      checked={menuData.menuCategoryIds.includes(item.id)}
-                    />
-                    <ListItemText primary={item.name} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <MultiSelect
+              title="Menu Category"
+              selected={menuData.menuCategoryIds}
+              setSelected={(selectedValues: number[]) =>
+                setMenuData({ ...menuData, menuCategoryIds: selectedValues })
+              }
+              items={menuCategories}
+            />
           </Grid>
           <Grid
             item
