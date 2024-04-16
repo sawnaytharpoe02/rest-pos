@@ -1,7 +1,6 @@
 import { config } from "@/config";
 import {
   PayloadAction,
-  PayloadActionCreator,
   createAsyncThunk,
   createSlice,
 } from "@reduxjs/toolkit";
@@ -15,6 +14,7 @@ import { setDisableLocationMenuCategories } from "./disableLocationMenuCategoryS
 import { setDisableLocationMenus } from "./disableLocationMenuSlice";
 import { setAddonCategories } from "./addonCategorySlice";
 import { setMenuAddonCategories } from "./menuAddonCategorySlice";
+import { setAddons } from "./addonSlice";
 
 interface AppSlice {
   init: boolean;
@@ -47,6 +47,7 @@ export const fetchAppData = createAsyncThunk(
         disableLocationMenus,
         addonCategories,
         menuAddonCategories,
+        addons,
       } = dataFromServer;
 
       thunkApi.dispatch(setMenuCategories(menuCategories));
@@ -72,6 +73,7 @@ export const fetchAppData = createAsyncThunk(
       thunkApi.dispatch(setDisableLocationMenus(disableLocationMenus));
       thunkApi.dispatch(setAddonCategories(addonCategories));
       thunkApi.dispatch(setMenuAddonCategories(menuAddonCategories));
+      thunkApi.dispatch(setAddons(addons));
     } catch (error) {
       thunkApi.dispatch(setLoading(false));
       return thunkApi.rejectWithValue(error);

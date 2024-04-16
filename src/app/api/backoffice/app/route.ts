@@ -54,22 +54,28 @@ export async function GET(req: Request, res: Response) {
             (item) => item.addonCategoryId
           );
           const addonCategories = await prisma.addonCategory.findMany({
-            where: { id: { in: menuAddonCategoryIds } },
+            where: { id: { in: menuAddonCategoryIds }, isArchived: false },
+            orderBy: { id: "asc" },
           });
 
           const addonCategoryIds = addonCategories.map((item) => item.id);
           const addons = await prisma.addon.findMany({
-            where: { addonCategoryId: { in: addonCategoryIds } },
+            where: {
+              addonCategoryId: { in: addonCategoryIds },
+              isArchived: false,
+            },
+            orderBy: { id: "asc" },
           });
 
           const disableLocationMenuCategories =
             await prisma.disableLocationMenuCategory.findMany({
-              where: {menuCategoryId: {in: menuCategoryIds}}
-            })
+              where: { menuCategoryId: { in: menuCategoryIds } },
+            });
 
-          const disableLocationMenus = await prisma.disableLocationMenu.findMany({
-            where: {menuId: {in: menuIds}}
-          })
+          const disableLocationMenus =
+            await prisma.disableLocationMenu.findMany({
+              where: { menuId: { in: menuIds } },
+            });
           return NextResponse.json(
             {
               company,
