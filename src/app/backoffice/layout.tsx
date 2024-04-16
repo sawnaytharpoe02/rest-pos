@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
@@ -23,6 +23,15 @@ import { fetchAppData } from "@/store/slice/appSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import NextTopLoader from "nextjs-toploader";
 import AddonCategoryForm from "@/components/form/AddonCategoryForm";
+import {
+  MENU,
+  ADDON,
+  SETTINGS,
+  LOCATION,
+  TABLE,
+  COMPANY,
+} from "@/constant/route";
+import { ISidebarMenu } from "@/constant/route";
 
 const drawerWidth = 240;
 
@@ -120,6 +129,7 @@ const BackOfficeLayout = ({
   const { init, isLoading } = useAppSelector((state) => state.app);
   const { selectedLocation } = useAppSelector((state) => state.app);
   const dispatch = useAppDispatch();
+  const navigate = useRouter();
 
   useEffect(() => {
     if (!init) {
@@ -135,49 +145,52 @@ const BackOfficeLayout = ({
     setOpen(false);
   };
 
-  const navigate = useRouter();
-
-  const MENU = [
+  const sideBarMenuArr: {
+    menus: ISidebarMenu[];
+    menuIcon: string;
+    menuLabel: string;
+  }[] = [
+    { menus: MENU, menuIcon: "lets-icons:arhive-duotone", menuLabel: "Menu" },
     {
-      name: "Menu",
-      href: "/backoffice/menu",
-      icon: "codicon:circle-filled",
+      menus: ADDON,
+      menuIcon: "solar:waterdrop-bold-duotone",
+      menuLabel: "Addon",
     },
     {
-      name: "Menu Category",
-      href: "/backoffice/menu-category",
-      icon: "codicon:circle-filled",
-    },
-  ];
-
-  const ADDON = [
-    {
-      name: "Addon",
-      href: "/backoffice/addon",
-      icon: "codicon:circle-filled",
+      menus: LOCATION,
+      menuIcon: "mingcute:location-3-fill",
+      menuLabel: "Location",
     },
     {
-      name: "Addon Category",
-      href: "/backoffice/addon-category",
-      icon: "codicon:circle-filled",
+      menus: COMPANY,
+      menuIcon: "solar:home-2-bold-duotone",
+      menuLabel: "Company",
     },
-  ];
-
-  const LOCATION = [
     {
-      name: "Location",
-      href: "/backoffice/location",
-      icon: "codicon:circle-filled",
+      menus: SETTINGS,
+      menuIcon: "solar:settings-bold-duotone",
+      menuLabel: "Settings",
+    },
+    {
+      menus: TABLE,
+      menuIcon: "material-symbols:table-restaurant-rounded",
+      menuLabel: "Table",
     },
   ];
 
-  const COMPANY = [
-    {
-      name: "Company",
-      href: "/backoffice/company",
-      icon: "codicon:circle-filled",
-    },
-  ];
+  const renderMenuItemDropDown = useMemo(() => {
+    return sideBarMenuArr.map((v,index) => {
+      return (
+        <MenuItemDropDown
+          key={index}
+          menus={v.menus}
+          isOpenDrawer={isOpen}
+          menuIcon={v.menuIcon}
+          menuLabel={v.menuLabel}
+        />
+      );
+    });
+  }, [sideBarMenuArr]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -209,33 +222,7 @@ const BackOfficeLayout = ({
 
         <List sx={{ padding: "10px" }}>
           {/* App */}
-          <MenuItemDropDown
-            menus={MENU}
-            isOpenDrawer={isOpen}
-            menuIcon="lets-icons:arhive-duotone"
-            menuLabel="Menu"
-          />
-
-          <MenuItemDropDown
-            menus={ADDON}
-            isOpenDrawer={isOpen}
-            menuIcon="lets-icons:arhive-duotone"
-            menuLabel="Addon"
-          />
-
-          <MenuItemDropDown
-            menus={LOCATION}
-            isOpenDrawer={isOpen}
-            menuIcon="mingcute:location-3-fill"
-            menuLabel="Location"
-          />
-
-          <MenuItemDropDown
-            menus={COMPANY}
-            isOpenDrawer={isOpen}
-            menuIcon="solar:home-2-bold-duotone"
-            menuLabel="Company"
-          />
+          {renderMenuItemDropDown}
         </List>
 
         <DrawerFooter>

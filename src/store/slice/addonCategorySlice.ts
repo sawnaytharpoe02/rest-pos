@@ -1,4 +1,8 @@
-import { AddonCategorySlice } from "@/types/addonCategory";
+import {
+  AddonCategorySlice,
+  DeleteAddonCategoryPayload,
+  UpdateAddonCategoryPayload,
+} from "@/types/addonCategory";
 import { AddonCategory } from "@prisma/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CreateAddonCategoryPayload } from "@/types/addonCategory";
@@ -33,12 +37,67 @@ export const createAddonCategory = createAsyncThunk(
   }
 );
 
+export const updateAddonCategory = createAsyncThunk(
+  "update/updateAddonCategory",
+  async (data: UpdateAddonCategoryPayload, thunkApi) => {
+    const { onSuccess, onError, ...payload } = data;
+    try {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/addon-category`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const { updateAddonCategory, updateMenuAddonCategory } = await res.json();
+      thunkApi.dispatch(replaceAddonCategory(updateAddonCategory));
+      thunkApi.dispatch(setMenuAddonCategories(updateMenuAddonCategory));
+      onSuccess && onSuccess();
+      return updateAddonCategory;
+    } catch (error) {
+      console.log(error);
+      onError && onError();
+    }
+  }
+);
+
+export const deleteAddonCategory = createAsyncThunk(
+  "delete/deleteAddonCategory",
+  async (payload: DeleteAddonCategoryPayload, thunkApi) => {
+    const { id, onSuccess, onError } = payload;
+    try {
+      const res = await fetch(
+        `${config.backofficeApiBaseUrl}/addon-category?id=${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const addonCategory = await res.json();
+      thunkApi.dispatch(removeAddonCategory(addonCategory));
+      onSuccess && onSuccess();
+    } catch (error) {
+      console.log(error);
+      onError && onError();
+    }
+  }
+);
+
 const addonCategorySice = createSlice({
   name: "addonCategory",
   initialState,
   reducers: {
     setAddonCategories: (state, action: PayloadAction<AddonCategory[]>) => {
       state.addonCategories = action.payload;
+    },
+    removeAddonCategory: (state, action: PayloadAction<AddonCategory>) => {
+      state.addonCategories = state.addonCategories.filter((category) =>
+        category.id === action.payload.id ? false : true
+      );
+    },
+    replaceAddonCategory: (state, action: PayloadAction<AddonCategory>) => {
+      state.addonCategories = state.addonCategories.map((category) =>
+        category.id === action.payload.id ? action.payload : category
+      );
     },
   },
   extraReducers: (builder) => {
@@ -63,5 +122,6 @@ const addonCategorySice = createSlice({
   },
 });
 
-export const { setAddonCategories } = addonCategorySice.actions;
+export const { setAddonCategories, removeAddonCategory, replaceAddonCategory } =
+  addonCategorySice.actions;
 export default addonCategorySice.reducer;

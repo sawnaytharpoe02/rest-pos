@@ -42,7 +42,7 @@ const MenuItem = ({ link, isOpenDrawer, handleClosePopover }: Props) => {
                 justifyContent: "center",
               }}>
               <Icon
-                icon={link.icon}
+                icon={link?.icon}
                 fontSize={isActive ? 15 : 10}
                 color={isActive ? "#00A76F" : "#637381"}
               />

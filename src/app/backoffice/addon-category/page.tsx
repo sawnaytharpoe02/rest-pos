@@ -9,6 +9,7 @@ import { CreateAddonCategoryPayload } from "@/types/addonCategory";
 import { config } from "@/config";
 import { useAppSelector, useAppDispatch } from "@/store/hook";
 import AddonCategoryForm from "@/components/form/AddonCategoryForm";
+import AddonCategoryCard from "./_components/AddonCategoryCard";
 
 const AddonCategoryPage = () => {
   const dispatch = useAppDispatch();
@@ -48,7 +49,12 @@ const AddonCategoryPage = () => {
             addonCategories.map((item) => {
               return (
                 <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
-                  {item.name}
+                  <AddonCategoryCard
+                    title={item.name}
+                    icon={<Icon icon="solar:waterdrop-bold-duotone" />}
+                    href={`${config.backofficeBaseUrl}/addon-category/${item.id}`}
+                    isRequired={item.isRequired}
+                  />
                 </Grid>
               );
             })
@@ -57,7 +63,9 @@ const AddonCategoryPage = () => {
       </Box>
       <CommonDialog formTitle="Create Addon Category Form">
         <AddonCategoryForm
-        addonCategoryData={addonCategoryData} setAddonCategoryData={setAddonCategoryData}/>
+          addonCategoryData={addonCategoryData}
+          setAddonCategoryData={setAddonCategoryData}
+        />
       </CommonDialog>
     </>
   );
