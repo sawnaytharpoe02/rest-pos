@@ -9,7 +9,7 @@ interface Props {
   street: string;
   href: string;
 }
-const LocationCard = ({ name, street, href }: Props) => {
+const CommonCard = ({ name, street, href }: Props) => {
   return (
     <Link href={href}>
       <Card variant="outlined">
@@ -27,4 +27,4 @@ const LocationCard = ({ name, street, href }: Props) => {
   );
 };
 
-export default LocationCard;
+export default CommonCard;

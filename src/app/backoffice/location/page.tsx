@@ -7,7 +7,7 @@ import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import CommonDialog from "@/components/dialog/CommonDialog";
 import LocationForm from "@/components/form/LocationForm";
 import { CreateLocationPayload } from "@/types/location";
-import LocationCard from "./_components/LocationCard";
+import CommonCard from "@/components/card/CommonCard";
 
 const LocationPage = () => {
   const [locationData, setLocationData] = useState<CreateLocationPayload>({
@@ -45,7 +45,7 @@ const LocationPage = () => {
           ) : (
             locations?.map((item) => (
               <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
-                <LocationCard
+                <CommonCard
                   name={item.name}
                   street={item.street}
                   href={`/backoffice/location/${item.id}`}

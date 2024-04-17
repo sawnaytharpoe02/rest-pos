@@ -8,7 +8,6 @@ import {
 import { Menu } from "@prisma/client";
 import { config } from "@/config";
 import { setMenuCategoryMenus } from "./menuCategoryMenuSlice";
-import { SiPayloadcms } from "react-icons/si";
 import { setDisableLocationMenus } from "./disableLocationMenuSlice";
 
 const initialState: MenuSlice = {
