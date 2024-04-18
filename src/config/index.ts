@@ -3,6 +3,9 @@ interface IConfig {
   googleClientSecret: string;
   backofficeApiBaseUrl: string;
   backofficeBaseUrl: string;
+  spaceEndpoint: string;
+  spaceAccessKeyId: string;
+  spaceSecretAccessKey: string;
 }
 
 export const config: IConfig = {
@@ -11,4 +14,8 @@ export const config: IConfig = {
 
   backofficeApiBaseUrl: process.env.NEXT_PUBLIC_BACKOFFICE_API_BASE_URL || "",
   backofficeBaseUrl: process.env.NEXT_PUBLIC_BACKOFFICE_BASE_URL || "",
+
+  spaceEndpoint: process.env.NEXT_PUBLIC_SPACE_ENDPOINT || "",
+  spaceAccessKeyId: process.env.NEXT_PUBLIC_SPACE_ACCESS_KEY_ID || "",
+  spaceSecretAccessKey: process.env.NEXT_PUBLIC_SPACE_SECRET_ACCESS_KEY || "",
 };

@@ -7,7 +7,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, price, description, menuCategoryIds } = await req.json();
+    const { name, price, description, menuCategoryIds, assetUrl } =
+      await req.json();
     const isValid =
       name && description && price !== null && menuCategoryIds.length > 0;
 
@@ -16,7 +17,7 @@ export async function POST(req: NextRequest) {
     }
 
     const menu = await prisma.menu.create({
-      data: { name, price, description },
+      data: { name, price, description, assetUrl },
     });
 
     const menuCategoryMenus = await prisma.$transaction(

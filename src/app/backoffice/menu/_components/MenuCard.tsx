@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography, Box } from "@mui/material";
 import Image from "next/image";
 
 interface Props {
@@ -27,20 +27,47 @@ const MenuCard = ({
         sx={{
           opacity: isAvailable ? 1 : 0.5,
           borderRadius: "1rem",
+          height: "250px",
           ":hover": {
             backgroundColor: "primary.lighter",
             color: "primary.dark",
           },
         }}>
-        <CardContent>
-          <Typography sx={{ fontSize: 20 }} color="primary" gutterBottom>
-            <img src={imageUrl || ""} alt="menu image" />
-          </Typography>
-          <Typography variant="h5" component="div">
+        <Box sx={{ position: "relative", width: "100%", height: "150px" }}>
+          <Image
+            src={imageUrl || "/default_menu.jpg"}
+            alt="menu image"
+            layout="fill"
+            objectFit="cover"
+            priority={true}
+            blurDataURL={imageUrl || "/default_menu.jpg"}
+            style={{ position: "absolute" }}
+          />
+        </Box>
+        <CardContent sx={{ py: 1 }}>
+          <Typography
+            sx={{
+              fontSize: 20,
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+            }}
+            color="primary"
+            gutterBottom>
             {name}
           </Typography>
-          <Typography variant="body2">{description}</Typography>
-          <Typography variant="body2">{price}</Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+            }}>
+            {description}
+          </Typography>
+          <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+            ${price}
+          </Typography>
         </CardContent>
       </Card>
     </Link>

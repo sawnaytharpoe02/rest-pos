@@ -1,24 +1,18 @@
 import { config } from "@/config";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { AppSlice, UploadAssetPayload } from "@/types/app";
+import { Location } from "@prisma/client";
 import { setMenuCategories } from "./menuCategorySlice";
 import { setMenus } from "./menuSlice";
 import { setCompany } from "./companySlice";
 import { setMenuCategoryMenus } from "./menuCategoryMenuSlice";
 import { setLocations } from "./locationSlice";
-import { Location } from "@prisma/client";
 import { setDisableLocationMenuCategories } from "./disableLocationMenuCategorySlice";
 import { setDisableLocationMenus } from "./disableLocationMenuSlice";
 import { setAddonCategories } from "./addonCategorySlice";
 import { setMenuAddonCategories } from "./menuAddonCategorySlice";
 import { setAddons } from "./addonSlice";
 import { setTables } from "./tableSlice";
-
-interface AppSlice {
-  init: boolean;
-  isLoading: boolean;
-  selectedLocation: Location | null;
-  isError: string | null;
-}
 
 const initialState: AppSlice = {
   init: false,
@@ -79,6 +73,22 @@ export const fetchAppData = createAsyncThunk(
     } finally {
       thunkApi.dispatch(setLoading(false));
     }
+  }
+);
+
+export const uploadAssset = createAsyncThunk(
+  "app/uploadAssset",
+  async (payload: UploadAssetPayload) => {
+    const { onSuccess, file } = payload;
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await fetch(`${config.backofficeApiBaseUrl}/asset`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const assetUrl = await response.json();
+    onSuccess && onSuccess(assetUrl);
   }
 );
 

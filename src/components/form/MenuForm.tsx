@@ -1,6 +1,13 @@
 "use client";
 
-import { Grid, Box, CircularProgress, FormLabel, Button } from "@mui/material";
+import {
+  Grid,
+  Box,
+  CircularProgress,
+  FormLabel,
+  Button,
+  Chip,
+} from "@mui/material";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import FormControl from "@mui/material/FormControl";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
@@ -9,6 +16,9 @@ import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { CreateMenuPayload } from "@/types/menu";
 import MultiSelect from "../MultiSelect";
+import FileDropZone from "@/components/FileDropZone";
+import { useState } from "react";
+import { uploadAssset } from "@/store/slice/appSlice";
 
 interface Props {
   menuData: CreateMenuPayload;
@@ -19,6 +29,7 @@ const MenuForm = ({ setMenuData, menuData }: Props) => {
   const dispatch = useAppDispatch();
   const { isLoading } = useAppSelector((state) => state.menu);
   const { menuCategories } = useAppSelector((state) => state.menuCategory);
+  const [menuImage, setMenuImage] = useState<File>();
 
   const handleCreateMenu = () => {
     const { name, price, description, menuCategoryIds } = menuData;
@@ -26,37 +37,36 @@ const MenuForm = ({ setMenuData, menuData }: Props) => {
     const isValid = name && price && description && menuCategoryIds.length > 0;
     if (!isValid) return null;
 
-    isValid &&
+    if (menuImage) {
       dispatch(
-        createMenu({
-          ...menuData,
-          onSuccess: () => {
-            dispatch(setOpenDialog(false));
-            setTimeout(() => {
-              dispatch(
-                setSnackbar({
-                  type: "success",
-                  isOpen: true,
-                  message: "Create menu successfully",
-                })
-              );
-            }, 1000);
-          },
-          onError: () => {
-            dispatch(setOpenDialog(false));
-            setTimeout(() => {
-              dispatch(
-                setSnackbar({
-                  type: "error",
-                  isOpen: true,
-                  message: "Error occured while creating menu",
-                })
-              );
-            }, 1000);
+        uploadAssset({
+          file: menuImage,
+          onSuccess: (assetUrl) => {
+            menuData.assetUrl = assetUrl;
+            console.log(menuData);
+            dispatch(
+              createMenu({
+                ...menuData,
+                onSuccess: () => {
+                  dispatch(setOpenDialog(false));
+                  setTimeout(() => {
+                    dispatch(
+                      setSnackbar({
+                        type: "success",
+                        isOpen: true,
+                        message: "Create menu successfully",
+                      })
+                    );
+                  }, 1000);
+                },
+              })
+            );
           },
         })
       );
+    }
   };
+
   return (
     <div>
       <Box>
@@ -105,6 +115,19 @@ const MenuForm = ({ setMenuData, menuData }: Props) => {
               }
               items={menuCategories}
             />
+          </Grid>
+          <Grid item xs={12}>
+            <FormLabel>Image</FormLabel>
+            <FileDropZone
+              onDrop={(acceptedFiles) => setMenuImage(acceptedFiles[0])}
+            />
+            {menuImage && (
+              <Chip
+                sx={{ mt: 2 }}
+                label={menuImage.name}
+                onDelete={() => setMenuImage(undefined)}
+              />
+            )}
           </Grid>
           <Grid
             item
