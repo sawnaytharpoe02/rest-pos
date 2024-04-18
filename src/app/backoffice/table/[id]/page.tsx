@@ -14,41 +14,29 @@ import {
   CircularProgress,
   Typography,
 } from "@mui/material";
-import { UpdateLocationPayload } from "@/types/location";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
-import { deleteLocation, updateLocation } from "@/store/slice/locationSlice";
-import { setSelectedLocation } from "@/store/slice/appSlice";
 import CommonDeleteDialog from "@/components/dialog/CommonDeleteDialog";
+import { UpdateTablePayload, DeleteTablePayload } from "@/types/table";
+import { updateTable, deleteTable } from "@/store/slice/tableSlice";
 
-const LocationDetailPage = ({ params }: { params: { id: string } }) => {
-  const locationId = Number(params.id);
+const TableDetailPage = ({ params }: { params: { id: string } }) => {
+  const tableId = Number(params.id);
   const router = useRouter();
-  const [updateData, setUpdateData] = useState<UpdateLocationPayload>();
+  const [updateData, setUpdateData] = useState<UpdateTablePayload>();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const dispatch = useAppDispatch();
-  const { locations, isLoading } = useAppSelector((state) => state.location);
-  const { selectedLocation } = useAppSelector((state) => state.app);
-  const location = locations.find((item) => item.id === locationId);
+  const { tables } = useAppSelector((state) => state.table);
+  const table = tables.find((table) => table.id === tableId);
 
   useEffect(() => {
-    if (location) {
-      setUpdateData(location);
-    }
-  }, [locations]);
+    setUpdateData(table);
+  }, []);
 
-  const handleUpdateLocation = () => {
-    const shouldUpdate =
-      updateData?.name !== location?.name ||
-      updateData?.street !== location?.street ||
-      updateData?.township !== location?.township ||
-      updateData?.city !== location?.city;
-    if (!shouldUpdate) {
-      return router.push("/backoffice/location");
-    }
+  const handleUpdateTable = () => {
     updateData &&
       dispatch(
-        updateLocation({
+        updateTable({
           ...updateData,
           onSuccess: () => {
             setTimeout(() => {
@@ -56,11 +44,11 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
                 setSnackbar({
                   type: "success",
                   isOpen: true,
-                  message: "Update location successfully",
+                  message: "Update table successfully",
                 })
               );
             }, 1000);
-            router.push("/backoffice/location");
+            router.push("/backoffice/table");
           },
           onError: () => {
             setTimeout(() => {
@@ -68,7 +56,7 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
                 setSnackbar({
                   type: "error",
                   isOpen: true,
-                  message: "Error occured while updating location",
+                  message: "Error occured while updating table",
                 })
               );
             }, 1000);
@@ -78,13 +66,13 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
   };
 
   if (!updateData) {
-    return <Typography>Location not found</Typography>;
+    return <Typography>Table not found</Typography>;
   }
 
-  const handleDeleteLocation = () => {
+  const handleDeleteTable = () => {
     dispatch(
-      deleteLocation({
-        id: locationId,
+      deleteTable({
+        id: tableId,
         onSuccess: () => {
           setOpenDeleteDialog(false);
           setTimeout(() => {
@@ -92,11 +80,11 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
               setSnackbar({
                 type: "success",
                 isOpen: true,
-                message: "Delete location successfully",
+                message: "Delete table successfully",
               })
             );
           }, 1000);
-          router.push("/backoffice/location");
+          router.push("/backoffice/table");
         },
       })
     );
@@ -119,79 +107,29 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12}>
-              <FormControl sx={{ width: "100%" }}>
-                <FormLabel>Street</FormLabel>
-                <OutlinedInput
-                  value={updateData?.street}
-                  type="text"
-                  onChange={(e) =>
-                    setUpdateData({ ...updateData, street: e.target.value })
-                  }
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl sx={{ width: "100%" }}>
-                <FormLabel>Township</FormLabel>
-                <OutlinedInput
-                  value={updateData?.township}
-                  type="text"
-                  onChange={(e) =>
-                    setUpdateData({ ...updateData, township: e.target.value })
-                  }
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl sx={{ width: "100%" }}>
-                <FormLabel>City</FormLabel>
-                <OutlinedInput
-                  value={updateData?.city}
-                  type="text"
-                  onChange={(e) =>
-                    setUpdateData({ ...updateData, city: e.target.value })
-                  }
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    defaultChecked={location?.id === selectedLocation?.id}
-                    onChange={() => {
-                      if (location) {
-                        dispatch(setSelectedLocation(location));
-                        localStorage.setItem(
-                          "selectedLocationId",
-                          JSON.stringify(location.id)
-                        );
-                      }
-                    }}
-                  />
-                }
-                label="Current location"
-              />
-            </Grid>
             <Grid
               item
               xs={12}
               sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
-              <Button
-                startIcon={
-                  isLoading && <CircularProgress color="inherit" size={20} />
-                }
-                variant="contained"
-                onClick={handleUpdateLocation}>
+              <Button variant="contained" onClick={handleUpdateTable}>
                 Update
               </Button>
-              <Button sx={{color: '#000'}} variant="text" onClick={() => router.push('/backoffice/location')}>Cancel</Button>
+              <Button
+                sx={{ color: "#000" }}
+                variant="text"
+                onClick={() => router.push("/backoffice/table")}>
+                Cancel
+              </Button>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={6}>
-          <Button color="error" variant="contained" onClick={() => setOpenDeleteDialog(true)}>Delete</Button>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={() => setOpenDeleteDialog(true)}>
+            Delete
+          </Button>
         </Grid>
       </Grid>
       <CommonDeleteDialog
@@ -199,10 +137,10 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
         close={() => setOpenDeleteDialog(false)}
         title="Delete Location"
         content="Are you sure you want to delete this location?"
-        handleDelete={handleDeleteLocation}
+        handleDelete={handleDeleteTable}
       />
     </div>
   );
 };
 
-export default LocationDetailPage;
+export default TableDetailPage;

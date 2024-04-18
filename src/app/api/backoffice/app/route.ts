@@ -25,9 +25,9 @@ export async function GET(req: Request, res: Response) {
 
           const locationIds = locations.map((item) => item.id);
           const tables = await prisma.table.findMany({
-            where: { id: { in: locationIds } },
+            where: { locationId: { in: locationIds }, isArchived: false },
+            orderBy: { id: "asc" },
           });
-
           const menuCategories = await prisma.menuCategory.findMany({
             where: { companyId, isArchived: false },
             orderBy: { id: "asc" },

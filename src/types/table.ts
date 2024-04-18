@@ -4,7 +4,7 @@ import { Table } from "@prisma/client";
 export interface CreateTablePayload extends BaseOptions {
   name: string;
   assetUrl?: string;
-  locationId: number;
+  locationId?: number;
 }
 
 export interface TableSlice {

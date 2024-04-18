@@ -1,9 +1,5 @@
 import { config } from "@/config";
-import {
-  PayloadAction,
-  createAsyncThunk,
-  createSlice,
-} from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setMenuCategories } from "./menuCategorySlice";
 import { setMenus } from "./menuSlice";
 import { setCompany } from "./companySlice";
@@ -15,6 +11,7 @@ import { setDisableLocationMenus } from "./disableLocationMenuSlice";
 import { setAddonCategories } from "./addonCategorySlice";
 import { setMenuAddonCategories } from "./menuAddonCategorySlice";
 import { setAddons } from "./addonSlice";
+import { setTables } from "./tableSlice";
 
 interface AppSlice {
   init: boolean;
@@ -48,6 +45,7 @@ export const fetchAppData = createAsyncThunk(
         addonCategories,
         menuAddonCategories,
         addons,
+        tables,
       } = dataFromServer;
 
       thunkApi.dispatch(setMenuCategories(menuCategories));
@@ -74,6 +72,7 @@ export const fetchAppData = createAsyncThunk(
       thunkApi.dispatch(setAddonCategories(addonCategories));
       thunkApi.dispatch(setMenuAddonCategories(menuAddonCategories));
       thunkApi.dispatch(setAddons(addons));
+      thunkApi.dispatch(setTables(tables));
     } catch (error) {
       thunkApi.dispatch(setLoading(false));
       return thunkApi.rejectWithValue(error);

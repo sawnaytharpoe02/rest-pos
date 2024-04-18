@@ -5,7 +5,7 @@ export async function POST(req: Request, res: Response) {
   try {
     const { name, assetUrl, locationId } = await req.json();
 
-    const isValid = name && assetUrl && locationId;
+    const isValid = name && locationId;
     if (!isValid) {
       return NextResponse.json({ message: "Invalid request" }, { status: 400 });
     }

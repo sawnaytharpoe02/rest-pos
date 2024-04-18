@@ -98,6 +98,26 @@ const tableSlice = createSlice({
       );
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createTable.pending, (state, _action) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(
+        createTable.fulfilled,
+        (state, action: PayloadAction<Table>) => {
+          state.isLoading = false;
+          state.error = null;
+          state.tables = [...state.tables, action.payload];
+        }
+      )
+      .addCase(createTable.rejected, (state, _action) => {
+        state.isLoading = false;
+        const error = new Error("Error occured while creating table.");
+        state.error = error.message;
+      });
+  },
 });
 
 export const { setTables, replaceTable, removeTable } = tableSlice.actions;

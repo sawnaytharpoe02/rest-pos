@@ -6,8 +6,8 @@ import Link from "next/link";
 
 interface Props {
   name: string;
-  street: string;
   href: string;
+  street?: string;
 }
 const CommonCard = ({ name, street, href }: Props) => {
   return (
@@ -20,7 +20,7 @@ const CommonCard = ({ name, street, href }: Props) => {
           <Typography variant="h5" component="div">
             {name}
           </Typography>
-          <Typography variant="body2">{street}</Typography>
+          {street && <Typography variant="body2">{street}</Typography>}
         </CardContent>
       </Card>
     </Link>

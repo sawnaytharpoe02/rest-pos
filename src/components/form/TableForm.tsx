@@ -13,58 +13,40 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
-import { CreateLocationPayload } from "@/types/location";
-import { createLocation } from "@/store/slice/locationSlice";
-import { useRouter } from "next/navigation";
+import { CreateTablePayload } from "@/types/table";
+import { createTable } from "@/store/slice/tableSlice";
 
 interface Props {
-  locationData: CreateLocationPayload;
-  setLocationData: React.Dispatch<React.SetStateAction<CreateLocationPayload>>;
+  tableData: CreateTablePayload;
+  setTableData: React.Dispatch<React.SetStateAction<CreateTablePayload>>;
 }
 
-const TableForm = ({ locationData, setLocationData }: Props) => {
-  const router = useRouter();
+const TableForm = ({ tableData, setTableData }: Props) => {
   const dispatch = useAppDispatch();
-  const { isLoading } = useAppSelector((state) => state.menuCategory);
-  const { company } = useAppSelector((state) => state.company);
 
-  const handleCreateLocation = () => {
-    setLocationData((prev) => ({ ...prev, companyId: company?.id }));
-    const isValid =
-      locationData.name &&
-      locationData.street &&
-      locationData.township &&
-      locationData.city &&
-      locationData.companyId;
+  const { isLoading } = useAppSelector((state) => state.table);
+  const { selectedLocation } = useAppSelector((state) => state.app);
 
-    if (!isValid) return router.push("/backoffice/location");
+  useEffect(() => {
+    setTableData({ ...tableData, locationId: selectedLocation?.id });
+  }, [selectedLocation]);
 
-    locationData &&
-      dispatch(
-        createLocation({
-          ...locationData,
-          onSuccess: () => {
-            dispatch(setOpenDialog(false));
-            setTimeout(() => {
-              setSnackbar({
-                type: "success",
-                isOpen: true,
-                message: "Create location successfully.",
-              });
-            }, 1000);
-          },
-          onError: () => {
-            dispatch(setOpenDialog(false));
-            setTimeout(() => {
-              setSnackbar({
-                type: "error",
-                isOpen: true,
-                message: "Error occured while creating location.",
-              });
-            }, 1000);
-          },
-        })
-      );
+  const handleCreateTable = () => {
+    dispatch(
+      createTable({
+        ...tableData,
+        onSuccess: () => {
+          dispatch(setOpenDialog(false));
+          setTimeout(() => {
+            setSnackbar({
+              type: "success",
+              isOpen: true,
+              message: "Create table successfully.",
+            });
+          }, 1000);
+        },
+      })
+    );
   };
 
   return (
@@ -77,40 +59,7 @@ const TableForm = ({ locationData, setLocationData }: Props) => {
               <OutlinedInput
                 type="text"
                 onChange={(e) =>
-                  setLocationData({ ...locationData, name: e.target.value })
-                }
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <FormControl sx={{ width: "100%" }}>
-              <FormLabel>Street</FormLabel>
-              <OutlinedInput
-                type="text"
-                onChange={(e) =>
-                  setLocationData({ ...locationData, street: e.target.value })
-                }
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <FormControl sx={{ width: "100%" }}>
-              <FormLabel>Township</FormLabel>
-              <OutlinedInput
-                type="text"
-                onChange={(e) =>
-                  setLocationData({ ...locationData, township: e.target.value })
-                }
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <FormControl sx={{ width: "100%" }}>
-              <FormLabel>City</FormLabel>
-              <OutlinedInput
-                type="text"
-                onChange={(e) =>
-                  setLocationData({ ...locationData, city: e.target.value })
+                  setTableData({ ...tableData, name: e.target.value })
                 }
               />
             </FormControl>
@@ -124,7 +73,7 @@ const TableForm = ({ locationData, setLocationData }: Props) => {
                 isLoading && <CircularProgress color="inherit" size={20} />
               }
               variant="contained"
-              onClick={handleCreateLocation}>
+              onClick={handleCreateTable}>
               Create
             </Button>
             <Button

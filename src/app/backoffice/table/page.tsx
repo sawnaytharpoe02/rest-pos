@@ -5,21 +5,24 @@ import { Button, Typography, Box, Grid } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import CommonDialog from "@/components/dialog/CommonDialog";
-import LocationForm from "@/components/form/LocationForm";
-import { CreateLocationPayload } from "@/types/location";
-import LocationCard from "./_components/LocationCard";
+import { CreateTablePayload } from "@/types/table";
+import CommonCard from "@/components/card/CommonCard";
+import TableForm from "@/components/form/TableForm";
 
-const LocationPage = () => {
-  const [locationData, setLocationData] = useState<CreateLocationPayload>({
+const TablePage = () => {
+  const [tableData, setTableData] = useState<CreateTablePayload>({
     name: "",
-    street: "",
-    township: "",
-    city: "",
-    companyId: undefined,
+    assetUrl: "",
+    locationId: undefined,
   });
 
   const dispatch = useAppDispatch();
-  const { locations, isLoading } = useAppSelector((state) => state.location);
+  const { isLoading, tables } = useAppSelector((state) => state.table);
+  const { selectedLocation } = useAppSelector((state) => state.app);
+  const currentTables = tables.filter(
+    (table) => table.locationId === selectedLocation?.id
+  );
+
   const handleOpenDialog = () => {
     dispatch(setOpenDialog(true));
   };
@@ -33,9 +36,9 @@ const LocationPage = () => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Typography> Location Lists </Typography>{" "}
+          <Typography> Table Lists </Typography>{" "}
           <Button onClick={handleOpenDialog} variant="contained">
-            New Location
+            New Table
           </Button>
         </Box>
 
@@ -43,12 +46,11 @@ const LocationPage = () => {
           {isLoading ? (
             <Typography>Loading ...</Typography>
           ) : (
-            locations?.map((item) => (
+            currentTables?.map((item) => (
               <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
-                <LocationCard
+                <CommonCard
                   name={item.name}
-                  street={item.street}
-                  href={`/backoffice/location/${item.id}`}
+                  href={`/backoffice/table/${item.id}`}
                 />
               </Grid>
             ))
@@ -57,13 +59,10 @@ const LocationPage = () => {
       </Box>
 
       <CommonDialog formTitle="Create Location Form">
-        <LocationForm
-          locationData={locationData}
-          setLocationData={setLocationData}
-        />
+        <TableForm tableData={tableData} setTableData={setTableData} />
       </CommonDialog>
     </>
   );
 };
 
-export default LocationPage;
+export default TablePage;

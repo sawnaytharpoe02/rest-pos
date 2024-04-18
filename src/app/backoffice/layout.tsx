@@ -150,7 +150,7 @@ const BackOfficeLayout = ({
     menuIcon: string;
     menuLabel: string;
   }[] = [
-    { menus: MENU, menuIcon: "lets-icons:arhive-duotone", menuLabel: "Menu" },
+    { menus: MENU, menuIcon: "solar:home-2-bold-duotone", menuLabel: "Menu" },
     {
       menus: ADDON,
       menuIcon: "solar:waterdrop-bold-duotone",
@@ -162,24 +162,19 @@ const BackOfficeLayout = ({
       menuLabel: "Location",
     },
     {
-      menus: COMPANY,
-      menuIcon: "solar:home-2-bold-duotone",
-      menuLabel: "Company",
+      menus: TABLE,
+      menuIcon: "material-symbols:table-restaurant-rounded",
+      menuLabel: "Table",
     },
     {
       menus: SETTINGS,
       menuIcon: "solar:settings-bold-duotone",
       menuLabel: "Settings",
     },
-    {
-      menus: TABLE,
-      menuIcon: "material-symbols:table-restaurant-rounded",
-      menuLabel: "Table",
-    },
   ];
 
   const renderMenuItemDropDown = useMemo(() => {
-    return sideBarMenuArr.map((v,index) => {
+    return sideBarMenuArr.map((v, index) => {
       return (
         <MenuItemDropDown
           key={index}
