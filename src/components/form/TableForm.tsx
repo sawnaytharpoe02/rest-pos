@@ -32,6 +32,10 @@ const TableForm = ({ tableData, setTableData }: Props) => {
   }, [selectedLocation]);
 
   const handleCreateTable = () => {
+    const isValid = tableData.name && tableData.locationId;
+    if(!isValid){
+      return dispatch(setSnackbar({type: 'error', isOpen: true, message: 'Missing required fields.'}))
+    }
     dispatch(
       createTable({
         ...tableData,

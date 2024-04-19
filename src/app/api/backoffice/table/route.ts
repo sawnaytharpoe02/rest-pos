@@ -1,5 +1,6 @@
 import { prisma } from "@/utils/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { qrCodeImageUpload } from "@/utils/assetUpload";
 
 export async function POST(req: Request, res: Response) {
   try {
@@ -10,12 +11,18 @@ export async function POST(req: Request, res: Response) {
       return NextResponse.json({ message: "Invalid request" }, { status: 400 });
     }
 
-    const table = await prisma.table.create({
+    let table = await prisma.table.create({
       data: {
         name,
         assetUrl,
         locationId,
       },
+    });
+
+    const qrCodeImg = await qrCodeImageUpload(table.id);
+    table = await prisma.table.update({
+      where: { id: table.id },
+      data: { assetUrl: qrCodeImg },
     });
 
     return NextResponse.json(table, { status: 201 });

@@ -4,9 +4,11 @@ import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
+  ObjectCannedACL,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { config } from "@/config";
+import QRCode from "qrcode";
 
 const BucketName = "msquarefdc";
 
@@ -58,4 +60,30 @@ export const assetUpload = async (
   );
 
   return url;
+};
+
+export const generateLinkForQRCode = (tableId: number) => {
+  return `${config.orderAppUrl}?tableId=${tableId}`;
+};
+
+export const qrCodeImageUpload = async (tableId: number) => {
+  try {
+    const qrImageData = await QRCode.toDataURL(generateLinkForQRCode(tableId), {
+      scale: 20,
+    });
+    const params = {
+      Bucket: "msquarefdc",
+      Key: `foodie-pos/msquarefdc-batch3/nathaniel/qrcode/tableId-${tableId}.png`,
+      ACL: ObjectCannedACL.public_read,
+      Body: Buffer.from(
+        qrImageData.replace(/^data:image\/\w+;base64,/, ""),
+        "base64"
+      ),
+    };
+    const command = new PutObjectCommand(params);
+    await s3Client.send(command);
+    return `https://msquarefdc.sgp1.cdn.digitaloceanspaces.com/foodie-pos/msquarefdc-batch3/nathaniel/qrcode/tableId-${tableId}.png`;
+  } catch (err) {
+    console.log(err);
+  }
 };

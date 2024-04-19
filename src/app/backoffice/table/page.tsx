@@ -27,6 +27,19 @@ const TablePage = () => {
     dispatch(setOpenDialog(true));
   };
 
+  const handlePrintQRCode = (assetUrl: string) => {
+    const openWindow = window.open("", "_blank");
+    openWindow?.document.write(
+      `<head>
+        <title>Print QR Code</title>
+      </head>
+      <body style="text-align: center;">
+        <img src="${assetUrl}" style="width: "400px"; height: "400px" onload="window.print();window.close()"/>
+      </body>
+      </html>`
+    );
+  };
+
   return (
     <>
       <Box>
@@ -47,11 +60,25 @@ const TablePage = () => {
             <Typography>Loading ...</Typography>
           ) : (
             currentTables?.map((item) => (
-              <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
+              <Grid
+                item
+                xs={6}
+                sm={4}
+                md={3}
+                lg={2}
+                key={item.id}
+                sx={{ textAlign: "center" }}>
                 <CommonCard
                   name={item.name}
+                  imageUrl={item.assetUrl}
                   href={`/backoffice/table/${item.id}`}
                 />
+                <Button
+                  sx={{ mt: 2 }}
+                  variant="contained"
+                  onClick={() => handlePrintQRCode(item.assetUrl)}>
+                  Print QR code
+                </Button>
               </Grid>
             ))
           )}

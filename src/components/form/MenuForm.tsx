@@ -43,7 +43,6 @@ const MenuForm = ({ setMenuData, menuData }: Props) => {
           file: menuImage,
           onSuccess: (assetUrl) => {
             menuData.assetUrl = assetUrl;
-            console.log(menuData);
             dispatch(
               createMenu({
                 ...menuData,
