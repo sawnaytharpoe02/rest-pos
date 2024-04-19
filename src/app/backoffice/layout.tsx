@@ -29,7 +29,7 @@ import {
   SETTINGS,
   LOCATION,
   TABLE,
-  COMPANY,
+  ORDER,
 } from "@/constant/route";
 import { ISidebarMenu } from "@/constant/route";
 
@@ -150,6 +150,11 @@ const BackOfficeLayout = ({
     menuIcon: string;
     menuLabel: string;
   }[] = [
+    {
+      menus: ORDER,
+      menuIcon: "mingcute:shopping-bag-2-fill",
+      menuLabel: "Order",
+    },
     { menus: MENU, menuIcon: "solar:home-2-bold-duotone", menuLabel: "Menu" },
     {
       menus: ADDON,

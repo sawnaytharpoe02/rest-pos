@@ -46,20 +46,20 @@ export const assetUpload = async (
   const params = {
     Bucket: BucketName,
     Key: `foodie-pos/msquarefdc-batch3/nathaniel/${Date.now().toString()}_${fileName}`,
+    ACL: ObjectCannedACL.public_read,
     Body: fileStream,
-    ContentType: "image/jpeg",
   };
 
   const command = new PutObjectCommand(params);
   await s3Client.send(command);
 
-  const url = await getSignedUrl(
-    s3Client,
-    new GetObjectCommand({ Bucket: BucketName, Key: params.Key }),
-    { expiresIn: 3600 }
-  );
+  return `https://msquarefdc.sgp1.cdn.digitaloceanspaces.com/${params.Key}`;
 
-  return url;
+  // const url = await getSignedUrl(
+  //   s3Client,
+  //   new GetObjectCommand({ Bucket: BucketName, Key: params.Key }),
+  //   { expiresIn: 3600 }
+  // );
 };
 
 export const generateLinkForQRCode = (tableId: number) => {
@@ -72,7 +72,7 @@ export const qrCodeImageUpload = async (tableId: number) => {
       scale: 20,
     });
     const params = {
-      Bucket: "msquarefdc",
+      Bucket: BucketName,
       Key: `foodie-pos/msquarefdc-batch3/nathaniel/qrcode/tableId-${tableId}.png`,
       ACL: ObjectCannedACL.public_read,
       Body: Buffer.from(

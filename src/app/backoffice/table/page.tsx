@@ -6,8 +6,8 @@ import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import CommonDialog from "@/components/dialog/CommonDialog";
 import { CreateTablePayload } from "@/types/table";
-import CommonCard from "@/components/card/CommonCard";
 import TableForm from "@/components/form/TableForm";
+import TableCard from "./_components/TableCard";
 
 const TablePage = () => {
   const [tableData, setTableData] = useState<CreateTablePayload>({
@@ -68,7 +68,7 @@ const TablePage = () => {
                 lg={2}
                 key={item.id}
                 sx={{ textAlign: "center" }}>
-                <CommonCard
+                <TableCard
                   name={item.name}
                   imageUrl={item.assetUrl}
                   href={`/backoffice/table/${item.id}`}

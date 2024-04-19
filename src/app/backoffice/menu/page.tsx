@@ -43,20 +43,19 @@ const MenuPage = () => {
           </Button>
         </Box>
 
-        <Grid container spacing={2} mt={4}>
+        <Grid container spacing={2} mt={4} gap={1}>
           {isLoading ? (
             <Typography>Loading ...</Typography>
           ) : (
             menus.map((item) => {
               const isAvailable = disableLocationMenus.find(
                 (v) =>
-                  v.menuId === item.id &&
-                  v.locationId === selectedLocation?.id
+                  v.menuId === item.id && v.locationId === selectedLocation?.id
               )
                 ? false
                 : true;
               return (
-                <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
+                <Grid item xs={6} sm={4} md={3} lg={2.3} key={item.id}>
                   <MenuCard
                     name={item.name}
                     description={item.description || ""}

@@ -24,6 +24,14 @@ export const ADDON = [
   },
 ];
 
+export const ORDER = [
+  {
+    name: "Order",
+    href: "/backoffice/order",
+    icon: "",
+  },
+];
+
 export const LOCATION = [
   {
     name: "Location",
