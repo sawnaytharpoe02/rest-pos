@@ -9,7 +9,7 @@ import { CreateAddonCategoryPayload } from "@/types/addonCategory";
 import { config } from "@/config";
 import { useAppSelector, useAppDispatch } from "@/store/hook";
 import AddonCategoryForm from "@/components/form/AddonCategoryForm";
-import CommonAddonCard from "@/components/card/CommonAddonCard";
+import CommonCard from "@/components/card/CommonCard";
 
 const AddonCategoryPage = () => {
   const dispatch = useAppDispatch();
@@ -49,9 +49,9 @@ const AddonCategoryPage = () => {
             addonCategories.map((item) => {
               return (
                 <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
-                  <CommonAddonCard
-                    title={item.name}
-                    icon={<Icon icon="solar:waterdrop-bold-duotone" />}
+                  <CommonCard
+                    name={item.name}
+                    icon="solar:waterdrop-bold-duotone"
                     href={`${config.backofficeBaseUrl}/addon-category/${item.id}`}
                     isRequired={item.isRequired}
                   />

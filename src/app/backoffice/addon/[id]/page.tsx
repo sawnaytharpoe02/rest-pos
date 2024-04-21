@@ -16,6 +16,7 @@ import { updateAddon, deleteAddon } from "@/store/slice/addonSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import CommonDeleteDialog from "@/components/dialog/CommonDeleteDialog";
 import SingleSelect from "@/components/SingleSelect";
+import { appDataSelector } from "@/store/slice/appSlice";
 
 const AddonDetailPage = ({ params }: { params: { id: string } }) => {
   const addonId = Number(params.id);
@@ -25,8 +26,7 @@ const AddonDetailPage = ({ params }: { params: { id: string } }) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const { addons } = useAppSelector((state) => state.addon);
-  const { addonCategories } = useAppSelector((state) => state.addonCategory);
+  const { addons, addonCategories } = useAppSelector(appDataSelector);
   const addon = addons.find((item) => item.id === addonId);
 
   useEffect(() => {

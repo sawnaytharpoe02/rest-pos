@@ -49,6 +49,8 @@ const LocationPage = () => {
                   name={item.name}
                   street={item.street}
                   href={`/backoffice/location/${item.id}`}
+                  icon="mingcute:location-2-fill"
+                
                 />
               </Grid>
             ))

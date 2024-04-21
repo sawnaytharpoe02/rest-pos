@@ -9,7 +9,7 @@ import CommonDialog from "@/components/dialog/CommonDialog";
 import { CreateAddonPayload } from "@/types/addon";
 import { config } from "@/config";
 import AddonForm from "@/components/form/AddonForm";
-import CommonAddonCard from "@/components/card/CommonAddonCard";
+import CommonCard from "@/components/card/CommonCard";
 
 const AddonPage = () => {
   const [addonData, setAddonData] = useState<CreateAddonPayload>({
@@ -47,11 +47,10 @@ const AddonPage = () => {
             addons.map((item) => {
               return (
                 <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
-                  <CommonAddonCard
-                    title={item.name}
-                    icon={<Icon icon="solar:waterdrop-bold-duotone" />}
+                  <CommonCard
+                    name={item.name}
+                    icon="solar:waterdrop-bold-duotone"
                     href={`${config.backofficeBaseUrl}/addon/${item.id}`}
-                    isRequired={null}
                   />
                 </Grid>
               );

@@ -17,18 +17,21 @@ const TableCard = ({ name, imageUrl, href }: Props) => {
         variant="outlined"
         sx={{
           borderRadius: "1rem",
-          height: "200px  ",
-          p: 1,
+          height: "200px",
+          py: 2,
         }}>
-        <Box sx={{ position: "relative", width: "100%", height: "140px" }}>
+        <Box sx={{ position: "relative", width: "100%", height: "130px" }}>
           <Image
             src={imageUrl || ""}
             alt="menu image"
             layout="fill"
-            objectFit="cover"
             priority={true}
             blurDataURL={imageUrl || ""}
-            style={{ position: "absolute", borderRadius: "1rem" }}
+            style={{
+              position: "absolute",
+              borderRadius: "1rem",
+              objectFit: "cover",
+            }}
           />
         </Box>
         <CardContent>
@@ -39,7 +42,7 @@ const TableCard = ({ name, imageUrl, href }: Props) => {
               justifyContent: "center",
               fontSize: "22px",
             }}>
-            <Icon icon="material-symbols-light:table-bar" />
+            <Icon icon="material-symbols-light:table-bar" color="#63738180" />
             <Typography color="primary">{name}</Typography>
           </Box>
         </CardContent>

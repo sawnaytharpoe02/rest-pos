@@ -9,6 +9,7 @@ interface Props {
   price: number;
   imageUrl: string;
   href: string;
+  isAvailable: boolean;
 }
 
 const MenuCard = ({ name, description, price, imageUrl, href }: Props) => {
@@ -26,10 +27,14 @@ const MenuCard = ({ name, description, price, imageUrl, href }: Props) => {
             src={imageUrl || "/default_menu.jpg"}
             alt="menu image"
             layout="fill"
-            objectFit="cover"
+            sizes="(max-width: 600px) 100vw, (max-width: 900px) 80vw, 1200px"
             priority={true}
             blurDataURL={imageUrl || "/default_menu.jpg"}
-            style={{ position: "absolute", borderRadius: "1rem" }}
+            style={{
+              position: "absolute",
+              borderRadius: "1rem",
+              objectFit: "cover",
+            }}
           />
         </Box>
         <CardContent sx={{ py: 1 }}>

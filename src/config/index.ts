@@ -2,6 +2,7 @@ interface IConfig {
   googleClientId: string;
   googleClientSecret: string;
   backofficeApiBaseUrl: string;
+  orderApiBaseUrl: string;
   backofficeBaseUrl: string;
   spaceEndpoint: string;
   spaceAccessKeyId: string;
@@ -14,6 +15,7 @@ export const config: IConfig = {
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
 
   backofficeApiBaseUrl: process.env.NEXT_PUBLIC_BACKOFFICE_API_BASE_URL || "",
+  orderApiBaseUrl: process.env.NEXT_PUBLIC_ORDER_API_BASE_URL || "",
   backofficeBaseUrl: process.env.NEXT_PUBLIC_BACKOFFICE_BASE_URL || "",
 
   spaceEndpoint: process.env.NEXT_PUBLIC_SPACE_ENDPOINT || "",

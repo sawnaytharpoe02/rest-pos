@@ -9,6 +9,7 @@ import MenuForm from "@/components/form/MenuForm";
 import { CreateMenuPayload } from "@/types/menu";
 import MenuCard from "./_components/MenuCard";
 import { config } from "@/config";
+import { appDataSelector } from "../../../store/slice/appSlice";
 
 const MenuPage = () => {
   const [menuData, setMenuData] = useState<CreateMenuPayload>({
@@ -19,11 +20,9 @@ const MenuPage = () => {
   });
 
   const dispatch = useAppDispatch();
-  const { menus, isLoading } = useAppSelector((state) => state.menu);
-  const { disableLocationMenus } = useAppSelector(
-    (state) => state.disableLocatinMenu
-  );
-  const { selectedLocation } = useAppSelector((state) => state.app);
+  const { menus, disableLocationMenus, selectedLocation } =
+    useAppSelector(appDataSelector);
+
   const handleOpenDialog = () => {
     dispatch(setOpenDialog(true));
   };
@@ -44,30 +43,26 @@ const MenuPage = () => {
         </Box>
 
         <Grid container spacing={2} mt={4} gap={1}>
-          {isLoading ? (
-            <Typography>Loading ...</Typography>
-          ) : (
-            menus.map((item) => {
-              const isAvailable = disableLocationMenus.find(
-                (v) =>
-                  v.menuId === item.id && v.locationId === selectedLocation?.id
-              )
-                ? false
-                : true;
-              return (
-                <Grid item xs={6} sm={4} md={3} lg={2.3} key={item.id}>
-                  <MenuCard
-                    name={item.name}
-                    description={item.description || ""}
-                    price={item.price}
-                    imageUrl={item.assetUrl || ""}
-                    href={`${config.backofficeBaseUrl}/menu/${item.id}`}
-                    isAvailable={isAvailable}
-                  />
-                </Grid>
-              );
-            })
-          )}
+          {menus.map((item) => {
+            const isAvailable = disableLocationMenus.find(
+              (v) =>
+                v.menuId === item.id && v.locationId === selectedLocation?.id
+            )
+              ? false
+              : true;
+            return (
+              <Grid item xs={6} sm={4} md={3} lg={2.3} key={item.id}>
+                <MenuCard
+                  name={item.name}
+                  description={item.description || ""}
+                  price={item.price}
+                  imageUrl={item.assetUrl || ""}
+                  href={`${config.backofficeBaseUrl}/menu/${item.id}`}
+                  isAvailable={isAvailable}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </Box>
       <CommonDialog formTitle="Create Menu Form">

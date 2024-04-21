@@ -11,3 +11,7 @@ export interface AppSlice {
 export interface UploadAssetPayload extends BaseOptions {
   file: File;
 }
+
+export interface AppPayloadOptions {
+  tableId?: string;
+}

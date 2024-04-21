@@ -8,6 +8,7 @@ import CommonDialog from "@/components/dialog/CommonDialog";
 import { CreateTablePayload } from "@/types/table";
 import TableForm from "@/components/form/TableForm";
 import TableCard from "./_components/TableCard";
+import { appDataSelector } from "@/store/slice/appSlice";
 
 const TablePage = () => {
   const [tableData, setTableData] = useState<CreateTablePayload>({
@@ -17,8 +18,8 @@ const TablePage = () => {
   });
 
   const dispatch = useAppDispatch();
-  const { isLoading, tables } = useAppSelector((state) => state.table);
-  const { selectedLocation } = useAppSelector((state) => state.app);
+  const { tables, selectedLocation } = useAppSelector(appDataSelector);
+
   const currentTables = tables.filter(
     (table) => table.locationId === selectedLocation?.id
   );
@@ -56,32 +57,28 @@ const TablePage = () => {
         </Box>
 
         <Grid container spacing={2} mt={4}>
-          {isLoading ? (
-            <Typography>Loading ...</Typography>
-          ) : (
-            currentTables?.map((item) => (
-              <Grid
-                item
-                xs={6}
-                sm={4}
-                md={3}
-                lg={2}
-                key={item.id}
-                sx={{ textAlign: "center" }}>
-                <TableCard
-                  name={item.name}
-                  imageUrl={item.assetUrl}
-                  href={`/backoffice/table/${item.id}`}
-                />
-                <Button
-                  sx={{ mt: 2 }}
-                  variant="contained"
-                  onClick={() => handlePrintQRCode(item.assetUrl)}>
-                  Print QR code
-                </Button>
-              </Grid>
-            ))
-          )}
+          {currentTables?.map((item) => (
+            <Grid
+              item
+              xs={6}
+              sm={4}
+              md={3}
+              lg={2}
+              key={item.id}
+              sx={{ textAlign: "center" }}>
+              <TableCard
+                name={item.name}
+                imageUrl={item.assetUrl}
+                href={`/backoffice/table/${item.id}`}
+              />
+              <Button
+                sx={{ mt: 2 }}
+                variant="contained"
+                onClick={() => handlePrintQRCode(item.assetUrl)}>
+                Print QR code
+              </Button>
+            </Grid>
+          ))}
         </Grid>
       </Box>
 

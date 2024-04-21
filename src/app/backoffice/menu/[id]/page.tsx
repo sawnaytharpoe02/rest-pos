@@ -25,6 +25,7 @@ import { deleteMenu, updateMenu } from "@/store/slice/menuSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { Menu, MenuCategory } from "@prisma/client";
 import MultiSelect from "@/components/MultiSelect";
+import { appDataSelector } from "@/store/slice/appSlice";
 
 const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = -100;
@@ -42,15 +43,13 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const { menus, isLoading } = useAppSelector((state) => state.menu);
-  const { menuCategories } = useAppSelector((state) => state.menuCategory);
-  const { menuCategoryMenus } = useAppSelector(
-    (state) => state.menuCategoryMenu
-  );
-  const { selectedLocation } = useAppSelector((state) => state.app);
-  const { disableLocationMenus } = useAppSelector(
-    (state) => state.disableLocatinMenu
-  );
+  const {
+    menus,
+    menuCategories,
+    menuCategoryMenus,
+    selectedLocation,
+    disableLocationMenus,
+  } = useAppSelector(appDataSelector);
 
   const [updateData, setUpdateData] = useState<UpdateMenuPayload>();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -241,11 +240,7 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
               item
               xs={12}
               sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-              <Button
-                startIcon={
-                  isLoading && <CircularProgress color="inherit" size={20} />
-                }
-                variant="contained"
+              <Button variant="contained"
                 onClick={handleUpdateMenu}>
                 Update
               </Button>

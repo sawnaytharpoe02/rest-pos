@@ -10,11 +10,31 @@ interface Props {
   href: string;
   street?: string;
   imageUrl?: string;
+  isRequired?: boolean;
+  icon: string;
+  isAvailable?: boolean;
 }
-const CommonCard = ({ name, street, href, imageUrl }: Props) => {
+const CommonCard = ({
+  name,
+  street,
+  href,
+  imageUrl,
+  isRequired,
+  icon,
+  isAvailable,
+}: Props) => {
   return (
     <Link href={href}>
-      <Card variant="outlined">
+      <Card
+        variant="outlined"
+        sx={{
+          opacity: isAvailable !== undefined ? (isAvailable ? 1 : 0.4) : 1,
+          borderRadius: "1rem",
+          ":hover": {
+            backgroundColor: "primary.lighter",
+            color: "primary.dark",
+          },
+        }}>
         {imageUrl && (
           <Box sx={{ position: "relative", width: "100%", height: "150px" }}>
             <Image
@@ -30,12 +50,24 @@ const CommonCard = ({ name, street, href, imageUrl }: Props) => {
         )}
         <CardContent>
           <Box>
-            <Icon icon="fa6-solid:map-location" color="#63738180" />
+            <Icon icon={icon} fontSize={20} color="#63738180" />
           </Box>
           <Typography variant="h5" component="div">
             {name}
           </Typography>
           {street && <Typography variant="body2">{street}</Typography>}
+          {isRequired !== undefined && (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Typography variant="body2">require</Typography>
+              <Box
+                sx={{
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "50%",
+                  background: isRequired ? "green" : "red",
+                }}></Box>
+            </Box>
+          )}
         </CardContent>
       </Card>
     </Link>

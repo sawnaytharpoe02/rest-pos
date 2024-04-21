@@ -1,6 +1,6 @@
 import { config } from "@/config";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { AppSlice, UploadAssetPayload } from "@/types/app";
+import { AppSlice, UploadAssetPayload, AppPayloadOptions } from "@/types/app";
 import { Location } from "@prisma/client";
 import { setMenuCategories } from "./menuCategorySlice";
 import { setMenus } from "./menuSlice";
@@ -13,6 +13,7 @@ import { setAddonCategories } from "./addonCategorySlice";
 import { setMenuAddonCategories } from "./menuAddonCategorySlice";
 import { setAddons } from "./addonSlice";
 import { setTables } from "./tableSlice";
+import { RootState } from "..";
 
 const initialState: AppSlice = {
   init: false,
@@ -23,10 +24,18 @@ const initialState: AppSlice = {
 
 export const fetchAppData = createAsyncThunk(
   "app/fetchAppData",
-  async (_, thunkApi) => {
+  async (payload: AppPayloadOptions, thunkApi) => {
     try {
       thunkApi.dispatch(setLoading(true));
-      const res = await fetch(`${config.backofficeApiBaseUrl}/app`);
+
+      const { tableId } = payload;
+      console.log("table id shi lr", tableId);
+
+      const apiUrl = tableId
+        ? `${config.orderApiBaseUrl}?tableId=${tableId}`
+        : `${config.backofficeApiBaseUrl}/app`;
+
+      const res = await fetch(apiUrl);
       const dataFromServer = await res.json();
       const {
         menus,
@@ -57,7 +66,6 @@ export const fetchAppData = createAsyncThunk(
       } else {
         thunkApi.dispatch(setSelectedLocation(locations[0]));
       }
-      thunkApi.dispatch(setInit(true));
       thunkApi.dispatch(setLoading(false));
       thunkApi.dispatch(
         setDisableLocationMenuCategories(disableLocationMenuCategories)
@@ -67,6 +75,8 @@ export const fetchAppData = createAsyncThunk(
       thunkApi.dispatch(setMenuAddonCategories(menuAddonCategories));
       thunkApi.dispatch(setAddons(addons));
       thunkApi.dispatch(setTables(tables));
+
+      thunkApi.dispatch(setInit(true));
     } catch (error) {
       thunkApi.dispatch(setLoading(false));
       return thunkApi.rejectWithValue(error);
@@ -109,4 +119,22 @@ const appSlice = createSlice({
 });
 
 export const { setInit, setSelectedLocation, setLoading } = appSlice.actions;
+
+export const appDataSelector = (state: RootState) => {
+  return {
+    selectedLocation: state.app.selectedLocation,
+    menus: state.menu.menus,
+    menuCategories: state.menuCategory.menuCategories,
+    addonCategories: state.addonCategory.addonCategories,
+    addons: state.addon.addons,
+    locations: state.location.locations,
+    company: state.company.company,
+    menuAddonCategories: state.menuAddonCategory.menuAddonCategories,
+    disableLocationMenus: state.disableLocatinMenu.disableLocationMenus,
+    disableLocationMenuCategories:
+      state.disableLocationMenuCategory.disableLocationMenuCategories,
+    menuCategoryMenus: state.menuCategoryMenu.menuCategoryMenus,
+    tables: state.table.tables,
+  };
+};
 export default appSlice.reducer;

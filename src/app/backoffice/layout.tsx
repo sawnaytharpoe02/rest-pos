@@ -133,7 +133,7 @@ const BackOfficeLayout = ({
 
   useEffect(() => {
     if (!init) {
-      dispatch(fetchAppData());
+      dispatch(fetchAppData({}));
     }
   }, []);
 

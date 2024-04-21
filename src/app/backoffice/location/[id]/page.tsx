@@ -17,7 +17,7 @@ import {
 import { UpdateLocationPayload } from "@/types/location";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { deleteLocation, updateLocation } from "@/store/slice/locationSlice";
-import { setSelectedLocation } from "@/store/slice/appSlice";
+import { appDataSelector, setSelectedLocation } from "@/store/slice/appSlice";
 import CommonDeleteDialog from "@/components/dialog/CommonDeleteDialog";
 
 const LocationDetailPage = ({ params }: { params: { id: string } }) => {
@@ -27,8 +27,8 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const dispatch = useAppDispatch();
-  const { locations, isLoading } = useAppSelector((state) => state.location);
-  const { selectedLocation } = useAppSelector((state) => state.app);
+  const { locations, selectedLocation } = useAppSelector(appDataSelector);
+
   const location = locations.find((item) => item.id === locationId);
 
   useEffect(() => {
@@ -178,20 +178,26 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
               item
               xs={12}
               sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
-              <Button
-                startIcon={
-                  isLoading && <CircularProgress color="inherit" size={20} />
-                }
-                variant="contained"
+              <Button variant="contained"
                 onClick={handleUpdateLocation}>
                 Update
               </Button>
-              <Button sx={{color: '#000'}} variant="text" onClick={() => router.push('/backoffice/location')}>Cancel</Button>
+              <Button
+                sx={{ color: "#000" }}
+                variant="text"
+                onClick={() => router.push("/backoffice/location")}>
+                Cancel
+              </Button>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={6}>
-          <Button color="error" variant="contained" onClick={() => setOpenDeleteDialog(true)}>Delete</Button>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={() => setOpenDeleteDialog(true)}>
+            Delete
+          </Button>
         </Grid>
       </Grid>
       <CommonDeleteDialog

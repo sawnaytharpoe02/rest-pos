@@ -20,6 +20,7 @@ import {
 } from "@/store/slice/menuCategorySlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import CommonDeleteDialog from "@/components/dialog/CommonDeleteDialog";
+import { appDataSelector } from "@/store/slice/appSlice";
 
 const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
   const menuCategoryId = Number(params.id);
@@ -28,13 +29,9 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const { selectedLocation } = useAppSelector((state) => state.app);
-  const { disableLocationMenuCategories } = useAppSelector(
-    (state) => state.disableLocationMenuCategory
-  );
-  const { menuCategories, isLoading } = useAppSelector(
-    (state) => state.menuCategory
-  );
+  const { selectedLocation, disableLocationMenuCategories, menuCategories } =
+    useAppSelector(appDataSelector);
+
   const menuCategory = menuCategories.find(
     (item) => item.id === menuCategoryId
   );
@@ -46,7 +43,6 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
   )
     ? false
     : true;
-
 
   useEffect(() => {
     if (menuCategory) {
@@ -152,12 +148,7 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
               item
               xs={12}
               sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
-              <Button
-                startIcon={
-                  isLoading && <CircularProgress color="inherit" size={20} />
-                }
-                variant="contained"
-                onClick={handleUpdateMenuCategory}>
+              <Button variant="contained" onClick={handleUpdateMenuCategory}>
                 Update
               </Button>
               <Button

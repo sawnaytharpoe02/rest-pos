@@ -23,6 +23,7 @@ import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import CommonDeleteDialog from "@/components/dialog/CommonDeleteDialog";
 import MultiSelect from "@/components/MultiSelect";
 import { Menu } from "@prisma/client";
+import { appDataSelector } from "@/store/slice/appSlice";
 
 const AddonCategoryDetailPage = ({ params }: { params: { id: string } }) => {
   const addonCategoryId = Number(params.id);
@@ -33,16 +34,13 @@ const AddonCategoryDetailPage = ({ params }: { params: { id: string } }) => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const dispatch = useAppDispatch();
-  const { menus } = useAppSelector((state) => state.menu);
-  const { isLoading, addonCategories } = useAppSelector(
-    (state) => state.addonCategory
-  );
+  const { menus, addonCategories, menuAddonCategories } =
+    useAppSelector(appDataSelector);
+
   const addonCategory = addonCategories.find(
     (item) => item.id === addonCategoryId
   );
-  const { menuAddonCategories } = useAppSelector(
-    (state) => state.menuAddonCategory
-  );
+
   const selectedMenuIds = menuAddonCategories
     .filter((item) => item.addonCategoryId === addonCategoryId)
     .map((item) => {
@@ -175,12 +173,7 @@ const AddonCategoryDetailPage = ({ params }: { params: { id: string } }) => {
               item
               xs={12}
               sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
-              <Button
-                startIcon={
-                  isLoading && <CircularProgress color="inherit" size={20} />
-                }
-                variant="contained"
-                onClick={handleUpdateAddonCategory}>
+              <Button variant="contained" onClick={handleUpdateAddonCategory}>
                 Update
               </Button>
               <Button

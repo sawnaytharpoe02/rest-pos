@@ -7,18 +7,14 @@ import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import CommonDialog from "@/components/dialog/CommonDialog";
 import MenuCategoryForm from "@/components/form/MenuCategoryForm";
-import MenuCategoryCard from "@/app/backoffice/menu-category/_components/MenuCategoryCard";
 import { CreateMenuCategoryPayload } from "@/types/menuCategory";
 import { config } from "@/config";
+import CommonCard from "@/components/card/CommonCard";
+import { appDataSelector } from "@/store/slice/appSlice";
 
 const MenuCategoryPage = () => {
-  const { isLoading, menuCategories } = useAppSelector(
-    (state) => state.menuCategory
-  );
-  const { selectedLocation } = useAppSelector((state) => state.app);
-  const { disableLocationMenuCategories } = useAppSelector(
-    (state) => state.disableLocationMenuCategory
-  );
+  const { menuCategories, selectedLocation, disableLocationMenuCategories } =
+    useAppSelector(appDataSelector);
 
   const [menuCategoryData, setMenuCategoryData] =
     useState<CreateMenuCategoryPayload>({
@@ -48,30 +44,25 @@ const MenuCategoryPage = () => {
         </Box>
 
         <Grid container spacing={2} mt={4}>
-          {isLoading ? (
-            <div>Loading ...</div>
-          ) : (
-            menuCategories.map((item) => {
-              const isAvailable = disableLocationMenuCategories.find(
-                (v) =>
-                  v.menuCategoryId === item.id &&
-                  v.locationId === selectedLocation?.id
-              )
-                ? false
-                : true;
-              return (
-                <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
-                  <MenuCategoryCard
-                    title={item.name}
-                    subTitle="description"
-                    icon={<Icon icon="mingcute:fork-spoon-fill" />}
-                    href={`${config.backofficeBaseUrl}/menu-category/${item.id}`}
-                    isAvailable={isAvailable}
-                  />
-                </Grid>
-              );
-            })
-          )}
+          {menuCategories.map((item) => {
+            const isAvailable = disableLocationMenuCategories.find(
+              (v) =>
+                v.menuCategoryId === item.id &&
+                v.locationId === selectedLocation?.id
+            )
+              ? false
+              : true;
+            return (
+              <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
+                <CommonCard
+                  name={item.name}
+                  icon="mingcute:fork-spoon-fill"
+                  href={`${config.backofficeBaseUrl}/menu-category/${item.id}`}
+                  isAvailable={isAvailable}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </Box>
       <CommonDialog formTitle="Create Menu Category Form">
