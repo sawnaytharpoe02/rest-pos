@@ -29,10 +29,9 @@ export const fetchAppData = createAsyncThunk(
       thunkApi.dispatch(setLoading(true));
 
       const { tableId } = payload;
-      console.log("table id shi lr", tableId);
 
       const apiUrl = tableId
-        ? `${config.orderApiBaseUrl}?tableId=${tableId}`
+        ? `${config.orderApiBaseUrl}/app?tableId=${tableId}`
         : `${config.backofficeApiBaseUrl}/app`;
 
       const res = await fetch(apiUrl);
@@ -57,7 +56,22 @@ export const fetchAppData = createAsyncThunk(
       thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
       thunkApi.dispatch(setLocations(locations));
 
-      if (localStorage.getItem("selectedLocationId")) {
+      const selectedLocationId = localStorage.getItem("selectedLocationId");
+
+      if (selectedLocationId) {
+        const ownLocation =
+          selectedLocationId &&
+          locations.find((item: any) => item.id === Number(selectedLocationId));
+
+        if (!ownLocation) {
+          localStorage.removeItem("selectedLocationId");
+          localStorage.setItem(
+            "selectedLocationId",
+            locations[0].id.toString()
+          );
+          thunkApi.dispatch(setSelectedLocation(locations[0]));
+          return;
+        }
         const selectedLocation = locations.find(
           (location: any) =>
             location.id === Number(localStorage.getItem("selectedLocationId"))
@@ -66,6 +80,7 @@ export const fetchAppData = createAsyncThunk(
       } else {
         thunkApi.dispatch(setSelectedLocation(locations[0]));
       }
+
       thunkApi.dispatch(setLoading(false));
       thunkApi.dispatch(
         setDisableLocationMenuCategories(disableLocationMenuCategories)

@@ -15,7 +15,7 @@
     "@emotion/styled": "^11.11.0",
     "@iconify/react": "^4.1.1",
     "@mui/material": "^5.15.12",
-    "@prisma/client": "^5.12.1",
+    "@prisma/client": "^5.13.0",
     "@reduxjs/toolkit": "^2.2.1",
     "multer": "^1.4.5-lts.1",
     "multer-s3": "^3.0.1",
@@ -38,7 +38,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.1.2",
-    "prisma": "^5.12.1",
+    "prisma": "^5.13.0",
     "typescript": "^5"
   }
 }

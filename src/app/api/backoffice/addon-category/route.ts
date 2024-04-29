@@ -13,13 +13,15 @@ export async function POST(req: NextRequest) {
       data: { name, isRequired },
     });
 
-    const menuAddonCategory = await prisma.$transaction(
+    await prisma.$transaction(
       menuIds.map((menuId: number) =>
         prisma.menuAddonCategory.create({
           data: { menuId, addonCategoryId: addonCategory.id },
         })
       )
     );
+
+    const menuAddonCategory = await prisma.menuAddonCategory.findMany();
     return NextResponse.json(
       { addonCategory, menuAddonCategory },
       { status: 201 }
@@ -102,8 +104,8 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    const addonCategory = await prisma.menuCategory.update({
-      where: { id },
+    const addonCategory = await prisma.addonCategory.update({
+      where: { id: existingAddonCategory.id },
       data: {
         isArchived: true,
       },

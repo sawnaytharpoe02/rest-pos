@@ -144,7 +144,7 @@ const AddonCategoryDetailPage = ({ params }: { params: { id: string } }) => {
             </Grid>
             <Grid item xs={12}>
               <MultiSelect
-                title="Addon Category"
+                title="Menus"
                 selected={selectedIds}
                 setSelected={(selectedValues: number[]) =>
                   setSelectedIds(selectedValues)

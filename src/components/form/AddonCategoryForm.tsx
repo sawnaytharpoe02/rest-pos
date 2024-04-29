@@ -80,7 +80,7 @@ const AddonCategoryForm = ({
           </Grid>
           <Grid item xs={12}>
             <MultiSelect
-              title="Addon Category"
+              title="Menus"
               selected={addonCategoryData.menuIds || []}
               setSelected={(selectedValues) =>
                 setAddonCategoryData({
