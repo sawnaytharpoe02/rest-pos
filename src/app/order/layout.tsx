@@ -6,6 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store/hook";
 import { Box } from "@mui/material";
 import { fetchAppData } from "@/store/slice/appSlice";
+import OrderAppFooter from "./_components/OrderAppFooter";
+import OrderAppHeader from "./_components/OrderAppHeader";
 
 export default function RootLayout({
   children,
@@ -25,9 +27,9 @@ export default function RootLayout({
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      <Box>header</Box>
-      <Box>{isLoading ? <Box>loading...</Box> : children}</Box> 
-      <Box sx={{ display: "inline-block", mt: "auto" }}>footer</Box>
+      <OrderAppHeader />
+      <Box>{isLoading ? <Box>loading...</Box> : children}</Box>
+      <OrderAppFooter />
     </Box>
   );
 }

@@ -12,6 +12,8 @@ import addonCategorySliceReducer from "./slice/addonCategorySlice";
 import menuAddonCategorySliceReduer from "./slice/menuAddonCategorySlice";
 import addonSliceReducer from "./slice/addonSlice";
 import tableSliceReducer from "./slice/tableSlice";
+import orderSliceReducer from "./slice/orderSlice";
+import cartSliceReducer from "./slice/cartSlice";
 import appReducer from "./slice/appSlice";
 
 export const store = configureStore({
@@ -27,6 +29,8 @@ export const store = configureStore({
     addonCategory: addonCategorySliceReducer,
     menuAddonCategory: menuAddonCategorySliceReduer,
     addon: addonSliceReducer,
+    order: orderSliceReducer,
+    cart: cartSliceReducer,
     table: tableSliceReducer,
     dialog: dialogReducer,
     snackbar: snackbarReducer,

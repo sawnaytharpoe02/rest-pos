@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import styled from "@mui/system/styled";
 import Card, { CardProps } from "@mui/material/Card";
 import { CardContent, CardActions } from "@mui/material";
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, Stack } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -15,13 +15,6 @@ import { shallowEqual } from "react-redux";
 import { MenuCategory } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-
-const CustomMenuCard = styled(Card)<CardProps>(({ theme }) => ({
-  width: "100%",
-  height: "250px",
-  borderRadius: "1rem",
-  border: `1px solid ${theme.palette.primary.main}`,
-}));
 
 const OrderPage = () => {
   const { menuCategories, menus, menuCategoryMenus } = useAppSelector(
@@ -48,23 +41,46 @@ const OrderPage = () => {
       // const href = { pathname: `/order/menu/${item.id}`, query };
       return (
         <Grid item xs={6} sm={3} md={2} lg={2} key={item.id}>
-          <Link href={`/order/menu/${item.id}`}>
-            <CustomMenuCard>
-              <CardContent>
-                <Typography>{item.name}</Typography>
+          <Link href={`/order/menu/${item.id}`} style={{ width: "100%" }}>
+            <Box sx={{ width: "100%" }}>
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "100%",
+                  height: 150,
+                  mb: 1,
+                }}>
                 <Image
                   src={item.assetUrl || ""}
                   alt="menu img"
-                  width={200}
-                  height={150}
+                  layout="fill"
                   priority={true}
-                  style={{ backgroundSize: "cover" }}
+                  style={{
+                    position: "absolute",
+                    backgroundSize: "cover",
+                    borderRadius: "1rem",
+                  }}
                 />
-              </CardContent>
-              <CardActions>
-                <Button variant="contained">Add to Cart</Button>
-              </CardActions>
-            </CustomMenuCard>
+              </Box>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Stack direction="column">
+                  <Typography>{item.name}</Typography>
+                  <Typography
+                    sx={{
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                    }}>
+                    {item.description}
+                  </Typography>
+                </Stack>
+                <Stack>
+                  <Typography sx={{ fontWeight: "bold" }}>
+                    ${item.price}
+                  </Typography>
+                </Stack>
+              </Box>
+            </Box>
           </Link>
         </Grid>
       );
@@ -73,11 +89,13 @@ const OrderPage = () => {
 
   return (
     <div>
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: "100%", p: 4 }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             value={value}
             onChange={(evt, value) => setValue(value)}
+            variant="scrollable"
+            scrollButtons="auto"
             aria-label="menu category">
             {menuCategories.map((menuCategory) => (
               <Tab
@@ -88,7 +106,7 @@ const OrderPage = () => {
             ))}
           </Tabs>
         </Box>
-        <Grid container gap={2} mt={2}>
+        <Grid container gap={2} m={2}>
           {renderMenus}
         </Grid>
       </Box>
