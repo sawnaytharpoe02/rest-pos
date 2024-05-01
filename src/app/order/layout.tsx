@@ -20,7 +20,7 @@ export default function RootLayout({
   const { init, isLoading } = useAppSelector((state) => state.app);
 
   useEffect(() => {
-    if (tableId && !init) {
+    if (tableId || !init) {
       dispatch(fetchAppData({ tableId }));
     }
   }, []);

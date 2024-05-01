@@ -14,7 +14,6 @@ const CartPage = () => {
 
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const table = useAppSelector((state) => state.table.tables);
 
   const renderAddons = (addons: Addon[]) => {
     if (!addons.length) return;
@@ -135,7 +134,7 @@ const CartPage = () => {
                           style={{ cursor: "pointer" }}
                           onClick={() =>
                             router.push(
-                              `/order?tableId=${table[0].id}/menu/${menu.id}?cartItemId=${cartItem.id}`
+                              `/order/menu/${menu.id}?cartItemId=${cartItem.id}`
                             )
                           }
                         />

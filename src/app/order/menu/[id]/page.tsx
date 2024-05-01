@@ -11,16 +11,21 @@ import { Box, Typography, Button } from "@mui/material";
 import { nanoid } from "nanoid";
 import { addToCart } from "@/store/slice/cartSlice";
 import { CartItem } from "@/types/cart";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-const MenuDetailPage = ({ params }: { params: { id: string, cartItemId: string } }) => {
+const MenuDetailPage = ({ params }: { params: { id: string } }) => {
   const menuId = Number(params.id);
-  const cartItemId = Number(params.cartItemId);
+  const search = useSearchParams();
+  const cartItemId = search.get("cartItemId");
   const router = useRouter();
 
-  const { menus, menuAddonCategories, addonCategories, addons } =
-    useAppSelector(appDataSelector, shallowEqual);
+  const { menus, menuAddonCategories, addonCategories, carts } = useAppSelector(
+    appDataSelector,
+    shallowEqual
+  );
   const dispatch = useAppDispatch();
+
+  const cartItem = carts.find((item) => item.id === cartItemId);
 
   const table = useAppSelector((state) => state.table.tables);
   const [selectedAddons, setSelectedAddons] = useState<Addon[]>([]);
@@ -34,6 +39,14 @@ const MenuDetailPage = ({ params }: { params: { id: string, cartItemId: string }
   const validAddonCategories = addonCategories.filter((item) =>
     addonCategoryIds.includes(item.id)
   );
+
+  useEffect(() => {
+    if (cartItem) {
+      setSelectedAddons(cartItem.addons);
+      setQuantity(cartItem.quantity);
+      console.log(cartItem);
+    }
+  }, []);
 
   useEffect(() => {
     const requiredAddonCategories = validAddonCategories.filter(
@@ -56,14 +69,14 @@ const MenuDetailPage = ({ params }: { params: { id: string, cartItemId: string }
     if (!menu) return;
 
     const newCartItem: CartItem = {
-      id: nanoid(7),
+      id: cartItem ? cartItem.id : nanoid(7),
       menu,
       addons: selectedAddons,
       quantity,
     };
 
     dispatch(addToCart(newCartItem));
-    const pathname = "/order";
+    const pathname = cartItem ? "/order/cart" : "/order";
     router.push(`${pathname}?tableId=${table[0].id}`);
   };
 
@@ -93,7 +106,7 @@ const MenuDetailPage = ({ params }: { params: { id: string, cartItemId: string }
           variant="contained"
           disabled={isDisabled}
           onClick={handleAddToCart}>
-          Add to Cart
+          {cartItem ? "Update Add to Cart" : "Add to Cart"}
         </Button>
       </Box>
     </Box>

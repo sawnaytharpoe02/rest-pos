@@ -150,6 +150,7 @@ export const appDataSelector = (state: RootState) => {
       state.disableLocationMenuCategory.disableLocationMenuCategories,
     menuCategoryMenus: state.menuCategoryMenu.menuCategoryMenus,
     tables: state.table.tables,
+    carts: state.cart.items,
   };
 };
 export default appSlice.reducer;
