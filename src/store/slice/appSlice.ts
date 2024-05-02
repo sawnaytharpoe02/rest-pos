@@ -151,6 +151,7 @@ export const appDataSelector = (state: RootState) => {
     menuCategoryMenus: state.menuCategoryMenu.menuCategoryMenus,
     tables: state.table.tables,
     carts: state.cart.items,
+    orders: state.order.orders,
   };
 };
 export default appSlice.reducer;

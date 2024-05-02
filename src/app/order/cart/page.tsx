@@ -8,9 +8,12 @@ import { useRouter } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/store/hook";
 import { removeCart } from "@/store/slice/cartSlice";
 import { Icon } from "@iconify/react";
+import { createOrder } from "@/store/slice/orderSlice";
+import Link from "next/link";
 
 const CartPage = () => {
   const cartItems = useAppSelector((state) => state.cart.items);
+  const tableId = useAppSelector((state) => state.table.tables)[0]?.id;
 
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -41,22 +44,19 @@ const CartPage = () => {
     dispatch(removeCart(cartItem));
   };
 
-  // const confirmOrder = async () => {
-  //   const isValid = tableId;
-  //   if (!isValid) return alert("Table Id");
-  //   dispatch(
-  //     createOrder({
-  //       tableId,
-  //       cartItems,
-  //       onSuccess: (orders: Order[]) => {
-  //         router.push({
-  //           pathname: `/order/active-order/${orders[0].orderSeq}`,
-  //           query: { tableId },
-  //         });
-  //       },
-  //     })
-  //   );
-  // };
+  const confirmOrder = () => {
+    const isValid = tableId;
+    if (!isValid) return null;
+    dispatch(
+      createOrder({
+        tableId,
+        cartItems,
+        onSuccess: (orders: Order[]) => {
+          router.push(`/order/active-order/${orders[0].orderSeq}`);
+        },
+      })
+    );
+  };
 
   return (
     <Box sx={{ textAlign: "center" }}>
@@ -81,7 +81,18 @@ const CartPage = () => {
             placeContent: "center",
           }}>
           {!cartItems.length ? (
-            <Typography>Your cart is empty.</Typography>
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <Typography>Your cart is empty.</Typography>
+              <Link
+                style={{
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                  color: "#5BE49B",
+                }}
+                href={`/order?tableId=${tableId}`}>
+                Order more food
+              </Link>
+            </Box>
           ) : (
             <Box
               sx={{
@@ -149,8 +160,10 @@ const CartPage = () => {
                   Total: {getCartTotalPrice(cartItems)}
                 </Typography>
               </Box>
-              <Box sx={{ mt: 3, textAlign: "center" }} onClick={() => {}}>
-                <Button variant="contained">Confirm order</Button>
+              <Box sx={{ mt: 3, textAlign: "center" }}>
+                <Button variant="contained" onClick={confirmOrder}>
+                  Confirm order
+                </Button>
               </Box>
             </Box>
           )}
