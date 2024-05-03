@@ -106,7 +106,7 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
           variant="contained"
           disabled={isDisabled}
           onClick={handleAddToCart}>
-          {cartItem ? "Update Add to Cart" : "Add to Cart"}
+          {cartItem ? "Update Cart" : "Add to Cart"}
         </Button>
       </Box>
     </Box>

@@ -25,6 +25,7 @@ const OrderPage = () => {
   const [selectedMenuCategory, setSelectedMenuCategory] =
     useState<MenuCategory>();
 
+
   useEffect(() => {
     if (menuCategories.length) {
       setSelectedMenuCategory(menuCategories[0]);
