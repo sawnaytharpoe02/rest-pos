@@ -50,7 +50,7 @@ const AddonPage = () => {
                   <CommonCard
                     name={item.name}
                     icon="solar:waterdrop-bold-duotone"
-                    href={`${config.backofficeBaseUrl}/addon/${item.id}`}
+                    href={`${config.backofficeBaseUrl}/addons/${item.id}`}
                   />
                 </Grid>
               );

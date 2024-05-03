@@ -15,8 +15,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 const MenuDetailPage = ({ params }: { params: { id: string } }) => {
   const menuId = Number(params.id);
-  const search = useSearchParams();
-  const cartItemId = search.get("cartItemId");
+  const searchParams = useSearchParams();
+  const cartItemId = searchParams.get("cartItemId");
   const router = useRouter();
 
   const { menus, menuAddonCategories, addonCategories, carts } = useAppSelector(

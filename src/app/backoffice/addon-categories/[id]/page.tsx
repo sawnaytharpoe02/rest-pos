@@ -91,7 +91,7 @@ const AddonCategoryDetailPage = ({ params }: { params: { id: string } }) => {
               })
             );
           }, 1000);
-          router.push("/backoffice/addon-category");
+          router.push("/backoffice/addon-categories");
         },
       })
     );
@@ -116,7 +116,7 @@ const AddonCategoryDetailPage = ({ params }: { params: { id: string } }) => {
               })
             );
           }, 1000);
-          router.push("/backoffice/addon-category");
+          router.push("/backoffice/addon-categories");
         },
       })
     );
@@ -179,7 +179,7 @@ const AddonCategoryDetailPage = ({ params }: { params: { id: string } }) => {
               <Button
                 sx={{ color: "#000" }}
                 variant="text"
-                onClick={() => router.push("/backoffice/addon-category")}>
+                onClick={() => router.push("/backoffice/addon-categories")}>
                 Cancel
               </Button>
             </Grid>

@@ -18,7 +18,7 @@ export const createTable = createAsyncThunk(
   "table/createTable",
   async (payload: CreateTablePayload) => {
     try {
-      const res = await fetch(`${config.backofficeApiBaseUrl}/table`, {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/tables`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export const updateTable = createAsyncThunk(
   async (data: UpdateTablePayload, thunkApi) => {
     const { onSuccess, onError, ...payload } = data;
     try {
-      const res = await fetch(`${config.backofficeApiBaseUrl}/table`, {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/tables`, {
         method: "PUT",
         headers: { "Content-Type": "application-content/json" },
         body: JSON.stringify(payload),
@@ -65,7 +65,7 @@ export const deleteTable = createAsyncThunk(
   async (data: DeleteTablePayload, thunkApi) => {
     const { onSuccess, onError, id } = data;
     try {
-      const res = await fetch(`${config.backofficeApiBaseUrl}/table?id=${id}`, {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/tables?id=${id}`, {
         method: "DELETE",
       });
 

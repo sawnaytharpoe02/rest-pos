@@ -57,7 +57,7 @@ const MenuCategoryPage = () => {
                 <CommonCard
                   name={item.name}
                   icon="mingcute:fork-spoon-fill"
-                  href={`${config.backofficeBaseUrl}/menu-category/${item.id}`}
+                  href={`${config.backofficeBaseUrl}/menu-categories/${item.id}`}
                   isAvailable={isAvailable}
                 />
               </Grid>

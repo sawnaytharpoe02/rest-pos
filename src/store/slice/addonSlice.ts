@@ -18,7 +18,7 @@ export const createAddon = createAsyncThunk(
   "addon/createAddon",
   async (payload: CreateAddonPayload, thunkApi) => {
     try {
-      const res = await fetch(`${config.backofficeApiBaseUrl}/addon`, {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/addons`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export const updateAddon = createAsyncThunk(
   async (data: UpdateAddonPayload, thunkApi) => {
     const { onSuccess, ...payload } = data;
     try {
-      const res = await fetch(`${config.backofficeApiBaseUrl}/addon`, {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/addons`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export const deleteAddon = createAsyncThunk(
   async (payload: DeleteAddonPayload, thunkApi) => {
     const { onSuccess, id } = payload;
     try {
-      const res = await fetch(`${config.backofficeApiBaseUrl}/addon?id=${id}`, {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/addons?id=${id}`, {
         method: "DELETE",
       });
 

@@ -1,12 +1,12 @@
 export const MENU = [
   {
     name: "Menu",
-    href: "/backoffice/menu",
+    href: "/backoffice/menus",
     icon: "codicon:circle-filled",
   },
   {
     name: "Menu Category",
-    href: "/backoffice/menu-category",
+    href: "/backoffice/menu-categories",
     icon: "codicon:circle-filled",
   },
 ];
@@ -14,12 +14,12 @@ export const MENU = [
 export const ADDON = [
   {
     name: "Addon",
-    href: "/backoffice/addon",
+    href: "/backoffice/addons",
     icon: "codicon:circle-filled",
   },
   {
     name: "Addon Category",
-    href: "/backoffice/addon-category",
+    href: "/backoffice/addon-categories",
     icon: "codicon:circle-filled",
   },
 ];
@@ -27,7 +27,7 @@ export const ADDON = [
 export const ORDER = [
   {
     name: "Order",
-    href: "/backoffice/order",
+    href: "/backoffice/orders",
     icon: "",
   },
 ];
@@ -35,7 +35,7 @@ export const ORDER = [
 export const LOCATION = [
   {
     name: "Location",
-    href: "/backoffice/location",
+    href: "/backoffice/locations",
     icon: "",
   },
 ];
@@ -59,7 +59,7 @@ export const SETTINGS = [
 export const TABLE = [
   {
     name: "Table",
-    href: "/backoffice/table",
+    href: "/backoffice/tables",
     icon: "",
   },
 ];

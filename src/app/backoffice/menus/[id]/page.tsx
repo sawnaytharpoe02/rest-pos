@@ -116,7 +116,7 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
               })
             );
           }, 1000);
-          router.push("/backoffice/menu");
+          router.push("/backoffice/menus");
         },
         onError: () => {
           setTimeout(() => {
@@ -147,7 +147,7 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
               })
             );
           }, 1000);
-          router.push("/backoffice/menu");
+          router.push("/backoffice/menus");
         },
         onError: () => {
           setTimeout(() => {
@@ -246,7 +246,7 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
               </Button>
               <Button
                 sx={{ color: "#000" }}
-                onClick={() => router.push("/backoffice/menu")}>
+                onClick={() => router.push("/backoffice/menus")}>
                 Cancel
               </Button>
             </Grid>

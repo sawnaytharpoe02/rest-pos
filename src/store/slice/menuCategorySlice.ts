@@ -20,7 +20,7 @@ export const createMenuCategory = createAsyncThunk(
   async (payload: CreateMenuCategoryPayload) => {
     const { onSuccess, onError } = payload;
     try {
-      const res = await fetch(`${config.backofficeApiBaseUrl}/menu-category`, {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/menu-categories`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -41,7 +41,7 @@ export const updateMenuCategory = createAsyncThunk(
   async (data: UpdateMenuCategoryPayload, thunkApi) => {
     const { onSuccess, onError, ...payload } = data;
     try {
-      const res = await fetch(`${config.backofficeApiBaseUrl}/menu-category`, {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/menu-categories`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -68,7 +68,7 @@ export const deleteMenuCategory = createAsyncThunk(
     const { id, onSuccess, onError } = payload;
     try {
       const res = await fetch(
-        `${config.backofficeApiBaseUrl}/menu-category?id=${id}`,
+        `${config.backofficeApiBaseUrl}/menu-categories?id=${id}`,
         {
           method: "DELETE",
         }

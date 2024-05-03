@@ -48,7 +48,7 @@ const LocationPage = () => {
                 <CommonCard
                   name={item.name}
                   street={item.street}
-                  href={`/backoffice/location/${item.id}`}
+                  href={`/backoffice/locations/${item.id}`}
                   icon="mingcute:location-2-fill"
                 
                 />

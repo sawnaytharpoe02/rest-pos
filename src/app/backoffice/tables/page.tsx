@@ -69,7 +69,7 @@ const TablePage = () => {
               <TableCard
                 name={item.name}
                 imageUrl={item.assetUrl}
-                href={`/backoffice/table/${item.id}`}
+                href={`/backoffice/tables/${item.id}`}
               />
               <Button
                 sx={{ mt: 2 }}

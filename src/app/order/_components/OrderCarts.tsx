@@ -49,7 +49,7 @@ const OrderCarts = () => {
         tableId,
         cartItems,
         onSuccess: (orders: Order[]) => {
-          router.push(`/order/active-order/${orders[0].orderSeq}`);
+          router.push(`/order/active-orders/${orders[0].orderSeq}`);
         },
       })
     );
@@ -132,7 +132,7 @@ const OrderCarts = () => {
                           sx={{ color: "primary.dark" }}
                           onClick={() =>
                             router.push(
-                              `/order/menu/${menu.id}?cartItemId=${cartItem.id}`
+                              `/order/menus/${menu.id}?cartItemId=${cartItem.id}`
                             )
                           }>
                           <Icon icon="fluent:edit-28-filled" fontSize={16} />

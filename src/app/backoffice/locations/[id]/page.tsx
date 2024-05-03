@@ -44,7 +44,7 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
       updateData?.township !== location?.township ||
       updateData?.city !== location?.city;
     if (!shouldUpdate) {
-      return router.push("/backoffice/location");
+      return router.push("/backoffice/locations");
     }
     updateData &&
       dispatch(
@@ -60,7 +60,7 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
                 })
               );
             }, 1000);
-            router.push("/backoffice/location");
+            router.push("/backoffice/locations");
           },
           onError: () => {
             setTimeout(() => {
@@ -96,7 +96,7 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
               })
             );
           }, 1000);
-          router.push("/backoffice/location");
+          router.push("/backoffice/locations");
         },
       })
     );
@@ -185,7 +185,7 @@ const LocationDetailPage = ({ params }: { params: { id: string } }) => {
               <Button
                 sx={{ color: "#000" }}
                 variant="text"
-                onClick={() => router.push("/backoffice/location")}>
+                onClick={() => router.push("/backoffice/locations")}>
                 Cancel
               </Button>
             </Grid>

@@ -13,8 +13,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const search = useSearchParams();
-  const tableId = search.get("tableId") || "";
+  const searchParams = useSearchParams();
+  const tableId = searchParams.get("tableId") || "";
   const dispatch = useAppDispatch();
   const { init, isLoading } = useAppSelector((state) => state.app);
 

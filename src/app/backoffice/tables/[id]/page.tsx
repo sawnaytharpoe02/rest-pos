@@ -48,7 +48,7 @@ const TableDetailPage = ({ params }: { params: { id: string } }) => {
                 })
               );
             }, 1000);
-            router.push("/backoffice/table");
+            router.push("/backoffice/tables");
           },
           onError: () => {
             setTimeout(() => {
@@ -84,7 +84,7 @@ const TableDetailPage = ({ params }: { params: { id: string } }) => {
               })
             );
           }, 1000);
-          router.push("/backoffice/table");
+          router.push("/backoffice/tables");
         },
       })
     );
@@ -117,7 +117,7 @@ const TableDetailPage = ({ params }: { params: { id: string } }) => {
               <Button
                 sx={{ color: "#000" }}
                 variant="text"
-                onClick={() => router.push("/backoffice/table")}>
+                onClick={() => router.push("/backoffice/tables")}>
                 Cancel
               </Button>
             </Grid>

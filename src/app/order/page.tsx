@@ -37,7 +37,7 @@ const OrderPage = () => {
     return validMenus.map((item) => {
       return (
         <Grid item xs={6} sm={4} md={4} lg={3} key={item.id}>
-          <Link href={`/order/menu/${item.id}`} style={{ width: "100%" }}>
+          <Link href={`/order/menus/${item.id}`} style={{ width: "100%" }}>
             <Box sx={{ width: "100%" }}>
               <Box
                 sx={{

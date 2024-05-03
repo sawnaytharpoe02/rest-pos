@@ -37,7 +37,7 @@ const LocationForm = ({ locationData, setLocationData }: Props) => {
       locationData.city &&
       locationData.companyId;
 
-    if (!isValid) return router.push("/backoffice/location");
+    if (!isValid) return router.push("/backoffice/locations");
 
     locationData &&
       dispatch(

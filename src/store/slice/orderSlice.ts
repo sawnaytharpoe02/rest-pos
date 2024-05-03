@@ -20,7 +20,7 @@ export const createOrder = createAsyncThunk(
   async (options: CreateOrderOptions, thunkApi) => {
     const { tableId, cartItems, onSuccess, onError } = options;
     try {
-      const response = await fetch(`${config.orderApiBaseUrl}/menu`, {
+      const response = await fetch(`${config.orderApiBaseUrl}/menus`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ tableId, cartItems }),
@@ -43,7 +43,7 @@ export const updateOrder = createAsyncThunk(
     try {
       thunkApi.dispatch(setIsLoading(true));
       const response = await fetch(
-        `${config.backofficeApiBaseUrl}/order?itemId=${itemId}`,
+        `${config.backofficeApiBaseUrl}/orders?itemId=${itemId}`,
         {
           method: "PUT",
           headers: { "content-type": "application/json" },
@@ -67,7 +67,7 @@ export const refreshOrder = createAsyncThunk(
     try {
       thunkApi.dispatch(setIsLoading(true));
       const response = await fetch(
-        `${config.orderApiBaseUrl}/menu?orderSeq=${orderSeq}`
+        `${config.orderApiBaseUrl}/menus?orderSeq=${orderSeq}`
       );
       const { orders } = await response.json();
       thunkApi.dispatch(setOrders(orders));

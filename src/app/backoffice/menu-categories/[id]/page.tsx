@@ -59,7 +59,7 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
       updateData?.name !== menuCategory?.name ||
       updateData?.isAvailable !== undefined;
     if (!shouldUpdate) {
-      return router.push("/backoffice/menu-category");
+      return router.push("/backoffice/menu-categories");
     }
     updateData &&
       dispatch(
@@ -75,7 +75,7 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
                 })
               );
             }, 1000);
-            router.push("/backoffice/menu-category");
+            router.push("/backoffice/menu-categories");
           },
           onError: () => {
             setTimeout(() => {
@@ -111,7 +111,7 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
               })
             );
           }, 1000);
-          router.push("/backoffice/menu-category");
+          router.push("/backoffice/menu-categories");
         },
       })
     );
@@ -154,7 +154,7 @@ const MenuCategoryDetailPage = ({ params }: { params: { id: string } }) => {
               <Button
                 sx={{ color: "#000" }}
                 variant="text"
-                onClick={() => router.push("/backoffice/menu-category")}>
+                onClick={() => router.push("/backoffice/menu-categories")}>
                 Cancel
               </Button>
             </Grid>

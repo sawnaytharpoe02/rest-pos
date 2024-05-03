@@ -19,7 +19,7 @@ export const createLocation = createAsyncThunk(
   async (data: CreateLocationPayload) => {
     const { onSuccess, onError, ...payload } = data;
     try {
-      const res = await fetch(`${config.backofficeApiBaseUrl}/location`, {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/locations`, {
         method: "POST",
         headers: { "Content-Type": "application-content/json" },
         body: JSON.stringify(payload),
@@ -40,7 +40,7 @@ export const updateLocation = createAsyncThunk(
   async (data: UpdateLocationPayload) => {
     const { onSuccess, onError, ...payload } = data;
     try {
-      const res = await fetch(`${config.backofficeApiBaseUrl}/location`, {
+      const res = await fetch(`${config.backofficeApiBaseUrl}/locations`, {
         method: "PUT",
         headers: { "Content-Type": "application-content/json" },
         body: JSON.stringify(payload),
@@ -62,7 +62,7 @@ export const deleteLocation = createAsyncThunk(
     const { onSuccess, onError, id } = data;
     try {
       const res = await fetch(
-        `${config.backofficeApiBaseUrl}/location?id=${id}`,
+        `${config.backofficeApiBaseUrl}/locations?id=${id}`,
         {
           method: "DELETE",
         }

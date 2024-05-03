@@ -52,7 +52,7 @@ const AddonCategoryPage = () => {
                   <CommonCard
                     name={item.name}
                     icon="solar:waterdrop-bold-duotone"
-                    href={`${config.backofficeBaseUrl}/addon-category/${item.id}`}
+                    href={`${config.backofficeBaseUrl}/addon-categories/${item.id}`}
                     isRequired={item.isRequired}
                   />
                 </Grid>

@@ -56,7 +56,7 @@ const AddonDetailPage = ({ params }: { params: { id: string } }) => {
                 })
               );
             }, 1000);
-            router.push("/backoffice/addon");
+            router.push("/backoffice/addons");
           },
         })
       );
@@ -77,7 +77,7 @@ const AddonDetailPage = ({ params }: { params: { id: string } }) => {
               })
             );
           }, 1000);
-          router.push("/backoffice/addon");
+          router.push("/backoffice/addons");
         },
       })
     );
@@ -138,7 +138,7 @@ const AddonDetailPage = ({ params }: { params: { id: string } }) => {
               <Button
                 sx={{ color: "#000" }}
                 variant="text"
-                onClick={() => router.push("/backoffice/addon")}>
+                onClick={() => router.push("/backoffice/addons")}>
                 Cancel
               </Button>
             </Grid>
