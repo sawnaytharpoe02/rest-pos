@@ -45,19 +45,17 @@ const ActiveOrderPage = ({ params }: { params: { orderSeq: string } }) => {
           borderRadius: 15,
           flexDirection: "column",
           alignItems: "center",
-          position: "relative",
-          top: { xs: 0, md: -220, lg: -280 },
         }}>
         <Typography
           sx={{
-            color: { xs: "success.main", md: "info.main" },
+            color: { xs: "success.main", md: "primary.dark" },
             fontSize: { xs: 20, md: 25 },
           }}>
           Table: {table?.name}
         </Typography>
         <Typography
           sx={{
-            color: { xs: "success.main", md: "info.main" },
+            color: { xs: "success.main", md: "primary.dark" },
             fontSize: { xs: 20, md: 25 },
           }}>
           Total price: {orders[0].totalPrice}
@@ -68,8 +66,6 @@ const ActiveOrderPage = ({ params }: { params: { orderSeq: string } }) => {
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "center",
-          position: "relative",
-          top: { md: -200 },
         }}>
         {orderItems.map((orderItem) => {
           return (

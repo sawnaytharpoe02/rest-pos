@@ -25,7 +25,6 @@ const OrderPage = () => {
   const [selectedMenuCategory, setSelectedMenuCategory] =
     useState<MenuCategory>();
 
-
   useEffect(() => {
     if (menuCategories.length) {
       setSelectedMenuCategory(menuCategories[0]);
@@ -39,9 +38,8 @@ const OrderPage = () => {
     const validMenus = menus.filter((item) => validMenuIds.includes(item.id));
 
     return validMenus.map((item) => {
-      // const href = { pathname: `/order/menu/${item.id}`, query };
       return (
-        <Grid item xs={6} sm={3} md={2} lg={2} key={item.id}>
+        <Grid item xs={6} sm={4} md={4} lg={3} key={item.id}>
           <Link href={`/order/menu/${item.id}`} style={{ width: "100%" }}>
             <Box sx={{ width: "100%" }}>
               <Box
@@ -90,8 +88,8 @@ const OrderPage = () => {
 
   return (
     <div>
-      <Box sx={{ width: "100%", p: 4 }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ width: "70vw", p: 4, margin: "0 auto" }}>
+        <Box>
           <Tabs
             value={value}
             onChange={(evt, value) => setValue(value)}

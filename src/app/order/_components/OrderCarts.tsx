@@ -30,8 +30,8 @@ const OrderCarts = () => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Typography sx={{ fontStyle: "italic" }}>{item.name}</Typography>
-          <Typography sx={{ fontStyle: "italic" }}>{item.price}</Typography>
+          <Typography>{item.name}</Typography>
+          <Typography>{item.price}</Typography>
         </Box>
       );
     });
@@ -58,13 +58,12 @@ const OrderCarts = () => {
   return (
     <Box sx={{ width: "30vw", margin: "0 auto" }}>
       <Box sx={{ width: "100%", height: "100vh" }}>
-        <Typography variant="h5" sx={{ fontSize: { md: 15, lg: 25 } }}>
+        <Typography variant="h5" sx={{ fontSize: { md: 15, lg: 25 }, pt: 2 }}>
           My Cart
         </Typography>
         <Box
           sx={{
             width: "100%",
-            mt: 2,
           }}>
           {!cartItems.length ? (
             <Box sx={{ display: "flex", gap: 1 }}>
@@ -74,7 +73,7 @@ const OrderCarts = () => {
             <Box
               sx={{
                 width: "100%",
-                height: "480px",
+                height: "520px",
                 overflow: "auto",
                 py: 2,
               }}>
@@ -112,6 +111,7 @@ const OrderCarts = () => {
                             display: "flex",
                             justifyContent: "space-between",
                             width: "100%",
+                            color: "primary.light",
                           }}>
                           <Typography>{menu.name}</Typography>
                           <Typography>{menu.price}</Typography>
@@ -155,12 +155,16 @@ const OrderCarts = () => {
         {cartItems.length !== 0 && (
           <Box>
             <Divider />
-            <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-              <Typography color="primary" sx={{ fontSize: { sm: 20 } }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mt: 2,
+              }}>
+              <Typography sx={{ fontSize: { sm: 20 }, fontWeight: "bold" }}>
                 Total: {getCartTotalPrice(cartItems)}
               </Typography>
-            </Box>
-            <Box sx={{ textAlign: "center" }}>
               <Button variant="contained" onClick={confirmOrder}>
                 Confirm order
               </Button>

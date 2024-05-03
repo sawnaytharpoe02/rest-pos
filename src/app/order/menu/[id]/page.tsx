@@ -76,14 +76,13 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
     };
 
     dispatch(addToCart(newCartItem));
-    const pathname = cartItem ? "/order/cart" : "/order";
-    router.push(`${pathname}?tableId=${table[0].id}`);
+    router.push(`/order?tableId=${table[0].id}`);
   };
 
   if (!menu) return null;
 
   return (
-    <Box sx={{ maxWidth: "500px", margin: "5rem auto" }}>
+    <Box sx={{ maxWidth: "450px", margin: "5rem auto" }}>
       <Typography variant="h4">{menu.name}</Typography>
       <AddonCategories
         addonCategories={validAddonCategories}
