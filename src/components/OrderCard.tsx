@@ -6,10 +6,10 @@ import { AddonCategory, ORDERSTATUS } from "@prisma/client";
 interface Props {
   orderItem: OrderItem;
   isAdmin: boolean;
-  handleOrderStatuUpdate?: (itemId: string, status: ORDERSTATUS) => void;
+  handleOrderStatusUpdate?: (itemId: string, status: ORDERSTATUS) => void;
 }
 
-const OrderCard = ({ orderItem, isAdmin, handleOrderStatuUpdate }: Props) => {
+const OrderCard = ({ orderItem, isAdmin, handleOrderStatusUpdate }: Props) => {
   const addonCategories = useAppSelector(
     (state) => state.addonCategory.addonCategories
   );
@@ -107,8 +107,8 @@ const OrderCard = ({ orderItem, isAdmin, handleOrderStatuUpdate }: Props) => {
               <Select
                 value={orderItem.status}
                 onChange={(evt) =>
-                  handleOrderStatuUpdate &&
-                  handleOrderStatuUpdate(
+                  handleOrderStatusUpdate &&
+                  handleOrderStatusUpdate(
                     orderItem.itemId,
                     evt.target.value as ORDERSTATUS
                   )

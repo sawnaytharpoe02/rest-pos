@@ -14,6 +14,7 @@ import { setMenuAddonCategories } from "./menuAddonCategorySlice";
 import { setAddons } from "./addonSlice";
 import { setTables } from "./tableSlice";
 import { RootState } from "..";
+import { setOrders } from "./orderSlice";
 
 const initialState: AppSlice = {
   init: false,
@@ -48,6 +49,7 @@ export const fetchAppData = createAsyncThunk(
         menuAddonCategories,
         addons,
         tables,
+        orders,
       } = dataFromServer;
 
       thunkApi.dispatch(setMenuCategories(menuCategories));
@@ -90,6 +92,7 @@ export const fetchAppData = createAsyncThunk(
       thunkApi.dispatch(setMenuAddonCategories(menuAddonCategories));
       thunkApi.dispatch(setAddons(addons));
       thunkApi.dispatch(setTables(tables));
+      thunkApi.dispatch(setOrders(orders));
 
       thunkApi.dispatch(setInit(true));
     } catch (error) {

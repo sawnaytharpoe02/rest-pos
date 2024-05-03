@@ -79,6 +79,13 @@ export async function GET(req: Request, res: Response) {
             orderBy: [{ id: "asc" }],
           });
 
+          const orders = await prisma.order.findMany({
+            where: {
+              tableId: { in: tables.map((item) => item.id) },
+              isArchived: false,
+            },
+          });
+
           return NextResponse.json(
             {
               company,
@@ -92,6 +99,7 @@ export async function GET(req: Request, res: Response) {
               addons,
               disableLocationMenuCategories,
               disableLocationMenus,
+              orders,
             },
             { status: 200 }
           );

@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@/store/hook";
 import { Box, Typography } from "@mui/material";
-import OrderCard from "../../_components/OrderCard";
+import OrderCard from "@/components/OrderCard";
 import { appDataSelector } from "@/store/slice/appSlice";
 import { shallowEqual } from "react-redux";
 import { refreshOrder } from "@/store/slice/orderSlice";

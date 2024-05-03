@@ -4,6 +4,7 @@ import {
   OrderSlice,
   CreateOrderOptions,
   RefreshOrderOptions,
+  UpdateOrderOptions
 } from "@/types/order";
 import { config } from "@/config";
 import { emptyCart } from "./cartSlice";
@@ -35,29 +36,29 @@ export const createOrder = createAsyncThunk(
   }
 );
 
-// export const updateOrder = createAsyncThunk(
-//   "order/updateOrder",
-//   async (options: UpdateOrderOptions, thunkApi) => {
-//     const { itemId, status, onSuccess, onError } = options;
-//     try {
-//       thunkApi.dispatch(setIsLoading(true));
-//       const response = await fetch(
-//         `${config.backofficeApiBaseUrl}/order?itemId=${itemId}`,
-//         {
-//           method: "PUT",
-//           headers: { "content-type": "application/json" },
-//           body: JSON.stringify({ status }),
-//         }
-//       );
-//       const { orders } = await response.json();
-//       thunkApi.dispatch(setOrders(orders));
-//       thunkApi.dispatch(setIsLoading(false));
-//       onSuccess && onSuccess(orders);
-//     } catch (err) {
-//       onError && onError();
-//     }
-//   }
-// );
+export const updateOrder = createAsyncThunk(
+  "order/updateOrder",
+  async (options: UpdateOrderOptions, thunkApi) => {
+    const { itemId, status, onSuccess, onError } = options;
+    try {
+      thunkApi.dispatch(setIsLoading(true));
+      const response = await fetch(
+        `${config.backofficeApiBaseUrl}/order?itemId=${itemId}`,
+        {
+          method: "PUT",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ status }),
+        }
+      );
+      const { orders } = await response.json();
+      thunkApi.dispatch(setOrders(orders));
+      thunkApi.dispatch(setIsLoading(false));
+      onSuccess && onSuccess(orders);
+    } catch (err) {
+      onError && onError();
+    }
+  }
+);
 
 export const refreshOrder = createAsyncThunk(
   "order/refreshOrder",
