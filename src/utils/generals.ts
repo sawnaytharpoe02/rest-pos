@@ -1,5 +1,5 @@
 import { CartItem } from "@/types/cart";
-import { Order, Addon,Menu, Table } from "@prisma/client";
+import { Order, Addon, Menu, Table } from "@prisma/client";
 import { OrderItem, OrderAddon } from "@/types/order";
 
 export const getCartTotalPrice = (cartItems: CartItem[]) => {
@@ -22,24 +22,32 @@ export const formatOrders = (
   tables: Table[]
 ): OrderItem[] => {
   const orderItemIds: string[] = [];
+  console.log(orders);
+  console.log(orderItemIds);
+
   orders.forEach((order) => {
     const itemId = order.itemId;
     const exist = orderItemIds.find((orderItemId) => orderItemId === itemId);
     if (!exist && itemId !== null) orderItemIds.push(itemId as string);
   });
+
+  console.log(orderItemIds);
   const orderItems: OrderItem[] = orderItemIds.map((orderItemId) => {
     const currentOrders = orders.filter(
       (order) => order.itemId === orderItemId
     );
-    const addonIds = currentOrders.map((item) => item.addonId);
+    const addonIds = currentOrders.map((item) => item.addonId); // [10,15]
     let orderAddons: OrderAddon[] = [];
+
     if (addonIds.length) {
       addonIds.forEach((addonId) => {
         const addon = addons.find((item) => item.id === addonId) as Addon;
         if (!addon) return;
+        console.log("orderAddons", orderAddons);
         const exist = orderAddons.find(
           (item) => item.addonCategoryId === addon.addonCategoryId
         );
+
         if (exist) {
           orderAddons = orderAddons.map((item) => {
             const isSameParent = item.addonCategoryId === addon.addonCategoryId;
@@ -62,6 +70,7 @@ export const formatOrders = (
               addons: [addon].sort((a, b) => a.name.localeCompare(b.name)),
             },
           ];
+
         }
       });
     }
@@ -78,5 +87,6 @@ export const formatOrders = (
       ) as Table,
     };
   });
+
   return orderItems.sort((a, b) => a.itemId.localeCompare(b.itemId));
 };

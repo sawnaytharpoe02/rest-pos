@@ -18,6 +18,7 @@ const ActiveOrderPage = ({ params }: { params: { orderSeq: string } }) => {
 
   const orderItems = formatOrders(orders, addons, menus, tables);
   const table = tables.find((table) => table.id === tables[0]?.id);
+
   const dispatch = useAppDispatch();
   let intervalId: number;
 

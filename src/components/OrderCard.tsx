@@ -16,10 +16,12 @@ const OrderCard = ({ orderItem, isAdmin, handleOrderStatusUpdate }: Props) => {
 
   return (
     <Card
+      variant="outlined"
       sx={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        borderRadius: ".6rem",
         width: 280,
         height: 280,
         mt: 2,
@@ -30,9 +32,9 @@ const OrderCard = ({ orderItem, isAdmin, handleOrderStatusUpdate }: Props) => {
           height: 40,
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
-          bgcolor: "#4C4C6D",
+          backgroundColor: "primary.dark",
           color: "white",
+          alignItems: "center",
           px: 1,
         }}>
         <Typography>{orderItem.menu.name}</Typography>
@@ -50,7 +52,7 @@ const OrderCard = ({ orderItem, isAdmin, handleOrderStatusUpdate }: Props) => {
           <Typography sx={{ fontWeight: "bold" }}>Item Id: </Typography>
           <Typography>{orderItem.itemId}</Typography>
         </Box>
-        <Box sx={{ height: 250 * 0.6, overflow: "scroll" }}>
+        <Box sx={{ height: 250 * 0.6, overflowY: "scroll" }}>
           {orderItem.orderAddons.length > 0 ? (
             orderItem.orderAddons.map((orderAddon) => {
               const addonCategory = addonCategories.find(

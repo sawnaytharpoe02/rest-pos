@@ -10,6 +10,7 @@ import { CreateMenuPayload } from "@/types/menu";
 import MenuCard from "./_components/MenuCard";
 import { config } from "@/config";
 import { appDataSelector } from "../../../store/slice/appSlice";
+import { shallowEqual } from "react-redux";
 
 const MenuPage = () => {
   const [menuData, setMenuData] = useState<CreateMenuPayload>({
@@ -21,7 +22,7 @@ const MenuPage = () => {
 
   const dispatch = useAppDispatch();
   const { menus, disableLocationMenus, selectedLocation } =
-    useAppSelector(appDataSelector);
+    useAppSelector(appDataSelector, shallowEqual);
 
   const handleOpenDialog = () => {
     dispatch(setOpenDialog(true));

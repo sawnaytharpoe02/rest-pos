@@ -34,6 +34,13 @@ export const colorsToken = {
     dark: "#B76E00",
     darker: "#7A4100",
   },
+  error: {
+    lighter: "#ffcdd2",
+    light: "#e57373",
+    main: "#f44336",
+    dark: "#d32f2f",
+    darkder: "#b71c1c",
+  },
   grey: {
     100: "#F9FAFB",
     200: "#F4F6F8",
@@ -45,4 +52,4 @@ export const colorsToken = {
     800: "#212B36",
     900: "#161C24",
   },
-}
+};

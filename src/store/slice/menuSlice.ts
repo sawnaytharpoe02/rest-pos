@@ -30,6 +30,7 @@ export const createMenu = createAsyncThunk(
 
       const { menu, menuCategoryMenus } = await res.json();
 
+      thunkApi.dispatch(addMenu(menu));
       thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
       payload.onSuccess && payload.onSuccess();
 
@@ -57,6 +58,7 @@ export const updateMenu = createAsyncThunk(
       const { menu, menuCategoryMenus, disableLocationMenus } =
         await res.json();
 
+      thunkApi.dispatch(editMenu(menu));
       thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
       thunkApi.dispatch(setDisableLocationMenus(disableLocationMenus));
       onSuccess && onSuccess();
@@ -98,43 +100,16 @@ const menuSlice = createSlice({
         menu.id === action.payload.id ? false : true
       );
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(createMenu.pending, (state, _action) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(createMenu.fulfilled, (state, action: PayloadAction<Menu>) => {
-        state.isLoading = false;
-        state.error = null;
-        state.menus = [...state.menus, action.payload];
-      })
-      .addCase(createMenu.rejected, (state, _action) => {
-        state.isLoading = false;
-        const error = new Error("Create menu error occured");
-        state.error = error.message;
-      });
-
-    builder
-      .addCase(updateMenu.pending, (state, _action) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(updateMenu.fulfilled, (state, action: PayloadAction<Menu>) => {
-        state.isLoading = false;
-        state.error = null;
-        state.menus = state.menus.map((menu) =>
-          menu.id === action.payload?.id ? action.payload : menu
-        );
-      })
-      .addCase(updateMenu.rejected, (state, _action) => {
-        state.isLoading = false;
-        const error = new Error("Update menu error occured");
-        state.error = error.message;
-      });
+    addMenu: (state, action: PayloadAction<Menu>) => {
+      state.menus = [...state.menus, action.payload];
+    },
+    editMenu: (state, action: PayloadAction<Menu>) => {
+      state.menus = state.menus.map((menu) =>
+        menu.id === action.payload?.id ? action.payload : menu
+      );
+    },
   },
 });
 
-export const { setMenus, removeMenu } = menuSlice.actions;
+export const { setMenus, removeMenu, addMenu, editMenu } = menuSlice.actions;
 export default menuSlice.reducer;

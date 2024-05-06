@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Typography,
@@ -9,23 +9,26 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-  Select,
   OutlinedInput,
-  CircularProgress,
   Checkbox,
-  MenuItem,
-  ListItemText,
   Button,
+  Chip,
+  CircularProgress,
 } from "@mui/material";
+import { Icon } from "@iconify/react";
 import { UpdateMenuPayload } from "@/types/menu";
 import CommonDeleteDialog from "@/components/dialog/CommonDeleteDialog";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
-import { setOpenDialog } from "@/store/slice/appDialogSlice";
 import { deleteMenu, updateMenu } from "@/store/slice/menuSlice";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import { Menu, MenuCategory } from "@prisma/client";
 import MultiSelect from "@/components/MultiSelect";
 import { appDataSelector } from "@/store/slice/appSlice";
+import Image from "next/image";
+import FileDropZone from "@/components/FileDropZone";
+import { uploadAssset } from "@/store/slice/appSlice";
+import { colorsToken } from "@/theme/colorToken";
+import { shallowEqual } from "react-redux";
 
 const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = -100;
@@ -49,17 +52,20 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
     menuCategoryMenus,
     selectedLocation,
     disableLocationMenus,
-  } = useAppSelector(appDataSelector);
+  } = useAppSelector(appDataSelector, shallowEqual);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [updateData, setUpdateData] = useState<UpdateMenuPayload>();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
+  const [menuImage, setMenuImage] = useState<File>();
+  const [curMenuImg, setCurMenuImg] = useState(true);
 
   const menu = menus.find((menu: Menu) => menu.id === menuId);
 
   const selectedMenuCategoryIds = menuCategoryMenus
-    .filter((item) => item.menuId === menuId)
-    .map((item) => {
+    .filter((item: any) => item.menuId === menuId)
+    .map((item: any) => {
       const menuCategory = menuCategories.find(
         (category) => category.id === item.menuCategoryId
       ) as MenuCategory;
@@ -103,34 +109,55 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
       menuCategoryIds: selectedIds,
     };
 
-    dispatch(
-      updateMenu({
-        ...payload,
-        onSuccess: () => {
-          setTimeout(() => {
+    if (menuImage) {
+      setIsLoading(true);
+      dispatch(
+        uploadAssset({
+          file: menuImage,
+          onSuccess: (assetUrl) => {
+            const newPayload = { ...payload, assetUrl };
             dispatch(
-              setSnackbar({
-                type: "success",
-                isOpen: true,
-                message: "Update menu successfully",
+              updateMenu({
+                ...newPayload,
+                onSuccess: () => {
+                  setIsLoading(false);
+                  setTimeout(() => {
+                    dispatch(
+                      setSnackbar({
+                        type: "success",
+                        isOpen: true,
+                        message: "Update menu successfully",
+                      })
+                    );
+                  }, 1000);
+                  router.push("/backoffice/menus");
+                },
               })
             );
-          }, 1000);
-          router.push("/backoffice/menus");
-        },
-        onError: () => {
-          setTimeout(() => {
-            dispatch(
-              setSnackbar({
-                type: "error",
-                isOpen: true,
-                message: "Error occured while updating menu",
-              })
-            );
-          });
-        },
-      })
-    );
+          },
+        })
+      );
+    } else {
+      setIsLoading(true);
+      dispatch(
+        updateMenu({
+          ...payload,
+          onSuccess: () => {
+            setIsLoading(false);
+            setTimeout(() => {
+              dispatch(
+                setSnackbar({
+                  type: "success",
+                  isOpen: true,
+                  message: "Update menu successfully",
+                })
+              );
+            }, 1000);
+            router.push("/backoffice/menus");
+          },
+        })
+      );
+    }
   };
 
   const handleDeleteMenu = () => {
@@ -220,6 +247,56 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
                 items={menuCategories}
               />
             </Grid>
+            <Grid item xs={12} sx={{ mt: 2 }}>
+              {curMenuImg && (
+                <Box
+                  sx={{
+                    width: "100%",
+                    position: "relative",
+                    height: "200px",
+                  }}>
+                  <Image
+                    src={updateData.assetUrl || ""}
+                    alt="menu img"
+                    layout="fill"
+                    priority
+                    style={{
+                      position: "absolute",
+                      backgroundSize: "cover",
+                      borderRadius: "1rem",
+                    }}
+                  />
+                  <Box
+                    onClick={() => setCurMenuImg(false)}
+                    style={{
+                      position: "absolute",
+                      top: 10,
+                      right: 10,
+                      cursor: "pointer",
+                      width: "25px",
+                      height: "25px",
+                      borderRadius: "50%",
+                      backgroundColor: colorsToken.error.main,
+                      display: "grid",
+                      placeContent: "center",
+                    }}>
+                    <Icon icon="streamline:delete-1-solid" fontSize={12} />
+                  </Box>
+                </Box>
+              )}
+              {!curMenuImg && (
+                <FileDropZone
+                  onDrop={(acceptedFiles) => setMenuImage(acceptedFiles[0])}
+                />
+              )}
+              {menuImage && (
+                <Chip
+                  sx={{ mt: 2 }}
+                  label={menuImage.name}
+                  onDelete={() => setMenuImage(undefined)}
+                />
+              )}
+            </Grid>
             <Grid item xs={12} sx={{ my: 2 }}>
               <FormControlLabel
                 control={
@@ -236,11 +313,16 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
                 label="Available"
               />
             </Grid>
+
             <Grid
               item
               xs={12}
               sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-              <Button variant="contained"
+              <Button
+                startIcon={
+                  isLoading && <CircularProgress color="inherit" size={20} />
+                }
+                variant="contained"
                 onClick={handleUpdateMenu}>
                 Update
               </Button>

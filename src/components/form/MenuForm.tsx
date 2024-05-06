@@ -27,7 +27,7 @@ interface Props {
 
 const MenuForm = ({ setMenuData, menuData }: Props) => {
   const dispatch = useAppDispatch();
-  const { isLoading } = useAppSelector((state) => state.menu);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { menuCategories } = useAppSelector((state) => state.menuCategory);
   const [menuImage, setMenuImage] = useState<File>();
 
@@ -38,6 +38,7 @@ const MenuForm = ({ setMenuData, menuData }: Props) => {
     if (!isValid) return null;
 
     if (menuImage) {
+      setIsLoading(true);
       dispatch(
         uploadAssset({
           file: menuImage,
@@ -47,6 +48,7 @@ const MenuForm = ({ setMenuData, menuData }: Props) => {
               createMenu({
                 ...menuData,
                 onSuccess: () => {
+                  setIsLoading(false);
                   dispatch(setOpenDialog(false));
                   setTimeout(() => {
                     dispatch(

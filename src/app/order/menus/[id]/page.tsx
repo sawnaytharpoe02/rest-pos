@@ -12,6 +12,7 @@ import { nanoid } from "nanoid";
 import { addToCart } from "@/store/slice/cartSlice";
 import { CartItem } from "@/types/cart";
 import { useRouter, useSearchParams } from "next/navigation";
+import { colorsToken } from "@/theme/colorToken";
 
 const MenuDetailPage = ({ params }: { params: { id: string } }) => {
   const menuId = Number(params.id);
@@ -84,6 +85,10 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
   return (
     <Box sx={{ maxWidth: "450px", margin: "5rem auto" }}>
       <Typography variant="h4">{menu.name}</Typography>
+      <Typography variant="body1" sx={{ color: colorsToken.grey[500], mb: 2 }}>
+        {menu.description}
+      </Typography>
+
       <AddonCategories
         addonCategories={validAddonCategories}
         selectedAddons={selectedAddons}
@@ -99,9 +104,8 @@ const MenuDetailPage = ({ params }: { params: { id: string } }) => {
           }
         />
       </Box>
-      <Box>
+      <Box sx={{ textAlign: "center" }}>
         <Button
-          fullWidth
           variant="contained"
           disabled={isDisabled}
           onClick={handleAddToCart}>
