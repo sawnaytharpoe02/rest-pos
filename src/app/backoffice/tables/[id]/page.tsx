@@ -5,18 +5,15 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hook";
 import {
   Grid,
-  Switch,
   Button,
   FormControl,
   FormLabel,
   OutlinedInput,
-  FormControlLabel,
-  CircularProgress,
   Typography,
 } from "@mui/material";
 import { setSnackbar } from "@/store/slice/appSnackbarSlice";
 import CommonDeleteDialog from "@/components/dialog/CommonDeleteDialog";
-import { UpdateTablePayload, DeleteTablePayload } from "@/types/table";
+import { UpdateTablePayload } from "@/types/table";
 import { updateTable, deleteTable } from "@/store/slice/tableSlice";
 
 const TableDetailPage = ({ params }: { params: { id: string } }) => {
