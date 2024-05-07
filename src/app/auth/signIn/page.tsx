@@ -11,7 +11,7 @@ const signIn = () => {
       <Box sx={{ height: "100vh", display: "grid", placeItems: "center" }}>
         <Button
           onClick={() =>
-            nextAuthSignIn("google", { callbackUrl: "/backoffice" })
+            nextAuthSignIn("google", { callbackUrl: "/backoffice/orders" })
           }
           variant="contained">  
           Sign In With Google
