@@ -81,7 +81,7 @@ export const deleteTable = createAsyncThunk(
 );
 
 const tableSlice = createSlice({
-  name: "company",
+  name: "table",
   initialState,
   reducers: {
     setTables: (state, action: PayloadAction<Table[]>) => {
