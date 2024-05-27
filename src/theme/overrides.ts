@@ -30,7 +30,6 @@ export const overrides = (): ThemeOptions["components"] => {
       styleOverrides: {
         root: {
           borderRadius: ".5rem",
-          color: "#eee",
           textTransform: "capitalize",
         },
       },
