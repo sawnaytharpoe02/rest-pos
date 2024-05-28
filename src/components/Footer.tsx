@@ -13,7 +13,7 @@ import {
 import { styled } from "@mui/material/styles";
 
 const FooterContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: theme.palette.primary.dark,
   color: theme.palette.common.white,
   padding: theme.spacing(6, 0),
 }));
@@ -59,7 +59,7 @@ const Footer = () => {
               123 Food Street, Food City, FC 12345
             </Typography>
             <Typography variant="body1">
-              Email: support@foodorderapp.com
+              Email: support@forkloreapp.com
             </Typography>
             <Typography variant="body1">Phone: (123) 456-7890</Typography>
           </Grid>
@@ -69,15 +69,15 @@ const Footer = () => {
               Home
             </Link>
             <br />
-            <Link href="#" color="inherit">
+            <Link href="#features" color="inherit">
               Features
             </Link>
             <br />
-            <Link href="#" color="inherit">
+            <Link href="#testimonials" color="inherit">
               Testimonials
             </Link>
             <br />
-            <Link href="#" color="inherit">
+            <Link href="#contact" color="inherit">
               Contact Us
             </Link>
           </Grid>

@@ -36,21 +36,33 @@ const Header = () => {
   return (
     <HeaderContainer position="static">
       <Toolbar>
-        <Logo variant="h6">Foodie POS</Logo>
+        <Logo variant="h6">Forklore</Logo>
         <HeaderButtons>
-          <a href="#" color="inherit" style={{ color: "#000", cursor: "pointer" }}>
+          <a
+            href="#"
+            color="inherit"
+            style={{ color: "#000", cursor: "pointer" }}>
             Home
           </a>
-          <a href="#" color="inherit" style={{ color: "#000", cursor: "pointer" }}>
+          <a
+            href="#features"
+            color="inherit"
+            style={{ color: "#000", cursor: "pointer" }}>
             Features
           </a>
-          <a href="#" color="inherit" style={{ color: "#000", cursor: "pointer" }}>
+          <a
+            href="#testimonials"
+            color="inherit"
+            style={{ color: "#000", cursor: "pointer" }}>
             Testimonials
           </a>
-          <a href="#" color="inherit" style={{ color: "#000", cursor: "pointer" }}>
+          <a
+            href="#contact"
+            color="inherit"
+            style={{ color: "#000", cursor: "pointer" }}>
             Contact
           </a>
-          <Button variant="contained" color="secondary">
+          <Button variant="contained" color="secondary" sx={{ color: "#fff" }}>
             Get Started
           </Button>
         </HeaderButtons>

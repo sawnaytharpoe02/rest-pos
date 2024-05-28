@@ -24,15 +24,15 @@ const ContactForm = styled("form")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   "& > *": {
-    marginBottom: theme.spacing(2),
+    marginBottom: "1.2rem",
   },
 }));
 
 const SubmitButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: theme.palette.primary.dark,
   color: theme.palette.common.white,
   "&:hover": {
-    backgroundColor: theme.palette.primary.dark,
+    backgroundColor: theme.palette.primary.contrastText,
   },
 }));
 
@@ -43,7 +43,7 @@ const Contact = () => {
         <Typography variant="h4" align="center" gutterBottom>
           Contact Us
         </Typography>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} mt={2}>
           <Grid item xs={12} md={6}>
             <ContactInfo>
               <Typography variant="h6">Our Address</Typography>
@@ -53,7 +53,7 @@ const Contact = () => {
             </ContactInfo>
             <ContactInfo>
               <Typography variant="h6">Email Us</Typography>
-              <Typography variant="body1">support@foodorderapp.com</Typography>
+              <Typography variant="body1">support@forkloreapp.com</Typography>
             </ContactInfo>
             <ContactInfo>
               <Typography variant="h6">Call Us</Typography>
@@ -62,11 +62,18 @@ const Contact = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <ContactForm>
-              <TextField variant="outlined" label="Name" fullWidth required />
+              <TextField
+                variant="outlined"
+                label="Name"
+                sx={{ mb: 2 }}
+                fullWidth
+                required
+              />
               <TextField
                 variant="outlined"
                 label="Email"
                 type="email"
+                sx={{ mb: 2 }}
                 fullWidth
                 required
               />
@@ -75,6 +82,7 @@ const Contact = () => {
                 label="Message"
                 multiline
                 rows={4}
+                sx={{ mb: 2 }}
                 fullWidth
                 required
               />

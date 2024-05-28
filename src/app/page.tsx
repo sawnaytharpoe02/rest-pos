@@ -25,10 +25,18 @@ export default function Home() {
           m: "0 auto",
           px: { xs: "10px", md: "15px" },
         }}>
-        <Hero />
-        <Features />
-        <Testimonials />
-        <Contact/>
+        <section id="hero">
+          <Hero />
+        </section>
+        <section id="features">
+          <Features />
+        </section>
+        <section id="testimonials">
+          <Testimonials />
+        </section>
+        <section id="contact">
+          <Contact />
+        </section>
       </Box>
       <Footer />
     </Box>
