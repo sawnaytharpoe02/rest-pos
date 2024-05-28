@@ -29,6 +29,7 @@ export const overrides = (): ThemeOptions["components"] => {
     MuiButton: {
       styleOverrides: {
         root: {
+          color: '#eee',
           borderRadius: ".5rem",
           textTransform: "capitalize",
         },

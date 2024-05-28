@@ -9,7 +9,6 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import { styled } from "@mui/material/styles";
 
 const HeaderContainer = styled(AppBar)(({ theme }) => ({

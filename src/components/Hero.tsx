@@ -77,10 +77,10 @@ const Hero = () => {
                 Entice your customers with QR code ordering system.
               </Typography>
               <HeroButtons>
-                <Link href={"order/tabledId=1"}>
+                <Link href={"/order?tabledId=1"}>
                   <HeroButtonContained>Order App</HeroButtonContained>
                 </Link>
-                <Link href={"backoffice/orders"}>
+                <Link href={"/backoffice/orders"}>
                   <HeroButtonOutlined>Backoffice App</HeroButtonOutlined>
                 </Link>
               </HeroButtons>

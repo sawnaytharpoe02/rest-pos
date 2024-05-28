@@ -5,6 +5,23 @@ import { useAppSelector } from "@/store/hook";
 import { Icon } from "@iconify/react";
 import OrderCarts from "./OrderCarts";
 import { useRouter } from "next/navigation";
+import { styled } from "@mui/material/styles";
+
+const HeaderContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-around",
+  minWidth: "100%",
+  height: "60px",
+  backgroundColor: theme.palette.primary.dark,
+  color: theme.palette.common.white,
+}));
+
+const LocationNameContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+}));
 
 const OrderAppHeader = () => {
   const router = useRouter();
@@ -23,28 +40,17 @@ const OrderAppHeader = () => {
   const carts = useAppSelector((state) => state.cart.items);
   return (
     <>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-around",
-          minWidth: "100%",
-          height: "60px",
-        }}>
+      <HeaderContainer>
         <Box
           sx={{ cursor: "pointer" }}
           onClick={() => router.push(`/order?tableId=${table[0].id}`)}>
-          Foodie
+          <Typography variant="h4">Forklore</Typography>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}>
-          <Typography variant="h4">{location?.name}</Typography>
-          <Typography variant="h6">{location?.street}</Typography>
-        </Box>
+        <LocationNameContainer>
+          <Typography variant="h6">
+            {location?.name} ({location?.street})
+          </Typography>
+        </LocationNameContainer>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Badge color="primary" badgeContent={carts ? carts.length : ""}>
             <Icon
@@ -63,7 +69,7 @@ const OrderAppHeader = () => {
             }
           />
         </Box>
-      </Box>
+      </HeaderContainer>
       <Drawer
         anchor="right"
         open={openCartDrawer}

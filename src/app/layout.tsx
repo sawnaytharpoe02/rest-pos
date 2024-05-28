@@ -6,7 +6,7 @@ import ThemeProvider from "@/theme";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Food Ordering App",
+  title: "Forklore",
   description: "Food ordering app for resturants including admin panel and QR code scanning for customers.",
 };
 

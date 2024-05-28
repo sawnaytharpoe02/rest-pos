@@ -215,8 +215,8 @@ const BackOfficeLayout = ({
       </AppBar>
       <Drawer variant="permanent" open={isOpen}>
         <DrawerHeader sx={{ justifyContent: "flex-start", pl: 3 }}>
-          <Link href="/backoffice">
-            <img src="/logo.svg" width={30} />
+          <Link href="/backoffice/orders">
+            <img src="/logo.png" width={30} />
           </Link>
         </DrawerHeader>
 
