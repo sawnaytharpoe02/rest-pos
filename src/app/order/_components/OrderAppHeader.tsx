@@ -47,9 +47,11 @@ const OrderAppHeader = () => {
           <Typography variant="h4">Forklore</Typography>
         </Box>
         <LocationNameContainer>
-          <Typography variant="h6">
-            {location?.name} ({location?.street})
-          </Typography>
+          {location && (
+            <Typography variant="h6">
+              {location?.name} ({location?.street})
+            </Typography>
+          )}
         </LocationNameContainer>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Badge color="primary" badgeContent={carts ? carts.length : ""}>
